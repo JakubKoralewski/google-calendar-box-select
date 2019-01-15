@@ -1,0 +1,14 @@
+{
+    "name": "Google Calendar - Box Select",
+    "version": "0.1",
+    "description": "Delete multiple events at once with ease.",
+    "manifest_version": 2,
+    "content_scripts": [{
+        "matches": ["*://calendar.google.com/calendar/*/*"],
+        "js": ["js/box-select.js"]
+    }],
+    "browser_action": {
+        "default_popup": "popup/popup.html"
+    },
+    "options_page": "options/options.html"
+}
