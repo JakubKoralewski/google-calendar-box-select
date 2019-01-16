@@ -18,11 +18,27 @@ style.href = chrome.runtime.getURL('css/box-select.css');
 (document.head || document.documentElement).appendChild(style);
 
 
+
 // b keycode - '66'
-const MAIN_KEY_CODE = 66;
+//b
+let SELECT_KEY = 66;
+//q
+let DELETE_KEY = 81;
+
+chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function (data) {
+    console.log(data);
+    SELECT_KEY = data.boxSelectHotkey || SELECT_KEY;
+    DELETE_KEY = data.deleteHotkey || DELETE_KEY;
+});
+
+chrome.storage.onChanged.addListener(function (data) {
+    console.log(data);
+    SELECT_KEY = data.boxSelectHotkey.newValue || SELECT_KEY;
+    DELETE_KEY = data.deleteHotkey.newValue || DELETE_KEY;
+});
 //const CONTEXT_MENU_HTML = '../context_menu/context_menu.html';
 
-// is the key with the MAIN_KEY_CODE being pressed
+// is the key with the SELECT_KEY being pressed
 let isKeyPressed = false;
 let selector;
 let events;
@@ -246,10 +262,10 @@ async function deleteEvents() {
 
 function keyDown(e) {
     // Q
-    if (e.keyCode === 81) {
+    if (e.key === DELETE_KEY) {
         deleteEvents();
     }
-    if (e.keyCode !== MAIN_KEY_CODE) return;
+    if (e.key !== SELECT_KEY) return;
 
     if (!blockerCreated) {
         setBlocker(document.body, 1);
@@ -261,8 +277,7 @@ function keyDown(e) {
 }
 
 function keyUp(e) {
-
-    if (e.keyCode !== MAIN_KEY_CODE) return;
+    if (e.key !== SELECT_KEY) return;
     // If something went wrong then also delete selection
 
 

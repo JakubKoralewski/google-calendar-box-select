@@ -10,6 +10,9 @@
     "browser_action": {
         "default_popup": "popup/popup.html"
     },
+    "permissions": [
+        "storage"
+    ],
     "options_page": "options/options.html",
     "web_accessible_resources": ["js/script.js", "css/box-select.css"]
 }

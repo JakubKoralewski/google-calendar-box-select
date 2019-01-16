@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 1rem;
+
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    margin: 5rem;
+    height: 100%;
+}
+
+h1 {
+    margin-top: 1rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+#options {
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    margin-right: 5rem;
+}
+
+div#taken {
+    margin: 1rem;
+    height: 50vh;
+}
+
+div#taken ul {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+input {
+    width: 25%;
+}
+
+input[type="button"] {
+    width: 50%;
+    margin-top: 1rem;
+}
