@@ -6,10 +6,26 @@ const DEFAULTS = {
     deleteHotkey: 'q'
 };
 
+let CURRENT = {};
+
 const selectInput = document.querySelector('#input_select_hotkey');
 const deleteInput = document.querySelector('#input_delete_hotkey');
 const saveButton = document.querySelector('#save');
 const restoreButton = document.querySelector('#remember_defaults');
+
+function updatePlaceholders(select, del) {
+    selectInput.placeholder = select;
+    deleteInput.placeholder = del;
+}
+
+chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function (data) {
+    updatePlaceholders(data.boxSelectHotkey, data.deleteHotkey);
+});
+
+chrome.storage.onChanged.addListener(function (data) {
+    console.log(data);
+    updatePlaceholders(data.boxSelectHotkey.newValue, data.deleteHotkey.newValue);
+});
 
 saveButton.addEventListener('click', save);
 restoreButton.addEventListener('click', rememberDefaults);
