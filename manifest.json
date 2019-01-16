@@ -4,7 +4,7 @@
     "description": "Delete multiple events at once with ease.",
     "manifest_version": 2,
     "content_scripts": [{
-        "matches": ["*://calendar.google.com/calendar/*/*"],
+        "matches": ["*://calendar.google.com/*/*"],
         "js": ["js/box-select.js"]
     }],
     "browser_action": {

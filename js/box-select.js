@@ -17,19 +17,18 @@ style.type = 'text/css';
 style.href = chrome.runtime.getURL('css/box-select.css');
 (document.head || document.documentElement).appendChild(style);
 
-
-
 // b keycode - '66'
 //b
-let SELECT_KEY = 66;
+let SELECT_KEY = 'b';
 //q
-let DELETE_KEY = 81;
+let DELETE_KEY = 'q';
 
 chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function (data) {
-    console.log(data);
+
     SELECT_KEY = data.boxSelectHotkey || SELECT_KEY;
     DELETE_KEY = data.deleteHotkey || DELETE_KEY;
 });
+console.log(`SELECT_KEY: ${SELECT_KEY}; DELETE_KEY: ${DELETE_KEY}`);
 
 chrome.storage.onChanged.addListener(function (data) {
     console.log(data);
@@ -61,16 +60,12 @@ function getEvents() {
     // Get all events
     //console.log('getEvents()');
 
-    events = document.querySelectorAll('div[role=button]');
-    events = Array.from(events).filter(event => {
+    events = document.querySelectorAll('div[role~="button"], div[role~="presentation"]');
+    events = Array.from(events);
+    console.log(events);
+    events = events.filter(event => {
         return event.dataset.eventid;
     });
-    if (events.length === 0) {
-        setTimeout(() => {
-            console.log('No events found. Waiting 500ms.');
-            getEvents();
-        }, 500);
-    }
     console.log(`Found ${events.length} events.`);
 }
 
@@ -82,7 +77,7 @@ function highlightEvents(evts) {
 
 }
 
-function unHiglightEvents(evts) {
+function unHighlightEvents(evts) {
     if (!evts) return;
     evts.forEach(evt => {
         evt.id = '';
@@ -201,37 +196,6 @@ class Selection {
 
 }
 
-//#region ContextMenu
-/* class ContextMenu {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.display();
-    }
-    display() {
-        // Insert HTML with JS from file
-        // https://stackoverflow.com/questions/15873904/adding-complex-html-using-a-chrome-content-script
-        // https://stackoverflow.com/a/3535356/10854888
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', CONTEXT_MENU_HTML, true);
-        xhr.onreadystatechange = function () {
-            if (this.readyState !== 4) {
-                console.error(this.readyState);
-                return;
-            }
-            if (this.status !== 200) {
-                console.error(this.status);
-                return;
-            } // or whatever error handling you want
-            document.getElementById('y').innerHTML = this.responseText;
-        };
-        xhr.send();
-    }
-
-} */
-
-//#endregion
-
 async function deleteEvents() {
     const OK_PATH = '#yDmH0d > div.NBxL9e.iWO5td > div > div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';
     const TRASH_PATH = '#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div';
@@ -239,25 +203,44 @@ async function deleteEvents() {
         console.log(entry);
         //event
         entry.click();
-        while (!document.querySelector('#yDmH0d > div > div > div.RDlrG.Inn9w.iWO5td')) {
+        while (!document.querySelector(TRASH_PATH)) {
             await new Promise(r => setTimeout(r, 50));
         }
 
         document.querySelector(TRASH_PATH).click();
+
+        /* The whole deal with the i variable below is important!
+           There are multiple ways a delete process in Google Calendar works.
+           If an event is reoccurring there is another popup
+           that checks whether you want to delete just this event or this and next or all.
+           So basically:
+           If there is no popup it ( waits 5 times ) then go to next.
+        */
+        let i = 0;
+        let reoccurringEvent = true;
         while (!document.querySelector(OK_PATH)) {
+
+            if (i > 10) {
+                reoccurringEvent = false;
+                break;
+            }
+            console.log(i);
             await new Promise(r => setTimeout(r, 50));
+            i++;
         }
+        if (!reoccurringEvent) continue;
 
         document.querySelector(OK_PATH).click();
         console.log('waiting for ok to disappear');
         while (document.querySelector(OK_PATH)) {
-            await new Promise(r => setTimeout(r, 150));
+            await new Promise(r => setTimeout(r, 250));
         }
         while (document.querySelector(TRASH_PATH)) {
-            await new Promise(r => setTimeout(r, 150));
+            await new Promise(r => setTimeout(r, 350));
         }
         console.log('disappeared');
     }
+    unHighlightEvents(selectedEvents);
 }
 
 function keyDown(e) {
@@ -270,7 +253,7 @@ function keyDown(e) {
     if (!blockerCreated) {
         setBlocker(document.body, 1);
     } else return;
-    unHiglightEvents(selectedEvents);
+    unHighlightEvents(selectedEvents);
     getEvents();
 
     isKeyPressed = true;
@@ -325,7 +308,6 @@ function boxSelectUp(e) {
     //if (!isKeyPressed) return;
     if (!isSelectionVisible) return;
 
-    unHiglightEvents(selectedEvents);
     selectedEvents = selector.selectedEvents();
     //console.log(selectedEvents);
     /*     selectedEvents.forEach(e => {
@@ -336,7 +318,7 @@ function boxSelectUp(e) {
         }); */
 
     //TODO: Apply shadow to selected
-
+    highlightEvents(selectedEvents);
     selector.destroy();
 }
 

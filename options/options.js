@@ -14,8 +14,8 @@ const saveButton = document.querySelector('#save');
 const restoreButton = document.querySelector('#remember_defaults');
 
 function updatePlaceholders(select, del) {
-    selectInput.placeholder = select;
-    deleteInput.placeholder = del;
+    selectInput.placeholder = select || DEFAULTS.boxSelectHotkey;
+    deleteInput.placeholder = del || DEFAULTS.deleteHotkey;
 }
 
 chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function (data) {
