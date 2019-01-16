@@ -2,9 +2,25 @@
 
 console.log('Box select extension on google calendar webpage active.');
 
+// https://stackoverflow.com/questions/9602022/chrome-extension-retrieving-global-variable-from-webpage/9636008#9636008
+// https://stackoverflow.com/questions/9515704/insert-code-into-the-page-context-using-a-content-script/9517879#9517879
+const s = document.createElement('script');
+s.src = chrome.runtime.getURL('js/script.js');
+document.body.appendChild(s);
+s.onload = function () {
+    this.remove();
+};
+
+var style = document.createElement('link');
+style.rel = 'stylesheet';
+style.type = 'text/css';
+style.href = chrome.runtime.getURL('css/box-select.css');
+(document.head || document.documentElement).appendChild(style);
+
+
 // b keycode - '66'
 const MAIN_KEY_CODE = 66;
-const CONTEXT_MENU_HTML = '../context_menu/context_menu.html';
+//const CONTEXT_MENU_HTML = '../context_menu/context_menu.html';
 
 // is the key with the MAIN_KEY_CODE being pressed
 let isKeyPressed = false;
@@ -27,7 +43,7 @@ console.log(grid); */
 
 function getEvents() {
     // Get all events
-    console.log('getEvents()');
+    //console.log('getEvents()');
 
     events = document.querySelectorAll('div[role=button]');
     events = Array.from(events).filter(event => {
@@ -40,6 +56,22 @@ function getEvents() {
         }, 500);
     }
     console.log(`Found ${events.length} events.`);
+}
+
+function highlightEvents(evts) {
+    evts.forEach(evt => {
+        //evt.classList.add('KKjvXb');
+        evt.id = 'selected';
+    });
+
+}
+
+function unHiglightEvents(evts) {
+    if (!evts) return;
+    evts.forEach(evt => {
+        evt.id = '';
+        //evt.classList.remove('KKjvXb');
+    });
 }
 
 //let grid = getElementByXPath('/html/body/div[2]/div[1]/div[1]/div[2]');
@@ -65,7 +97,6 @@ function setBlocker(parent, state) {
 //#endregion
 
 let isSelectionVisible = false;
-//#region Selection
 class Selection {
     constructor(startX, startY, parent) {
         this.x = startX;
@@ -150,12 +181,12 @@ class Selection {
         });
         return selectedEvents;
     }
+
+
 }
 
-//#endregion
-
 //#region ContextMenu
-class ContextMenu {
+/* class ContextMenu {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -181,34 +212,73 @@ class ContextMenu {
         xhr.send();
     }
 
-}
+} */
 
 //#endregion
 
+async function deleteEvents() {
+    const OK_PATH = '#yDmH0d > div.NBxL9e.iWO5td > div > div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';
+    const TRASH_PATH = '#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div';
+    for (entry of selectedEvents) {
+        console.log(entry);
+        //event
+        entry.click();
+        while (!document.querySelector('#yDmH0d > div > div > div.RDlrG.Inn9w.iWO5td')) {
+            await new Promise(r => setTimeout(r, 50));
+        }
+
+        document.querySelector(TRASH_PATH).click();
+        while (!document.querySelector(OK_PATH)) {
+            await new Promise(r => setTimeout(r, 50));
+        }
+
+        document.querySelector(OK_PATH).click();
+        console.log('waiting for ok to disappear');
+        while (document.querySelector(OK_PATH)) {
+            await new Promise(r => setTimeout(r, 150));
+        }
+        while (document.querySelector(TRASH_PATH)) {
+            await new Promise(r => setTimeout(r, 150));
+        }
+        console.log('disappeared');
+    }
+}
+
 function keyDown(e) {
+    // Q
+    if (e.keyCode === 81) {
+        deleteEvents();
+    }
     if (e.keyCode !== MAIN_KEY_CODE) return;
 
     if (!blockerCreated) {
         setBlocker(document.body, 1);
     } else return;
-
+    unHiglightEvents(selectedEvents);
     getEvents();
 
     isKeyPressed = true;
 }
 
 function keyUp(e) {
+
     if (e.keyCode !== MAIN_KEY_CODE) return;
     // If something went wrong then also delete selection
-    if (isSelectionVisible) {
-        selector.destroy();
-    }
+
 
     // Delete blocker
     if (blockerCreated) {
         setBlocker(document.body, 0);
     }
+
+    //TODO: Delete shadow from selected
+
+    if (isSelectionVisible) {
+        selector.destroy();
+    }
+
     isKeyPressed = false;
+
 }
 
 function boxSelectDown(e) {
@@ -218,7 +288,7 @@ function boxSelectDown(e) {
     // 2 = right button
     if (e.button === 2) {
         //TODO: context menu
-        contextMenu = new ContextMenu(e.clientX, e.clientY, e.button);
+        //contextMenu = new ContextMenu(e.clientX, e.clientY, e.button);
         return;
     }
 
@@ -240,9 +310,17 @@ function boxSelectUp(e) {
     //if (!isKeyPressed) return;
     if (!isSelectionVisible) return;
 
-    //TODO: Get selected events
+    unHiglightEvents(selectedEvents);
     selectedEvents = selector.selectedEvents();
-    console.log(selectedEvents);
+    //console.log(selectedEvents);
+    /*     selectedEvents.forEach(e => {
+            const re = /click:(\S*);/;
+            let jsaction = e.attributes.jsaction.nodeValue;
+            jsaction = re.exec(jsaction)[1];
+
+        }); */
+
+    //TODO: Apply shadow to selected
 
     selector.destroy();
 }
@@ -253,4 +331,3 @@ window.addEventListener('mousedown', boxSelectDown);
 window.addEventListener('mouseup', boxSelectUp);
 window.addEventListener('mousemove', boxSelectMove);
 // On hash change listens to URL changes
-//window.onload = getEvents;
