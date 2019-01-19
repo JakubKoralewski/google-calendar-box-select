@@ -23,6 +23,14 @@ let SELECT_KEY = 'b';
 //q
 let DELETE_KEY = 'q';
 
+Set.prototype.union = function (setB) {
+    var union = new Set(this);
+    for (var elem of setB) {
+        union.add(elem);
+    }
+    return union;
+};
+
 chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function (data) {
 
     SELECT_KEY = data.boxSelectHotkey || SELECT_KEY;
@@ -41,7 +49,7 @@ chrome.storage.onChanged.addListener(function (data) {
 let isKeyPressed = false;
 let selector;
 let events;
-let selectedEvents;
+let selectedEvents = new Set();
 
 /* function getElementByXPath(path) {
     return document.evaluate(
@@ -62,10 +70,10 @@ function getEvents() {
 
     events = document.querySelectorAll('div[role~="button"], div[role~="presentation"]');
     events = Array.from(events);
-    console.log(events);
     events = events.filter(event => {
         return event.dataset.eventid;
     });
+    //console.log(events);
     console.log(`Found ${events.length} events.`);
 }
 
@@ -99,6 +107,8 @@ blocker.style.height = '100%';
 blocker.style.left = '0';
 blocker.style.top = '0';
 blocker.style.zIndex = '10000';
+
+/* blocker.style.backgroundColor = 'rgba(68,132,240, 0.5)'; */
 
 function setBlocker(parent, state) {
     //console.log(`toggle blocker ${state ? 'on' : 'off'}`);
@@ -154,7 +164,7 @@ class Selection {
     }
 
     selectedEvents() {
-        let selectedEvents = [];
+        let selected = new Set();
 
         // 102px (string) -> 102 (number)
         let left = this.element.style.left;
@@ -187,10 +197,10 @@ class Selection {
                 eventsTopAboveBottom &&
                 eventsBottomBelowTop
             ) {
-                selectedEvents.push(event);
+                selected.add(event);
             }
         });
-        return selectedEvents;
+        return selected;
     }
 
 
@@ -250,13 +260,18 @@ function keyDown(e) {
     }
     if (e.key !== SELECT_KEY) return;
 
+    // Clear selected events
+
+
     if (!blockerCreated) {
         setBlocker(document.body, 1);
-    } else return;
-    unHighlightEvents(selectedEvents);
-    getEvents();
+        unHighlightEvents(selectedEvents);
+        getEvents();
+        isKeyPressed = true;
+        selectedEvents = new Set();
+    }
 
-    isKeyPressed = true;
+
 }
 
 function keyUp(e) {
@@ -305,19 +320,12 @@ function boxSelectMove(e) {
 }
 
 function boxSelectUp(e) {
-    //if (!isKeyPressed) return;
+
     if (!isSelectionVisible) return;
 
-    selectedEvents = selector.selectedEvents();
-    //console.log(selectedEvents);
-    /*     selectedEvents.forEach(e => {
-            const re = /click:(\S*);/;
-            let jsaction = e.attributes.jsaction.nodeValue;
-            jsaction = re.exec(jsaction)[1];
+    // Merge current selected events with the newly selected ones
+    selectedEvents = selectedEvents.union(selector.selectedEvents());
 
-        }); */
-
-    //TODO: Apply shadow to selected
     highlightEvents(selectedEvents);
     selector.destroy();
 }
