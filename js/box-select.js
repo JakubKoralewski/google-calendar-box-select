@@ -1,4 +1,21 @@
 /* eslint-disable no-console */
+let popupModeDelete = false;
+chrome.runtime.onMessage.addListener(function(request) {
+    if (request.action == 'boxSelect') {
+        console.log('boxSelect');
+        popupModeDelete = true;
+
+        keyDown({
+            key: 'b'
+        });
+    } else if (request.action == 'delete') {
+        window.focus();
+        keyDown({
+            key: 'q'
+        });
+        console.log('delete');
+    }
+});
 
 console.log('Box select extension on google calendar webpage active.');
 
@@ -7,23 +24,21 @@ console.log('Box select extension on google calendar webpage active.');
 const s = document.createElement('script');
 s.src = chrome.runtime.getURL('js/script.js');
 document.body.appendChild(s);
-s.onload = function () {
+s.onload = function() {
     this.remove();
 };
 
+// Inject stylesheet into website
 var style = document.createElement('link');
 style.rel = 'stylesheet';
 style.type = 'text/css';
 style.href = chrome.runtime.getURL('css/box-select.css');
 (document.head || document.documentElement).appendChild(style);
 
-// b keycode - '66'
-//b
 let SELECT_KEY = 'b';
-//q
 let DELETE_KEY = 'q';
 
-Set.prototype.union = function (setB) {
+Set.prototype.union = function(setB) {
     var union = new Set(this);
     for (var elem of setB) {
         union.add(elem);
@@ -31,19 +46,17 @@ Set.prototype.union = function (setB) {
     return union;
 };
 
-chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function (data) {
-
+chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function(data) {
     SELECT_KEY = data.boxSelectHotkey || SELECT_KEY;
     DELETE_KEY = data.deleteHotkey || DELETE_KEY;
 });
 console.log(`SELECT_KEY: ${SELECT_KEY}; DELETE_KEY: ${DELETE_KEY}`);
 
-chrome.storage.onChanged.addListener(function (data) {
+chrome.storage.onChanged.addListener(function(data) {
     console.log(data);
     SELECT_KEY = data.boxSelectHotkey.newValue || SELECT_KEY;
     DELETE_KEY = data.deleteHotkey.newValue || DELETE_KEY;
 });
-//const CONTEXT_MENU_HTML = '../context_menu/context_menu.html';
 
 // is the key with the SELECT_KEY being pressed
 let isKeyPressed = false;
@@ -51,24 +64,13 @@ let selector;
 let events;
 let selectedEvents = new Set();
 
-/* function getElementByXPath(path) {
-    return document.evaluate(
-        path,
-        document,
-        null,
-        XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null
-    ).singleNodeValue;
-} */
-
-/* console.log('grid: ');
-console.log(grid); */
-
 function getEvents() {
     // Get all events
     //console.log('getEvents()');
 
-    events = document.querySelectorAll('div[role~="button"], div[role~="presentation"]');
+    events = document.querySelectorAll(
+        'div[role~="button"], div[role~="presentation"]'
+    );
     events = Array.from(events);
     events = events.filter(event => {
         return event.dataset.eventid;
@@ -82,7 +84,6 @@ function highlightEvents(evts) {
         //evt.classList.add('KKjvXb');
         evt.id = 'selected';
     });
-
 }
 
 function unHighlightEvents(evts) {
@@ -101,18 +102,12 @@ let blockerCreated = false;
 
 const blocker = document.createElement('div');
 blocker.id = 'blocker';
-blocker.style.position = 'absolute';
-blocker.style.width = '100%';
-blocker.style.height = '100%';
-blocker.style.left = '0';
-blocker.style.top = '0';
-blocker.style.zIndex = '10000';
-
-/* blocker.style.backgroundColor = 'rgba(68,132,240, 0.5)'; */
 
 function setBlocker(parent, state) {
     //console.log(`toggle blocker ${state ? 'on' : 'off'}`);
-    state ? parent.insertBefore(blocker, parent.firstChild) : parent.removeChild(blocker);
+    state
+        ? parent.insertBefore(blocker, parent.firstChild)
+        : parent.removeChild(blocker);
     blockerCreated = state;
 }
 //#endregion
@@ -124,15 +119,9 @@ class Selection {
         this.y = startY;
 
         let element = document.createElement('div');
-        element.style.position = 'absolute';
-        element.style.display = 'block';
-        element.style.width = '0%';
-        element.style.height = '0%';
-        element.style.border = '2px dotted #4484f0';
-        element.style.backgroundColor = 'rgba(68,132,240, 0.3)';
         element.style.left = `${startX}px`;
         element.style.top = `${startY}px`;
-        element.style.zIndex = '10001';
+
         element.id = 'selector';
         this.element = element;
 
@@ -202,15 +191,17 @@ class Selection {
         });
         return selected;
     }
-
-
 }
 
 async function deleteEvents() {
-    const OK_PATH = '#yDmH0d > div.NBxL9e.iWO5td > div > div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';
-    const TRASH_PATH = '#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div';
+    // Let popup.js know when deleting starts and ends for UX animation purposes
+    chrome.runtime.sendMessage({ action: 'deleteStart' });
+    console.log('deleting these events:');
+    console.log(selectedEvents);
+    const OK_PATH = 'div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';
+    const TRASH_PATH =
+        '#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div';
     for (entry of selectedEvents) {
-        console.log(entry);
         //event
         entry.click();
         while (!document.querySelector(TRASH_PATH)) {
@@ -224,18 +215,19 @@ async function deleteEvents() {
            If an event is reoccurring there is another popup
            that checks whether you want to delete just this event or this and next or all.
            So basically:
-           If there is no popup it ( waits 5 times ) then go to next.
+           If there is no popup it ( waits 5 times ) then goes to next.
         */
         let i = 0;
         let reoccurringEvent = true;
         while (!document.querySelector(OK_PATH)) {
-
+            if (i > 9) OK_PATH = OK_PATH2;
             if (i > 10) {
                 reoccurringEvent = false;
                 break;
             }
-            console.log(i);
+            //console.log(i);
             await new Promise(r => setTimeout(r, 50));
+            console.log(document.querySelector(OK_PATH));
             i++;
         }
         if (!reoccurringEvent) continue;
@@ -251,6 +243,7 @@ async function deleteEvents() {
         console.log('disappeared');
     }
     unHighlightEvents(selectedEvents);
+    chrome.runtime.sendMessage({ action: 'deleteEnd' });
 }
 
 function keyDown(e) {
@@ -262,7 +255,6 @@ function keyDown(e) {
 
     // Clear selected events
 
-
     if (!blockerCreated) {
         setBlocker(document.body, 1);
         unHighlightEvents(selectedEvents);
@@ -270,28 +262,22 @@ function keyDown(e) {
         isKeyPressed = true;
         selectedEvents = new Set();
     }
-
-
 }
 
 function keyUp(e) {
     if (e.key !== SELECT_KEY) return;
     // If something went wrong then also delete selection
 
-
     // Delete blocker
     if (blockerCreated) {
         setBlocker(document.body, 0);
     }
-
-    //TODO: Delete shadow from selected
 
     if (isSelectionVisible) {
         selector.destroy();
     }
 
     isKeyPressed = false;
-
 }
 
 function boxSelectDown(e) {
@@ -320,7 +306,6 @@ function boxSelectMove(e) {
 }
 
 function boxSelectUp(e) {
-
     if (!isSelectionVisible) return;
 
     // Merge current selected events with the newly selected ones
@@ -328,6 +313,16 @@ function boxSelectUp(e) {
 
     highlightEvents(selectedEvents);
     selector.destroy();
+
+    // If triggered from popup/popup.html then remember to remove the blocker!
+    if (popupModeDelete) {
+        keyUp({ key: 'b' });
+
+        // Get rid of highlight when box select div active in popup.html
+        chrome.runtime.sendMessage({ action: 'boxSelectOff' });
+
+        popupModeDelete = false;
+    }
 }
 
 window.onkeydown = keyDown;
