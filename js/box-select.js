@@ -220,7 +220,6 @@ async function deleteEvents() {
         let i = 0;
         let reoccurringEvent = true;
         while (!document.querySelector(OK_PATH)) {
-            if (i > 9) OK_PATH = OK_PATH2;
             if (i > 10) {
                 reoccurringEvent = false;
                 break;
