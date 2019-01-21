@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+import '../css/options.css';
 
 const DEFAULTS = {
     boxSelectHotkey: 'b',
