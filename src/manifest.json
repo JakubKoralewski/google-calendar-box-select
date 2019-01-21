@@ -19,6 +19,6 @@
         "storage"
     ],
     "options_page": "options.html",
-    "web_accessible_resources": ["script.js", "box-select.css"],
+    "web_accessible_resources": ["script.js", "globalStyles.css"],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

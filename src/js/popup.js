@@ -1,4 +1,4 @@
-import '../css/popup.css';
+import '../css/popup.scss';
 
 const del = document.querySelector('#delete');
 const boxSelect = document.querySelector('#box-select');

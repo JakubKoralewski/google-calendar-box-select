@@ -32,7 +32,7 @@ s.onload = function () {
 var style = document.createElement('link');
 style.rel = 'stylesheet';
 style.type = 'text/css';
-style.href = chrome.runtime.getURL('box-select.css');
+style.href = chrome.runtime.getURL('globalStyles.css');
 (document.head || document.documentElement).appendChild(style);
 
 let SELECT_KEY = 'b';
