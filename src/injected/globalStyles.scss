@@ -14,16 +14,24 @@
     z-index: 10005;
 }
 
-#blocker {
-    background-color: #4484f0;
-    transition: opacity 0.2s ease-in-out;
-    opacity: 0.08;
+.blocker {
     position: absolute;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
+}
+
+#blocker-lower {
+    background-color: #4484f0;
+    transition: opacity 0.2s ease-in-out;
+    opacity: 0.08;
     z-index: 10000;
+}
+
+#blocker-upper {
+    /* Events at 10002 */
+    z-index: 10005;
 }
 
 #slidedown {

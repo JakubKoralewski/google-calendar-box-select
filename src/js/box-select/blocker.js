@@ -4,8 +4,16 @@
  * */
 class Blocker {
     constructor() {
-        this.element = document.createElement('div');
-        this.element.id = 'blocker';
+        /* Lower element shows color */
+        this.lowerElement = document.createElement('div');
+        this.lowerElement.id = 'blocker-lower';
+        this.lowerElement.classList.add('blocker');
+
+        /* Upper element captures clicks */
+        this.upperElement = document.createElement('div');
+        this.upperElement.id = 'blocker-upper';
+        this.upperElement.classList.add('blocker');
+
         this.created = false;
     }
     /** Turn Blocker instance on or off.
@@ -14,10 +22,14 @@ class Blocker {
      * @param {number} state - 0 (off); 1 (on);
      */
     setState(parent, state) {
-        //console.log(`toggle blocker ${state ? 'on' : 'off'}`);
-        state
-            ? parent.insertBefore(this.element, parent.childNodes[1])
-            : parent.removeChild(this.element);
+        if (state) {
+            parent.insertBefore(this.lowerElement, parent.childNodes[1]);
+            parent.insertBefore(this.upperElement, this.lowerElement);
+        } else {
+            parent.removeChild(this.lowerElement);
+            parent.removeChild(this.upperElement);
+        }
+
         this.created = state;
     }
 }
