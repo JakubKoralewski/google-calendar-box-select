@@ -2,9 +2,12 @@
 
 # ![logo](docs/img/main_logo.png)
 
-<h4 align="center">Chrome Extension to (Box) Select multiple Google Calendar events. Currently you can only delete events.</h4>
+<h4 align="center">Chrome Extension to (Box) Select multiple Google Calendar events. Currently you can only delete events. </h4> 
+<h5 align="center">
 
 ![trailer](docs/img/demo.gif)
+
+<img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/320px-Flag_of_Poland.svg.png" height="30" width="48"/> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/320px-Flag_of_the_United_Kingdom.svg.png" height="30" width="48" /></h5>
 
 ## Problem
 
@@ -65,7 +68,7 @@ Deploys to _dist/_ folder.
 
 ## Contributions
 
-Very welcome! 
+Very welcome!
 
 Especially dealing with the dreaded... _PROBLEM_.
 
@@ -73,8 +76,9 @@ Especially dealing with the dreaded... _PROBLEM_.
 
 This boilerplate was used to allow for Webpack code compilation:
 
-- [Chrome Extension Webpack Boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
-- I'd like to personally thank the StackOverflow community :heart:!
+- #### [Chrome Extension Webpack Boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
+
+Additionally I'd like to personally thank the **StackOverflow community** :heart: :sparkling_heart: :exclamation: :exclamation:
 
 ## License
 
