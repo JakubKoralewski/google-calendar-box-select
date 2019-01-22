@@ -1,0 +1,75 @@
+# Google Calendar Box Select
+
+# ![logo](docs/img/main_logo.png)
+
+<h4 align="center">Chrome Extension to (Box) Select multiple Google Calendar events. Currently you can only delete events.</h4>
+
+![trailer](docs/img/demo.gif)
+
+## Problem
+
+The process of deleting events is very hacked together since no hooking into underlying (minified) JavaScript code is being done.
+Instead of that the **trash can** is actually being clicked to delete events using a **querySelector**, something like this:
+
+```javascript
+document
+  .querySelector(
+    "#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div"
+  )
+  .click();
+```
+
+You can see this is not ideal.
+Because of this the ideal goal of this extension would be to acquire so many users as to pressure the Google Calendar team into creating a real, stable system of multiple selection, deletion and edition...
+
+## the ideal goal of this extension would be to... [**_die_**](https://getyarn.io/yarn-clip/9f143220-ed9d-4525-b4ef-b37fd5413768)
+
+![Not the hero we deserved but the one we needed.](https://i.imgur.com/NN4nmKR.gif)
+
+## Usage
+
+Hold **B** To enter selection mode. Click **Q** to delete.
+
+Keyboard shortcuts can be changed in the Extension's options.
+
+## Before developing
+
+```bash
+$ npm install
+```
+
+## Develop
+
+```bash
+$ npm run dev
+```
+
+#### Fairly opinionated stylistic choices.
+
+Using modern ES6 syntax.
+Running Prettier with ESLint.
+
+[_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes.
+
+## Build
+
+```bash
+$ npm run build
+```
+
+Deploys to _dist/_ folder.
+
+## Contribution
+
+Very welcome!
+
+## Credits
+
+This boilerplate was used to allow for Webpack code compilation:
+
+- [Chrome Extension Webpack Boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
+- I'd like to personally thank the StackOverflow community :heart:!
+
+## License
+
+MIT © [Jakub Koralewski](https://github.com/JakubKoralewski)
