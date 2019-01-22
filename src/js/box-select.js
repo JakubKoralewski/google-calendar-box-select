@@ -180,6 +180,8 @@ function showPossibleEvents(evts) {
         console.log(backgroundText);
         console.log(evt);
         evt.style.background = backgroundText;
+
+        //FIXME: Background not animating
         evt.classList.add('possible');
     });
 }
@@ -190,6 +192,7 @@ function showPossibleEvents(evts) {
  * */
 function hidePossibleEvents(evts) {
     evts.forEach(evt => {
+        //FIXME: Background color not being restored
         evt.style.background = '';
         console.log(`evt.oldColor = ${evt.oldColor}`);
         evt.style.backgroundColor = evt.oldColor;
