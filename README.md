@@ -2,14 +2,18 @@
 
 # ![logo](docs/img/main_logo.png)
 
-<h4 align="center">Chrome Extension to (Box) Select multiple Google Calendar events. Currently you can only delete events. </h4> 
-<h5 align="center">
+<h4 align="center">Chrome Extension to (Box) Select multiple Google Calendar events. Currently you can only delete events. </h4>
 
 ![trailer](docs/img/demo.gif)
 
-<img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/320px-Flag_of_Poland.svg.png" height="30" width="48"/> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/320px-Flag_of_the_United_Kingdom.svg.png" height="30" width="48" /></h5>
+<h5 align="center">
+<img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/320px-Flag_of_Poland.svg.png" height="30" width="48"/> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/320px-Flag_of_the_United_Kingdom.svg.png" height="30" width="48" />
 
-## Problem
+multilingual locale support
+
+</h5>
+
+## :warning: Problem
 
 The process of deleting events is very hacked together since no hooking into underlying (minified) JavaScript code is being done.
 Instead of that the **trash can** is actually being clicked to delete events using a **querySelector**, something like this:
@@ -37,7 +41,7 @@ Because of this the ideal goal of this extension would be to acquire so many use
 
 Keyboard shortcuts **can be changed** in the Extension's options.
 
-## Before developing
+## :construction: Before developing
 
 ```bash
 $ npm install
