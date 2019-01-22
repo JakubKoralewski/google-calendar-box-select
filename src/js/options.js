@@ -1,6 +1,17 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+/* global chrome */
+
 import '../css/options.scss';
+
+/* i18n */
+document.documentElement.lang = chrome.i18n.getMessage('@@ui_locale');
+document.head.title = chrome.i18n.getMessage('options');
+document.querySelector('#select_text').innerText = chrome.i18n.getMessage('selectHotkey');
+document.querySelector('#delete_text').innerText = chrome.i18n.getMessage('deleteHotkey');
+document.querySelector('input#save').value = chrome.i18n.getMessage('save');
+document.querySelector('input#remind_defaults').value = chrome.i18n.getMessage('remindDefaults');
+document.querySelector('h2#taken').innerText = chrome.i18n.getMessage('takenShortcuts');
 
 const DEFAULTS = {
     boxSelectHotkey: 'b',
@@ -19,11 +30,11 @@ function updatePlaceholders(select, del) {
     deleteInput.placeholder = del || DEFAULTS.deleteHotkey;
 }
 
-chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function (data) {
+chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function(data) {
     updatePlaceholders(data.boxSelectHotkey, data.deleteHotkey);
 });
 
-chrome.storage.onChanged.addListener(function (data) {
+chrome.storage.onChanged.addListener(function(data) {
     console.log(data);
     updatePlaceholders(data.boxSelectHotkey.newValue, data.deleteHotkey.newValue);
 });

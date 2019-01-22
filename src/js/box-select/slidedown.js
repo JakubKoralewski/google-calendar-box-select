@@ -38,16 +38,9 @@ class Slidedown {
     insertHTML() {
         // Element assigned to this.element and then reassigned because of function scope (this. doesn't work!)
         const element = this.element;
-        let filePath = chrome.runtime.getURL('slidedown.html');
+        let selectModeActiveText = chrome.i18n.getMessage('selectModeActive');
 
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', filePath, true);
-        xhr.onreadystatechange = function() {
-            if (this.readyState !== 4) return;
-            if (this.status !== 200) return; // or whatever error handling you want
-            element.innerHTML = this.responseText;
-        };
-        xhr.send();
+        this.element.innerHTML = `<p>${selectModeActiveText}</p>`;
 
         this.element = element;
     }

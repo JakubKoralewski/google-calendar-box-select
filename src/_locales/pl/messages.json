@@ -1,0 +1,32 @@
+{
+    "appName": {
+        "message": "Wielozaznaczacz dla Kalendarza Google"
+    },
+    "appDesc": {
+        "message": "Zaznacz kilka wydarzeń w Kalendarzu Google bez problemu."
+    },
+    "options": {
+        "message": "Opcje"
+    },
+    "deleteHotkey": {
+        "message": "Skrót do usunięcia:"
+    },
+    "selectHotkey": {
+        "message": "Skrót do zaznaczania:"
+    },
+    "save": {
+        "message": "Zapisz"
+    },
+    "remindDefaults": {
+        "message": "Przypomnij domyślne"
+    },
+    "takenShortcuts": {
+        "message": "Zajęte skróty, proszę uważać na:"
+    },
+    "boxSelect": {
+        "message": "Wielozaznaczacz"
+    },
+    "selectModeActive" {
+        "message": "Tryb wielo-zaznaczania aktywny!"
+    }
+}

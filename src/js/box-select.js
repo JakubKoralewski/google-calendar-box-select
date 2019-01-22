@@ -2,7 +2,7 @@
 /* global chrome:true */
 import Selection from './box-select/selection.js';
 import Blocker from './box-select/blocker.js';
-import Slidedown from './box-select/slidedown/slidedown.js';
+import Slidedown from './box-select/slidedown.js';
 
 let SELECT_KEY = 'b';
 let DELETE_KEY = 'q';

@@ -9,11 +9,10 @@ var webpack = require('webpack'),
     WriteFilePlugin = require('write-file-webpack-plugin'),
     MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-
 // load the secrets
 var alias = {};
 
-var secretsPath = path.join(__dirname, ('secrets.' + env.NODE_ENV + '.js'));
+var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
 
 var fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
 
@@ -38,14 +37,16 @@ var options = {
         filename: '[name].bundle.js'
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.(s*)css$/,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
                 exclude: /node_modules/
             },
             {
                 test: /globalStyles\.scss$/,
-                use: [{
+                use: [
+                    {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
                             // you can specify a publicPath here
@@ -53,11 +54,12 @@ var options = {
                             publicPath: 'dist/'
                         }
                     },
-                    'css-loader', 'sass-loader'
+                    'css-loader',
+                    'sass-loader'
                 ]
             },
             {
-                test: new RegExp('\.(' + fileExtensions.join('|') + ')$'),
+                test: new RegExp('.(' + fileExtensions.join('|') + ')$'),
                 loader: 'file-loader?name=[name].[ext]',
                 exclude: /node_modules/
             },
@@ -76,22 +78,27 @@ var options = {
         new CleanWebpackPlugin(['build']),
         // expose and write the allowed env vars on the compiled bundle
         new webpack.EnvironmentPlugin(['NODE_ENV']),
-        new CopyWebpackPlugin([{
+        new CopyWebpackPlugin([
+            {
                 from: 'src/manifest.json',
-                transform: function (content) {
+                transform: function(content) {
                     // generates the manifest file using the package.json informations
-                    return Buffer.from(JSON.stringify({
-                        description: process.env.npm_package_description,
-                        version: process.env.npm_package_version,
-                        ...JSON.parse(content.toString())
-                    }));
+                    return Buffer.from(
+                        JSON.stringify({
+                            description: process.env.npm_package_description,
+                            version: process.env.npm_package_version,
+                            ...JSON.parse(content.toString())
+                        })
+                    );
                 }
             },
             {
-                from: path.join(__dirname, 'src', 'injected', 'script.js'),
+                from: path.join(__dirname, 'src', 'injected', 'script.js')
             },
             {
-                from: path.join(__dirname, 'src', 'js', 'box-select', 'slidedown', 'slidedown.html'),
+                /* i18n */
+                from: path.join(__dirname, 'src', '_locales'),
+                to: path.join(__dirname, 'build', '_locales')
             }
         ]),
 
