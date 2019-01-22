@@ -169,19 +169,19 @@ function showPossibleEvents(evts) {
         let brColor = evtColor.match(/\d+/g).map(number => parseInt(number));
 
         /* Add 20 to every value to brighten it. */
-        brColor = brColor.map(number => (number + 100 > 255 ? 255 : number + 100));
+        brColor = brColor.map(number => (number + 20 > 255 ? 255 : number + 20));
         brColor = `rgb(${brColor[0]}, ${brColor[1]}, ${brColor[2]})`;
 
         evt.oldColor = evtColor;
 
-        console.log(evtColor);
-        console.log(brColor);
         let backgroundText = `-webkit-linear-gradient(left, ${evtColor} 0%, ${brColor} 50%, ${evtColor} 100%), linear-gradient(to right, ${evtColor} 0%, ${brColor} 50%,${evtColor} 100%)`;
-        console.log(backgroundText);
-        console.log(evt);
         evt.style.background = backgroundText;
+        evt.style.backgroundSize = '400% 400%';
 
-        //FIXME: Background not animating
+        evt.oldZIndex = evt.style.zIndex;
+
+        evt.style.zIndex = '10002';
+
         evt.classList.add('possible');
     });
 }
@@ -192,10 +192,11 @@ function showPossibleEvents(evts) {
  * */
 function hidePossibleEvents(evts) {
     evts.forEach(evt => {
-        //FIXME: Background color not being restored
         evt.style.background = '';
         console.log(`evt.oldColor = ${evt.oldColor}`);
+
         evt.style.backgroundColor = evt.oldColor;
+        evt.style.zIndex = evt.OldZIndex;
         evt.classList.remove('possible');
     });
 }
@@ -210,7 +211,6 @@ function keyDown(e) {
     if (!blocker.created) {
         blocker.setState(document.body, 1);
 
-        //TODO: Create slidedown
         if (!Slidedown.created) {
             Slidedown.created = true;
             slidedown.appendToDOM(document.body);

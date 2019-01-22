@@ -8,8 +8,6 @@ class Slidedown {
     constructor(parent) {
         this.element = document.createElement('div');
 
-        this.insertHTML();
-
         this.element.id = 'slidedown';
         Slidedown.created = false;
 
@@ -30,19 +28,16 @@ class Slidedown {
      * @param {Element} parent Parent element
      */
     appendToDOM(parent) {
-        console.log('appending slidedown to dom');
         parent.insertBefore(this.element, parent.firstChild);
+        this.insertHTML();
     }
 
     /** Insert html from **slidedown.html** into the innerHTML property of the slidedown.element instance*/
     insertHTML() {
-        // Element assigned to this.element and then reassigned because of function scope (this. doesn't work!)
-        const element = this.element;
         let selectModeActiveText = chrome.i18n.getMessage('selectModeActive');
-
         this.element.innerHTML = `<p>${selectModeActiveText}</p>`;
-
-        this.element = element;
+        console.log(`this.element.offsetWidth: ${this.element.offsetWidth}`);
+        this.element.style.marginLeft = (-this.element.offsetWidth / 2).toString() + 'px';
     }
 }
 

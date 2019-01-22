@@ -11,12 +11,13 @@
     height: 0%;
     border: 2px dotted #4484f0;
     background-color: rgba(68, 132, 240, 0.3);
-    z-index: 10001;
+    z-index: 10005;
 }
 
 #blocker {
-    /*     background-color: #4484f0;
-    opacity: 0.1; */
+    background-color: #4484f0;
+    transition: opacity 0.2s ease-in-out;
+    opacity: 0.08;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -30,7 +31,8 @@
     z-index: 10002;
     /*FIXME: I don't think this is centered, because it doesn't take the elements width into consideration! */
     left: 50%;
-    width: 200px;
+    width: auto;
+    padding: 0px 30px;
     height: 70px;
     margin-left: -100px;
     top: -100px;
@@ -61,19 +63,20 @@
 
 .possible {
     /* https://codepen.io/P1N2O/pen/pyBNzX */
-    animation: moveGradient 2s ease infinite;
+
+    animation: moveGradient 4s ease infinite;
 }
 
 @keyframes moveGradient {
     0% {
-        background-position: 0% 50%
+        background-position: 0% 50%;
     }
 
     50% {
-        background-position: 100% 50%
+        background-position: 100% 50%;
     }
 
     100% {
-        background-position: 0% 50%
+        background-position: 0% 50%;
     }
 }
