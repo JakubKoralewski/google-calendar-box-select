@@ -1,6 +1,22 @@
 /* eslint-disable no-console */
+/* global chrome:true */
+import Selection from './box-select/selection.js';
+import Blocker from './box-select/blocker.js';
+import Slidedown from './box-select/slidedown/slidedown.js';
+
+let SELECT_KEY = 'b';
+let DELETE_KEY = 'q';
+// is the key with the SELECT_KEY being pressed
+let isKeyPressed = false;
+let selector;
+let events;
+let selectedEvents = new Set();
+
+const blocker = new Blocker();
+const slidedown = new Slidedown();
+
 let popupModeDelete = false;
-chrome.runtime.onMessage.addListener(function (request) {
+chrome.runtime.onMessage.addListener(function(request) {
     if (request.action == 'boxSelect') {
         console.log('boxSelect');
         popupModeDelete = true;
@@ -24,7 +40,7 @@ console.log('Box select extension on google calendar webpage active.');
 const s = document.createElement('script');
 s.src = chrome.runtime.getURL('script.js');
 document.body.appendChild(s);
-s.onload = function () {
+s.onload = function() {
     this.remove();
 };
 
@@ -35,10 +51,7 @@ style.type = 'text/css';
 style.href = chrome.runtime.getURL('globalStyles.css');
 (document.head || document.documentElement).appendChild(style);
 
-let SELECT_KEY = 'b';
-let DELETE_KEY = 'q';
-
-Set.prototype.union = function (setB) {
+Set.prototype.union = function(setB) {
     var union = new Set(this);
     for (var elem of setB) {
         union.add(elem);
@@ -46,31 +59,23 @@ Set.prototype.union = function (setB) {
     return union;
 };
 
-chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function (data) {
+chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function(data) {
     SELECT_KEY = data.boxSelectHotkey || SELECT_KEY;
     DELETE_KEY = data.deleteHotkey || DELETE_KEY;
 });
 console.log(`SELECT_KEY: ${SELECT_KEY}; DELETE_KEY: ${DELETE_KEY}`);
 
-chrome.storage.onChanged.addListener(function (data) {
+chrome.storage.onChanged.addListener(function(data) {
     console.log(data);
     SELECT_KEY = data.boxSelectHotkey.newValue || SELECT_KEY;
     DELETE_KEY = data.deleteHotkey.newValue || DELETE_KEY;
 });
 
-// is the key with the SELECT_KEY being pressed
-let isKeyPressed = false;
-let selector;
-let events;
-let selectedEvents = new Set();
-
 function getEvents() {
     // Get all events
     //console.log('getEvents()');
 
-    events = document.querySelectorAll(
-        'div[role~="button"], div[role~="presentation"]'
-    );
+    events = document.querySelectorAll('div[role~="button"], div[role~="presentation"]');
     events = Array.from(events);
     events = events.filter(event => {
         return event.dataset.eventid;
@@ -94,14 +99,6 @@ function unHighlightEvents(evts) {
     });
 }
 
-import Blocker from './box-select/blocker.js';
-import Slidedown from './box-select/slidedown.js';
-
-const blocker = new Blocker();
-//#endregion
-
-import Selection from './box-select/selection.js';
-
 async function deleteEvents() {
     // Let popup.js know when deleting starts and ends for UX animation purposes
     chrome.runtime.sendMessage({
@@ -109,7 +106,8 @@ async function deleteEvents() {
     });
     console.log('deleting these events:');
     console.log(selectedEvents);
-    const OK_PATH = 'div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';
+    const OK_PATH =
+        'div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';
     const TRASH_PATH =
         '#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div';
     for (let entry of selectedEvents) {
@@ -158,6 +156,47 @@ async function deleteEvents() {
     });
 }
 
+/**
+ * Instead of creating a bland, blue blocker overlay. Highlight the possible events, by changing their color!
+ * Adds a 'possible' class to events.
+ * */
+function showPossibleEvents(evts) {
+    evts.forEach(evt => {
+        /* evtColor = rgb(202, 189, 191) */
+        let evtColor = evt.style.backgroundColor;
+
+        /* Extract numbers from rgb string to create brightened color. */
+        let brColor = evtColor.match(/\d+/g).map(number => parseInt(number));
+
+        /* Add 20 to every value to brighten it. */
+        brColor = brColor.map(number => (number + 100 > 255 ? 255 : number + 100));
+        brColor = `rgb(${brColor[0]}, ${brColor[1]}, ${brColor[2]})`;
+
+        evt.oldColor = evtColor;
+
+        console.log(evtColor);
+        console.log(brColor);
+        let backgroundText = `-webkit-linear-gradient(left, ${evtColor} 0%, ${brColor} 50%, ${evtColor} 100%), linear-gradient(to right, ${evtColor} 0%, ${brColor} 50%,${evtColor} 100%)`;
+        console.log(backgroundText);
+        console.log(evt);
+        evt.style.background = backgroundText;
+        evt.classList.add('possible');
+    });
+}
+
+/**
+ *  Same as showPossibleEvents but in reverse.
+ *  Removes the 'possible' class from events.
+ * */
+function hidePossibleEvents(evts) {
+    evts.forEach(evt => {
+        evt.style.background = '';
+        console.log(`evt.oldColor = ${evt.oldColor}`);
+        evt.style.backgroundColor = evt.oldColor;
+        evt.classList.remove('possible');
+    });
+}
+
 function keyDown(e) {
     // Q
     if (e.key === DELETE_KEY) {
@@ -165,14 +204,21 @@ function keyDown(e) {
     }
     if (e.key !== SELECT_KEY) return;
 
-    //TODO: Create slidedown
-
-    // Clear selected events
-
     if (!blocker.created) {
         blocker.setState(document.body, 1);
+
+        //TODO: Create slidedown
+        if (!Slidedown.created) {
+            Slidedown.created = true;
+            slidedown.appendToDOM(document.body);
+        }
+
+        slidedown.down();
+
         unHighlightEvents(selectedEvents);
         getEvents();
+
+        showPossibleEvents(events);
         isKeyPressed = true;
         selectedEvents = new Set();
     }
@@ -180,9 +226,10 @@ function keyDown(e) {
 
 function keyUp(e) {
     if (e.key !== SELECT_KEY) return;
-    // If something went wrong then also delete selection
 
-    //TODO: slidedown slide up
+    slidedown.up();
+
+    hidePossibleEvents(events);
 
     // Delete blocker
     if (blocker.created) {
@@ -221,7 +268,7 @@ function boxSelectMove(e) {
     selector.display(e.clientX, e.clientY);
 }
 
-function boxSelectUp(e) {
+function boxSelectUp() {
     if (!Selection.visible) return;
 
     // Merge current selected events with the newly selected ones

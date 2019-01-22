@@ -78,7 +78,7 @@ var options = {
         new webpack.EnvironmentPlugin(['NODE_ENV']),
         new CopyWebpackPlugin([{
                 from: 'src/manifest.json',
-                transform: function (content, path) {
+                transform: function (content) {
                     // generates the manifest file using the package.json informations
                     return Buffer.from(JSON.stringify({
                         description: process.env.npm_package_description,
@@ -89,17 +89,10 @@ var options = {
             },
             {
                 from: path.join(__dirname, 'src', 'injected', 'script.js'),
+            },
+            {
+                from: path.join(__dirname, 'src', 'js', 'box-select', 'slidedown', 'slidedown.html'),
             }
-            /* ,
-                        {
-                            from: path.join(__dirname, 'src', 'injected', 'box-select.scss'),
-                            transform: function (content) {
-                                return ExtractTextPlugin.extract({
-                                    fallbackLoader: 'style-loader',
-                                    loader: 'css-loader!sass-loader',
-                                });
-                            }
-                        }, */
         ]),
 
         new HtmlWebpackPlugin({
