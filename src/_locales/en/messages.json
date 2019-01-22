@@ -28,7 +28,7 @@
     "boxSelect": {
         "message": "Box Select"
     },
-    "selectModeActive" {
+    "selectModeActive": {
         "message": "Select Mode Active!"
     }
 }
