@@ -22,15 +22,17 @@ document
 You can see this is not ideal.
 Because of this the ideal goal of this extension would be to acquire so many users as to pressure the Google Calendar team into creating a real, stable system of multiple selection, deletion and edition...
 
-## the ideal goal of this extension would be to... [**_die_**](https://getyarn.io/yarn-clip/9f143220-ed9d-4525-b4ef-b37fd5413768)
+## the ideal goal of this extension would be to... [**die**](https://getyarn.io/yarn-clip/9f143220-ed9d-4525-b4ef-b37fd5413768)
 
 ![Not the hero we deserved but the one we needed.](https://i.imgur.com/NN4nmKR.gif)
 
 ## Usage
 
-Hold **B** To enter selection mode. Click **Q** to delete.
+`B` - (hold) enter selection mode
 
-Keyboard shortcuts can be changed in the Extension's options.
+`Q` - delete selected events
+
+Keyboard shortcuts **can be changed** in the Extension's options.
 
 ## Before developing
 
@@ -49,7 +51,9 @@ $ npm run dev
 Using modern ES6 syntax.
 Running Prettier with ESLint.
 
-[_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes.
+Developed with VSCode!
+
+[_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
 
 ## Build
 
@@ -59,9 +63,11 @@ $ npm run build
 
 Deploys to _dist/_ folder.
 
-## Contribution
+## Contributions
 
-Very welcome!
+Very welcome! 
+
+Especially dealing with the dreaded... _PROBLEM_.
 
 ## Credits
 
