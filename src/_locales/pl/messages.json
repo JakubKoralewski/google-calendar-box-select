@@ -8,6 +8,9 @@
     "options": {
         "message": "Opcje"
     },
+    "shortAppName": {
+        "message": "Wielozaznaczacz"
+    },
     "deleteHotkey": {
         "message": "Skrót do $OPEN_TAG$usunięcia$CLOSE_TAG$:",
         "placeholders": {

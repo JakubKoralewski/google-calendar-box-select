@@ -7,6 +7,10 @@
         "message": "Select multiple events in Google Calendar and delete them with ease.",
         "description": "The description of the application, displayed in the web store."
     },
+    "shortAppName": {
+        "message": "Box Select - GC",
+        "description": "https://developer.chrome.com/apps/manifest/name#short_name"
+    },
     "options": {
         "message": "Options"
     },
@@ -43,7 +47,7 @@
         "message": "Remind defaults"
     },
     "takenShortcuts": {
-        "message": "Taken shortcuts, be mind of:"
+        "message": "Be mind of these taken hotkeys:"
     },
     "boxSelect": {
         "message": "Box Select"
