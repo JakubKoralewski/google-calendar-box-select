@@ -1,8 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-/* global chrome */
-
-import '../css/options.scss';
+import './options.scss';
 
 /* i18n */
 document.documentElement.lang = chrome.i18n.getMessage('@@ui_locale');
@@ -18,7 +14,7 @@ const DEFAULTS = {
 	deleteHotkey: 'q'
 };
 
-let CURRENT = {};
+//let CURRENT = {};
 
 const selectInput = document.querySelector('#input_select_hotkey');
 const deleteInput = document.querySelector('#input_delete_hotkey');
@@ -46,7 +42,7 @@ selectInput.addEventListener('input', handleInput);
 deleteInput.addEventListener('input', handleInput);
 
 function handleInput(e) {
-	const input = e.data;
+	//const input = e.data;
 	if (e.target.value.length > 1) {
 		console.log('only 1 char');
 		e.target.value = e.target.value.charAt(0);

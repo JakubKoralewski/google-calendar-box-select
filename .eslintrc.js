@@ -2,7 +2,8 @@ module.exports = {
 	"env": {
 		"browser": true,
 		"node": true,
-		"es6": true
+		"es6": true,
+		"webextensions": true
 	},
 	"plugins": ["prettier"],
 	"extends": "eslint:recommended",
@@ -11,9 +12,9 @@ module.exports = {
 		"sourceType": "module",
 	},
 	"rules": {
-		//TODO: ignore console log errors
 		'no-console': 'off',
 		'no-mixed-spaces-and-tabs': ["warn", "smart-tabs"],
+		'indent': 'off',
 		"prettier/prettier": [
 			"error",
 			{
@@ -28,10 +29,6 @@ module.exports = {
 		// false means don't override
 		"chrome": false
 	},
-	"indent": [
-		"warn",
-		"tab"
-	],
 	"linebreak-style": [
 		"error",
 		"windows"

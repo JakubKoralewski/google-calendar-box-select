@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 const webpack = require('webpack'),
 	path = require('path'),
 	fileSystem = require('fs'),
@@ -30,9 +29,9 @@ if (fileSystem.existsSync(secretsPath)) {
 var options = {
 	mode: process.env.NODE_ENV || 'development',
 	entry: {
-		popup: path.join(__dirname, 'src', 'js', 'popup.js'),
-		options: path.join(__dirname, 'src', 'js', 'options.js'),
-		boxSelect: path.join(__dirname, 'src', 'js', 'box-select.js'),
+		popup: path.join(__dirname, 'src', 'popup', 'popup.js'),
+		options: path.join(__dirname, 'src', 'options', 'options.js'),
+		boxSelect: path.join(__dirname, 'src', 'js', 'box-select', 'box-select.js'),
 		background: path.join(__dirname, 'src', 'js', 'background.js'),
 		globalStyles: path.join(__dirname, 'src', 'injected', 'globalStyles.scss')
 	},
@@ -104,7 +103,7 @@ var options = {
 		]
 	},
 	resolve: {
-		alias: alias
+		alias
 	},
 	plugins: [
 		// clean the build folder
@@ -139,12 +138,12 @@ var options = {
 			}
 		]),
 		new HtmlWebpackPlugin({
-			template: path.join(__dirname, 'src', 'popup.html'),
+			template: path.join(__dirname, 'src', 'popup', 'popup.html'),
 			filename: 'popup.html',
 			chunks: ['popup']
 		}),
 		new HtmlWebpackPlugin({
-			template: path.join(__dirname, 'src', 'options.html'),
+			template: path.join(__dirname, 'src', 'options', 'options.html'),
 			filename: 'options.html',
 			chunks: ['options']
 		}),
@@ -168,7 +167,7 @@ if (debug) {
 } else {
 	options.devtool = 'false';
 	options.performance = {
-		hints: 'error'
+		hints: 'warning'
 	};
 }
 

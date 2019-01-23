@@ -1,5 +1,7 @@
-/* global chrome */
-import '../css/popup.scss';
+import './popup.scss';
+
+/* i18n */
+document.documentElement.lang = chrome.i18n.getMessage('@@ui_locale');
 
 const del = document.querySelector('#delete');
 const boxSelect = document.querySelector('#box-select');

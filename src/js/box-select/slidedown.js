@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* global chrome:true */
 /**
  * Provides user feedback for when the select button is being held.
  */

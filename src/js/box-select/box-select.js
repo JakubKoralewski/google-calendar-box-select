@@ -1,8 +1,6 @@
-/* eslint-disable no-console */
-/* global chrome:true */
-import Selection from './box-select/selection.js';
-import Blocker from './box-select/blocker.js';
-import Slidedown from './box-select/slidedown.js';
+import Selection from './selection.js';
+import Blocker from './blocker.js';
+import Slidedown from './slidedown.js';
 
 let SELECT_KEY = 'b';
 let DELETE_KEY = 'q';
@@ -37,12 +35,12 @@ console.log('Box select extension on google calendar webpage active.');
 
 // https://stackoverflow.com/questions/9602022/chrome-extension-retrieving-global-variable-from-webpage/9636008#9636008
 // https://stackoverflow.com/questions/9515704/insert-code-into-the-page-context-using-a-content-script/9517879#9517879
-const s = document.createElement('script');
+/* const s = document.createElement('script');
 s.src = chrome.runtime.getURL('script.js');
 document.body.appendChild(s);
 s.onload = function() {
 	this.remove();
-};
+}; */
 
 // Inject stylesheet into website
 var style = document.createElement('link');
