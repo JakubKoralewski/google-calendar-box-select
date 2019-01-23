@@ -1,34 +1,34 @@
 {
-    "appName": {
-        "message": "Box Select for Google Calendar",
-        "description": "The title of the application, displayed in the web store."
-    },
-    "appDesc": {
-        "message": "Select multiple events in Google Calendar and delete them with ease.",
-        "description": "The description of the application, displayed in the web store."
-    },
-    "options": {
-        "message": "Options"
-    },
-    "deleteHotkey": {
-        "message": "Delete hotkey:"
-    },
-    "selectHotkey": {
-        "message": "Select hotkey:"
-    },
-    "save": {
-        "message": "Save"
-    },
-    "remindDefaults": {
-        "message": "Remind defaults"
-    },
-    "takenShortcuts": {
-        "message": "Taken shortcuts, be mind of:"
-    },
-    "boxSelect": {
-        "message": "Box Select"
-    },
-    "selectModeActive": {
-        "message": "Select Mode Active!"
-    }
+	"appName": {
+		"message": "Box Select for Google Calendar",
+		"description": "The title of the application, displayed in the web store."
+	},
+	"appDesc": {
+		"message": "Select multiple events in Google Calendar and delete them with ease.",
+		"description": "The description of the application, displayed in the web store."
+	},
+	"options": {
+		"message": "Options"
+	},
+	"deleteHotkey": {
+		"message": "Delete hotkey:"
+	},
+	"selectHotkey": {
+		"message": "Select hotkey:"
+	},
+	"save": {
+		"message": "Save"
+	},
+	"remindDefaults": {
+		"message": "Remind defaults"
+	},
+	"takenShortcuts": {
+		"message": "Taken shortcuts, be mind of:"
+	},
+	"boxSelect": {
+		"message": "Box Select"
+	},
+	"selectModeActive": {
+		"message": "Select Mode Active!"
+	}
 }
