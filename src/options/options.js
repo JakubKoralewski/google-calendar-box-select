@@ -6,16 +6,6 @@ import '../fonts/OpenSans-Bold.ttf';
 /* i18n */
 const optionsText = chrome.i18n.getMessage('options');
 
-/**
- * https://stackoverflow.com/a/1912522/10854888
- * */
-function htmlDecode(input) {
-	let doc = new DOMParser().parseFromString(input, 'text/html');
-	let rv = doc.documentElement.textContent;
-	console.log(rv);
-	return rv;
-}
-
 document.documentElement.lang = chrome.i18n.getMessage('@@ui_locale');
 document.title = optionsText;
 document.querySelector('#toolbar #title').innerText = optionsText;
