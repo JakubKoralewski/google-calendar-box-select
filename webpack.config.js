@@ -131,10 +131,9 @@ var options = {
 			{
 				/* i18n */
 				from: path.join(__dirname, 'src', '_locales'),
-				transform: function(files) {
+				transform: function(content) {
 					// minify json
-					files.forEach(file => console.log(file));
-					//return JSONMinifyPlugin(content);
+					return JSONMinifyPlugin(content.toString());
 				},
 				to: path.join(__dirname, 'build', '_locales')
 			}
