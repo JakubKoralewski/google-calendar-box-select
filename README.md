@@ -64,6 +64,8 @@ Developed with VSCode!
 
 ## Build
 
+Set NODE_ENV variable to 'production' to minify, uglify JS, not create source maps. Use 'development' apart from that to get blazing fast hot reload.
+
 ```bash
 $ npm run build
 ```
