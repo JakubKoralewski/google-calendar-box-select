@@ -65,7 +65,20 @@ var options = {
         rules: [
             {
                 test: /\.(s*)css$/,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader'
+                        /* options: {
+                            importLoaders: 1
+                        } */
+                    },
+/*                     {
+                        loader: 'postcss-loader'
+
+                    }, */
+                    'sass-loader'
+                ],
                 exclude: /node_modules/
             },
             {
@@ -74,8 +87,17 @@ var options = {
                     {
                         loader: MiniCssExtractPlugin.loader
                     },
-                    'css-loader',
-                    'sass-loader'
+
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader'
+                    },
+                    { loader: 'sass-loader' }
                 ]
             },
             {
@@ -85,8 +107,14 @@ var options = {
             },
             {
                 test: /\.html$/,
-                loader: 'html-loader',
-                exclude: /node_modules/
+                use: [
+                    {
+                        loader: 'html-loader',
+                        options: {
+                            minimize: true
+                        }
+                    }
+                ]
             }
         ]
     },
