@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-var webpack = require('webpack'),
+const webpack = require('webpack'),
     path = require('path'),
     fileSystem = require('fs'),
     env = require('./utils/env'),
@@ -7,7 +7,13 @@ var webpack = require('webpack'),
     CopyWebpackPlugin = require('copy-webpack-plugin'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     WriteFilePlugin = require('write-file-webpack-plugin'),
-    MiniCssExtractPlugin = require('mini-css-extract-plugin');
+    MiniCssExtractPlugin = require('mini-css-extract-plugin'),
+    FileManagerWebpackPlugin = require('filemanager-webpack-plugin'),
+    TerserPlugin = require('terser-webpack-plugin');
+
+require('dotenv').config();
+
+const debug = process.env.NODE_ENV !== 'production';
 
 // load the secrets
 var alias = {};
@@ -32,6 +38,25 @@ var options = {
     chromeExtensionBoilerplate: {
         notHotReload: ['boxSelect']
     },
+    optimization: {
+        minimizer: !debug
+            ? [
+                  new TerserPlugin({
+                      //FIXME: console logs!
+                      terserOptions: {
+                          ecma: 6,
+                          comments: false,
+                          compress: {
+                              drop_console: true
+                          },
+                          output: {
+                              comments: false
+                          }
+                      }
+                  })
+              ]
+            : []
+    },
     output: {
         path: path.join(__dirname, 'build'),
         filename: '[name].bundle.js'
@@ -47,12 +72,7 @@ var options = {
                 test: /globalStyles\.scss$/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            // you can specify a publicPath here
-                            // by default it use publicPath in webpackOptions.output
-                            publicPath: 'dist/'
-                        }
+                        loader: MiniCssExtractPlugin.loader
                     },
                     'css-loader',
                     'sass-loader'
@@ -101,7 +121,6 @@ var options = {
                 to: path.join(__dirname, 'build', '_locales')
             }
         ]),
-
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'src', 'popup.html'),
             filename: 'popup.html',
@@ -118,12 +137,24 @@ var options = {
             filename: '[name].css',
             chunkFilename: '[id].css'
         }),
+        new FileManagerWebpackPlugin({
+            onEnd: {
+                delete: ['build/globalStyles.bundle.js']
+            }
+        }),
         new WriteFilePlugin()
     ]
 };
 
-if (env.NODE_ENV === 'development') {
+if (debug) {
     options.devtool = 'cheap-module-eval-source-map';
+} else {
+    options.devtool = 'false';
+    options.performance = {
+        hints: 'error'
+    };
 }
+
+console.log(options);
 
 module.exports = options;

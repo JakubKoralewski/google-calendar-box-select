@@ -86,4 +86,4 @@ Additionally I'd like to personally thank the **StackOverflow community** :heart
 
 ## License
 
-MIT © [Jakub Koralewski](https://github.com/JakubKoralewski)
+[MIT](LICENSE)
