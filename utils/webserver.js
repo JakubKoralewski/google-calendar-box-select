@@ -4,8 +4,6 @@ var WebpackDevServer = require('webpack-dev-server'),
 	env = require('./env'),
 	path = require('path');
 
-config.mode = 'development';
-
 var options = config.chromeExtensionBoilerplate || {};
 var excludeEntriesToHotReload = options.notHotReload || [];
 

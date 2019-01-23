@@ -39,6 +39,7 @@ var options = {
 		notHotReload: ['boxSelect']
 	},
 	optimization: {
+		// Only on during production mode
 		minimizer: !debug
 			? [
 					new TerserPlugin({
@@ -163,7 +164,7 @@ var options = {
 };
 
 if (debug) {
-	options.devtool = 'cheap-module-eval-source-map';
+	options.devtool = 'source-map';
 } else {
 	options.devtool = 'false';
 	options.performance = {

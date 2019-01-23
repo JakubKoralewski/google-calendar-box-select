@@ -5,50 +5,61 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-	<title>Options</title>
+	<title>Options X</title>
 </head>
 
 <body>
+	<div id="toolbar">
+		<img id="logo" />
+		<div id="title">Options X</div>
+	</div>
 	<div id="container">
-		<div id="options">
-			<h1 id="select_text">Select hotkey:</h1>
-			<input type="text" id="input_select_hotkey" placeholder="B" />
+		<div id="options" class="selector-bg">
+			<div id="options-inner">
+				<h1 id="select_text">Select hotkey:</h1>
+				<input type="text" id="input_select_hotkey" placeholder="B" class="selector-bg" />
 
-			<h1 id="delete_text">Delete hotkey:</h1>
-			<input type="text" id="input_delete_hotkey" placeholder="Q" />
+				<h1 id="delete_text">Delete hotkey:</h1>
+				<input type="text" id="input_delete_hotkey" placeholder="Q" class="selector-bg" />
 
-			<input type="button" id="save" value="Save" />
-			<input type="button" id="remind_defaults" value="Remind defaults" />
+				<div id="buttons">
+					<input type="button" id="save" value="Save" class="selector-bg" />
+					<input type="button" id="remind_defaults" value="Remind defaults" class="selector-bg" />
+				</div>
+			</div>
 		</div>
 
-		<div id="taken">
-			<h2 id="taken">Taken shortcuts, be mind of:</h2>
-			<ul>
-				<li>j</li>
-				<li>n</li>
-				<li>r</li>
-				<li>t</li>
-				<li>+</li>
-				<li>/</li>
-				<li>s</li>
-				<li>1</li>
-				<li>2</li>
-				<li>3</li>
-				<li>4</li>
-				<li>5</li>
-				<li>d</li>
-				<li>w</li>
-				<li>m</li>
-				<li>x</li>
-				<li>a</li>
-				<li>c</li>
-				<li>e</li>
-				<li>BACKSPACE</li>
-				<li>DELETE</li>
-				<li>z</li>
-				<li>ESC</li>
-			</ul>
+		<div id="taken" class="selector-bg">
+			<div id="taken-inner">
+				<h2 id="taken">Taken shortcuts, be mind of:</h2>
+				<ul>
+					<li><span>j</span></li>
+					<li><span>n</span></li>
+					<li><span>r</span></li>
+					<li><span>t</span></li>
+					<li><span>+</span></li>
+					<li><span>/</span></li>
+					<li><span>s</span></li>
+					<li><span>1</span></li>
+					<li><span>2</span></li>
+					<li><span>3</span></li>
+					<li><span>4</span></li>
+					<li><span>5</span></li>
+					<li><span>d</span></li>
+					<li><span>w</span></li>
+					<li><span>m</span></li>
+					<li><span>x</span></li>
+					<li><span>a</span></li>
+					<li><span>c</span></li>
+					<li><span>e</span></li>
+					<li><span>BACKSPACE</span></li>
+					<li><span>DELETE</span></li>
+					<li><span>z</span></li>
+					<li><span>ESC</span></li>
+				</ul>
+			</div>
 		</div>
+
 	</div>
 </body>
 

@@ -1,10 +1,32 @@
 import './options.scss';
+import '../fonts/OpenSans-Regular.ttf';
+import '../fonts/OpenSans-SemiBold.ttf';
+import '../fonts/OpenSans-Bold.ttf';
 
 /* i18n */
+const optionsText = chrome.i18n.getMessage('options');
+
+/**
+ * https://stackoverflow.com/a/1912522/10854888
+ * */
+function htmlDecode(input) {
+	let doc = new DOMParser().parseFromString(input, 'text/html');
+	let rv = doc.documentElement.textContent;
+	console.log(rv);
+	return rv;
+}
+
 document.documentElement.lang = chrome.i18n.getMessage('@@ui_locale');
-document.head.title = chrome.i18n.getMessage('options');
-document.querySelector('#select_text').innerText = chrome.i18n.getMessage('selectHotkey');
-document.querySelector('#delete_text').innerText = chrome.i18n.getMessage('deleteHotkey');
+document.title = optionsText;
+document.querySelector('#toolbar #title').innerText = optionsText;
+document.querySelector('#select_text').innerHTML = chrome.i18n.getMessage('selectHotkey', [
+	'<b>',
+	'</b>'
+]);
+document.querySelector('#delete_text').innerHTML = chrome.i18n.getMessage('deleteHotkey', [
+	'<b>',
+	'</b>'
+]);
 document.querySelector('input#save').value = chrome.i18n.getMessage('save');
 document.querySelector('input#remind_defaults').value = chrome.i18n.getMessage('remindDefaults');
 document.querySelector('h2#taken').innerText = chrome.i18n.getMessage('takenShortcuts');
@@ -14,12 +36,21 @@ const DEFAULTS = {
 	deleteHotkey: 'q'
 };
 
+const listItems = document.querySelectorAll('#taken-inner > ul > *');
+listItems.forEach(li => {
+	li.firstChild.classList.add('selector-bg');
+});
+
+const logo = document.querySelector('#logo');
+
+logo.src = 'icon-48.png';
+
 //let CURRENT = {};
 
 const selectInput = document.querySelector('#input_select_hotkey');
 const deleteInput = document.querySelector('#input_delete_hotkey');
 const saveButton = document.querySelector('#save');
-const restoreButton = document.querySelector('#remember_defaults');
+const restoreButton = document.querySelector('#remind_defaults');
 
 function updatePlaceholders(select, del) {
 	selectInput.placeholder = select || DEFAULTS.boxSelectHotkey;

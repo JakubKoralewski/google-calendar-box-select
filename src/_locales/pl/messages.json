@@ -1,32 +1,52 @@
 {
-	"appName": {
-		"message": "Wielozaznaczacz dla Kalendarza Google"
-	},
-	"appDesc": {
-		"message": "Zaznacz kilka wydarzeń w Kalendarzu Google bez problemu."
-	},
-	"options": {
-		"message": "Opcje"
-	},
-	"deleteHotkey": {
-		"message": "Skrót do usunięcia:"
-	},
-	"selectHotkey": {
-		"message": "Skrót do zaznaczania:"
-	},
-	"save": {
-		"message": "Zapisz"
-	},
-	"remindDefaults": {
-		"message": "Przypomnij domyślne"
-	},
-	"takenShortcuts": {
-		"message": "Zajęte skróty, proszę uważać na:"
-	},
-	"boxSelect": {
-		"message": "Wielozaznaczacz"
-	},
-	"selectModeActive": {
-		"message": "Tryb wielo-zaznaczania aktywny!"
-	}
+    "appName": {
+        "message": "Wielozaznaczacz dla Kalendarza Google"
+    },
+    "appDesc": {
+        "message": "Zaznacz kilka wydarzeń w Kalendarzu Google bez problemu."
+    },
+    "options": {
+        "message": "Opcje"
+    },
+    "deleteHotkey": {
+        "message": "Skrót do $OPEN_TAG$usunięcia$CLOSE_TAG$:",
+        "placeholders": {
+            "open_tag": {
+                "content": "$1",
+                "example": "<b>"
+            },
+            "close_tag": {
+                "content": "$2",
+                "example": "</b>"
+            }
+        }
+    },
+    "selectHotkey": {
+        "message": "Skrót do $OPEN_TAG$zaznaczania$CLOSE_TAG$:",
+        "placeholders": {
+            "open_tag": {
+                "content": "$1",
+                "example": "<b>"
+            },
+            "close_tag": {
+                "content": "$2",
+                "example": "</b>"
+            }
+        }
+    },
+    "save": {
+        "message": "Zapisz"
+    },
+    "remindDefaults": {
+        "message": "Przypomnij domyślne"
+    },
+    "takenShortcuts": {
+        "message": "Zajęte skróty, proszę uważać na:"
+    },
+    "boxSelect": {
+        "message": "Wielozaznaczacz"
+    },
+    "selectModeActive": {
+        "message": "Tryb wielo-zaznaczania aktywny!"
+    }
 }
