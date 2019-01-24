@@ -7,6 +7,7 @@ let DELETE_KEY = 'q';
 // is the key with the SELECT_KEY being pressed
 let isKeyPressed = false;
 let selector;
+let selectorHistory = [];
 let events;
 let selectedEvents = new Set();
 
@@ -203,7 +204,14 @@ function keyDown(e) {
 	// Q
 	if (e.key === DELETE_KEY) {
 		deleteEvents();
+		return;
 	}
+	/** CTRL+Z -> UNDO last selector  */
+	if (e.key === 'z' && e.ctrlKey && !e.repeat) {
+		selectorHistory[selectorHistory.length - 1].destroy();
+		selectorHistory.pop();
+	}
+
 	if (e.key !== SELECT_KEY) return;
 
 	if (!blocker.created) {
@@ -238,6 +246,7 @@ function keyUp(e) {
 	}
 
 	if (Selection.visible) {
+		selector.disable();
 		//selector.destroy();
 	}
 
@@ -255,9 +264,10 @@ function boxSelectDown(e) {
 		return;
 	}
 
-	/* if (!Selection.visible) { */
-	if (1) {
+	if (!Selection.visible) {
+		/* if (1) { */
 		selector = new Selection(e.clientX, e.clientY, document.body);
+		selectorHistory.push(selector);
 		selector.display(e.clientX, e.clientY);
 	}
 }
@@ -278,6 +288,7 @@ function boxSelectUp() {
 
 	highlightEvents(selectedEvents);
 	//selector.destroy();
+	selector.disable();
 
 	// If triggered from popup/popup.html then remember to remove the blocker!
 	if (popupModeDelete) {

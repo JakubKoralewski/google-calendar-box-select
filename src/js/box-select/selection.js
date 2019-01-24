@@ -36,6 +36,10 @@ class Selection {
 		this.parent.removeChild(this.element);
 		Selection.visible = false;
 	}
+	/** Drawing mode  */
+	disable() {
+		Selection.visible = false;
+	}
 
 	selectedEvents(events) {
 		let selected = new Set();
