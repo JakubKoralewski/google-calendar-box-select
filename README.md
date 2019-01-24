@@ -58,7 +58,7 @@ $ npm run dev
 Using modern ES6 syntax.
 Running Prettier with ESLint.
 
-Developed with VSCode!
+Ideal development experience with VSCode and the ESLint plugin :)
 
 [_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
 
