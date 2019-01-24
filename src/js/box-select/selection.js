@@ -3,7 +3,7 @@ class Selection {
 		this.x = startX;
 		this.y = startY;
 
-		let element = document.createElement('div');
+		const element = document.createElement('div');
 		element.style.left = `${startX}px`;
 		element.style.top = `${startY}px`;
 

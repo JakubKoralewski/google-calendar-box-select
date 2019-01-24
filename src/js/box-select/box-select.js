@@ -238,7 +238,7 @@ function keyUp(e) {
 	}
 
 	if (Selection.visible) {
-		selector.destroy();
+		//selector.destroy();
 	}
 
 	isKeyPressed = false;
@@ -255,7 +255,8 @@ function boxSelectDown(e) {
 		return;
 	}
 
-	if (!Selection.visible) {
+	/* if (!Selection.visible) { */
+	if (1) {
 		selector = new Selection(e.clientX, e.clientY, document.body);
 		selector.display(e.clientX, e.clientY);
 	}
@@ -276,7 +277,7 @@ function boxSelectUp() {
 	selectedEvents = selectedEvents.union(selector.selectedEvents(events));
 
 	highlightEvents(selectedEvents);
-	selector.destroy();
+	//selector.destroy();
 
 	// If triggered from popup/popup.html then remember to remove the blocker!
 	if (popupModeDelete) {
