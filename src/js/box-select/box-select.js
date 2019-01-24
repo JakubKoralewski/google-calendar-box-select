@@ -9,25 +9,64 @@ let isKeyPressed = false;
 let selector;
 let events;
 let selectedEvents = new Set();
+let selectedEventsIds = [];
+let uncompletedRequest = {};
 
 const blocker = new Blocker();
 const slidedown = new Slidedown();
 
 let popupModeDelete = false;
-chrome.runtime.onMessage.addListener(function(request) {
-	if (request.action == 'boxSelect') {
-		console.log('boxSelect');
-		popupModeDelete = true;
 
-		keyDown({
-			key: 'b'
-		});
-	} else if (request.action == 'delete') {
-		window.focus();
-		keyDown({
-			key: 'q'
-		});
-		console.log('delete');
+chrome.runtime.onMessage.addListener(async function(request) {
+	switch (request.action) {
+		case 'boxSelect':
+			console.log('boxSelect');
+			popupModeDelete = true;
+
+			keyDown({
+				key: 'b'
+			});
+			break;
+		case 'delete':
+			window.focus();
+			keyDown({
+				key: 'q'
+			});
+			console.log('delete');
+			break;
+		case 'webRequestBefore': {
+			/* Check if that request pertains to actions made to events */
+			let webRequestEventId = request.details.requestBody.formData.eid[0];
+			let idIsInTheSelectedEvents = selectedEventsIds.includes(webRequestEventId);
+
+			if (idIsInTheSelectedEvents) {
+				uncompletedRequest.requestId = request.details.requestId;
+				uncompletedRequest.details = request.details;
+				console.log(request.details);
+			}
+			break;
+		}
+		case 'webRequestCompleted': {
+			if (uncompletedRequest.requestId !== request.details.requestId) return;
+
+			let webRequestEventId = uncompletedRequest.details.requestBody.formData.eid[0];
+			let eventInQuestion = [...selectedEvents].find(
+				evt => evt.dataset.eventid === webRequestEventId
+			);
+			selectedEvents.delete(eventInQuestion);
+
+			/* If dragged to another day event changes place
+			 * in DOM and loses id of 'selected' and its shadow. */
+			let changedEvent = getEvents().find(
+				event => event.dataset.eventid === webRequestEventId
+			);
+			changedEvent.id = 'selected';
+			selectedEvents.add(changedEvent);
+			/* Re-add the selected id */
+			break;
+		}
+		default:
+			throw `unknown request.action: ${request.action}`;
 	}
 });
 
@@ -70,8 +109,7 @@ chrome.storage.onChanged.addListener(function(data) {
 });
 
 function getEvents() {
-	// Get all events
-	//console.log('getEvents()');
+	// Get all visible events
 
 	events = document.querySelectorAll('div[role~="button"], div[role~="presentation"]');
 	events = Array.from(events);
@@ -80,20 +118,18 @@ function getEvents() {
 	});
 	//console.log(events);
 	console.log(`Found ${events.length} events.`);
+	return events;
 }
 
 function highlightEvents(evts) {
 	evts.forEach(evt => {
-		//evt.classList.add('KKjvXb');
 		evt.id = 'selected';
 	});
 }
 
 function unHighlightEvents(evts) {
-	if (!evts) return;
 	evts.forEach(evt => {
 		evt.id = '';
-		//evt.classList.remove('KKjvXb');
 	});
 }
 
@@ -221,7 +257,7 @@ function keyDown(e) {
 
 		showPossibleEvents(events);
 		isKeyPressed = true;
-		selectedEvents = new Set();
+		selectedEvents.clear();
 	}
 }
 
@@ -271,9 +307,12 @@ function boxSelectMove(e) {
 
 function boxSelectUp() {
 	if (!Selection.visible) return;
+	let newSelectedEvents = null;
+
+	({ newSelectedEvents, selectedEventsIds } = selector.selectedEvents(events));
 
 	// Merge current selected events with the newly selected ones
-	selectedEvents = selectedEvents.union(selector.selectedEvents(events));
+	selectedEvents = selectedEvents.union(newSelectedEvents);
 
 	highlightEvents(selectedEvents);
 	selector.destroy();

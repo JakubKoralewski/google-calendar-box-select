@@ -39,6 +39,7 @@ class Selection {
 
 	selectedEvents(events) {
 		let selected = new Set();
+		let ids = [];
 
 		// 102px (string) -> 102 (number)
 		let left = this.element.style.left;
@@ -71,10 +72,11 @@ class Selection {
 				eventsTopAboveBottom &&
 				eventsBottomBelowTop
 			) {
+				ids.push(event.dataset.eventid);
 				selected.add(event);
 			}
 		});
-		return selected;
+		return { newSelectedEvents: selected, selectedEventsIds: ids };
 	}
 }
 

@@ -24,18 +24,18 @@ module.exports = {
 				"printWidth": 100,
 				"useTabs": true
 			}
-	], 
-	"globals": {
-		// false means don't override
-		"chrome": false
-	},
-	"linebreak-style": [
-		"error",
-		"windows"
-	],
-	"quotes": [
-		"error",
-		"single"
-	]
+        ], 
+        "globals": {
+            // false means cannot override
+            "chrome": false
+        },
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ]
 	}
 };
