@@ -4,3 +4,4 @@
 /build/
 # environment variables
 .env
+/docs/
