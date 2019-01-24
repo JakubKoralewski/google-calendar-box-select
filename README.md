@@ -80,7 +80,7 @@ Ideal development experience with VSCode and the ESLint plugin :)
 
 ## Credits
 
-This boilerplate was used to allow for Webpack code compilation:
+This boilerplate was used to allow for Webpack module bundling:
 
 - #### [Chrome Extension Webpack Boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
 
