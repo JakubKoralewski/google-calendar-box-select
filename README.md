@@ -53,15 +53,6 @@ $ npm install
 $ npm run dev
 ```
 
-#### Fairly opinionated stylistic choices.
-
-Using modern ES6 syntax.
-Running Prettier with ESLint.
-
-Ideal development experience with VSCode and the ESLint plugin :)
-
-[_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
-
 ## Build
 
 Set NODE_ENV variable to 'production' to minify, uglify JS, not create source maps. Use 'development' apart from that to get blazing fast hot reload.
@@ -77,6 +68,15 @@ Deploys to _dist/_ folder.
 Very welcome!
 
 Especially dealing with the dreaded... _PROBLEM_.
+
+#### Fairly opinionated stylistic choices.
+
+Using modern ES6 syntax.
+Running Prettier with ESLint.
+
+Ideal development experience with VSCode and the ESLint plugin :)
+
+[_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
 
 ## Credits
 
