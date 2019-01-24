@@ -53,16 +53,9 @@ $ npm install
 $ npm run dev
 ```
 
-#### Fairly opinionated stylistic choices.
-
-Using modern ES6 syntax.
-Running Prettier with ESLint.
-
-Developed with VSCode!
-
-[_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
-
 ## Build
+
+Set NODE_ENV variable to 'production' to minify, uglify JS, not create source maps. Use 'development' apart from that to get blazing fast hot reload.
 
 ```bash
 $ npm run build
@@ -76,9 +69,18 @@ Very welcome!
 
 Especially dealing with the dreaded... _PROBLEM_.
 
+#### Fairly opinionated stylistic choices.
+
+Using modern ES6 syntax.
+Running Prettier with ESLint.
+
+Ideal development experience with VSCode and the ESLint plugin :)
+
+[_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
+
 ## Credits
 
-This boilerplate was used to allow for Webpack code compilation:
+This boilerplate was used to allow for Webpack module bundling:
 
 - #### [Chrome Extension Webpack Boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
 
