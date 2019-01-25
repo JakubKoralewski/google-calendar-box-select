@@ -10,10 +10,10 @@ cache: npm
 
 before_deploy:
   - export NODE_ENV=production
-  - npm run build && npm run package
+  - npm run build && zip -r latest_build.zip build
 
 deploy:
   provider: releases
   api_key: "GITHUB OAUTH TOKEN"
-  file: "build/latest_build.zip"
+  file: "latest_build.zip"
   skip_cleanup: true
