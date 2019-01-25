@@ -10,8 +10,10 @@ env:
   global:
     - NODE_ENV=production
 
+cache: npm
+
 before_deploy:
-  - npm run build && cd build/ && zip latest_build
+  - npm run build && npm run package
 
 deploy:
   provider: releases
