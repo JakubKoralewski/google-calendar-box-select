@@ -14,6 +14,6 @@ before_deploy:
 
 deploy:
   provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
+  api_key: "$GH_TOKEN"
   file: "latest_build.zip"
   skip_cleanup: true
