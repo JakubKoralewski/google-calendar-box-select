@@ -49,6 +49,8 @@ $ npm install
 
 ## Develop
 
+Ideal development experience with VSCode and the [ESLint plugin](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) :)
+
 ```bash
 $ npm run dev
 ```
@@ -73,8 +75,6 @@ Especially dealing with the dreaded... _PROBLEM_.
 
 Using modern ES6 syntax.
 Running Prettier with ESLint.
-
-Ideal development experience with VSCode and the ESLint plugin :)
 
 [_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
 
