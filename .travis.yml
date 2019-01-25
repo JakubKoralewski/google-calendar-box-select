@@ -9,8 +9,7 @@ branches:
 cache: npm
 
 before_deploy:
-  - env:
-      - NODE_ENV=production
+  - export NODE_ENV=production
   - npm run build && npm run package
 
 deploy:
