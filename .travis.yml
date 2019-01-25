@@ -11,7 +11,7 @@ env:
     - NODE_ENV=production
 
 before_deploy:
-  script: npm run build && cd build/ && zip latest_build
+  - npm run build && cd build/ && zip latest_build
 
 deploy:
   provider: releases
