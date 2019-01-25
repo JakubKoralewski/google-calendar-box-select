@@ -6,16 +6,11 @@ branches:
   only:
     - master
 
-env:
-  global:
-    - NODE_ENV=production
-
 cache: npm
 
-install:
-  - npm install
-
 before_deploy:
+  - env:
+      - NODE_ENV=production
   - npm run build && npm run package
 
 deploy:
