@@ -1,4 +1,4 @@
-# Google Calendar Box Select
+# Google Calendar Box Select ![](https://img.shields.io/travis/com/JakubKoralewski/google-calendar-box-select/master.svg) ![](https://img.shields.io/github/release/JakubKoralewski/google-calendar-box-select.svg?label=stable) ![](https://img.shields.io/github/release-pre/JakubKoralewski/google-calendar-box-select.svg?label=experimental) 
 
 # ![logo](docs/img/main_logo.png)
 
