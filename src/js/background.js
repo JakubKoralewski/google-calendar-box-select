@@ -46,6 +46,12 @@ chrome.webRequest.onCompleted.addListener(
 		chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
 			chrome.tabs.sendMessage(tabs[0].id, { action: 'onCompleted', details });
 		});
+
+		if (details.url.includes('load')) {
+			chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+				chrome.tabs.sendMessage(tabs[0].id, { action: 'containsLoadonCompleted', details });
+			});
+		}
 	},
 	{ urls: ['*://calendar.google.com/*'] },
 	['responseHeaders']

@@ -18,6 +18,26 @@ const slidedown = new Slidedown();
 
 let popupModeDelete = false;
 
+function resetSelectedEvents() {
+	console.log('selectedEvents before reload:');
+	console.log(selectedEvents);
+	selectedEvents.forEach(event => {
+		event.id = '';
+	});
+	selectedEvents.clear();
+	getEvents();
+	let newSelectedEvents = events.filter(event => {
+		return selectedEventsIds.includes(event.dataset.eventid);
+	});
+	newSelectedEvents.forEach(event => {
+		event.id = 'selected';
+	});
+	selectedEvents = new Set(newSelectedEvents);
+	selectedEventsIds = newSelectedEvents.map(event => event.dataset.eventid);
+	console.log('selectedEvents after reload:');
+	console.log(selectedEvents);
+}
+
 chrome.runtime.onMessage.addListener(function(request) {
 	switch (request.action) {
 		case 'boxSelect':
@@ -61,23 +81,12 @@ chrome.runtime.onMessage.addListener(function(request) {
 			console.log('onCompleted:');
 			console.log(request.details);
 
-			let webRequestEventId = uncompletedRequest.onBeforeRequest.requestBody.formData.eid[0];
-			let eventInQuestion = [...selectedEvents].find(
-				evt => evt.dataset.eventid === webRequestEventId
-			);
-			/* Clean up current selectedEvents */
-			selectedEvents.delete(eventInQuestion);
-
-			/* If dragged to another day event changes place
-			 * in DOM and loses id of 'selected' and its shadow. */
-			let changedEvent = getEvents().find(
-				event => event.dataset.eventid === webRequestEventId
-			);
-			/* Re-add the selected id */
-			changedEvent.id = 'selected';
-
-			/* Replace with the new changedEvent */
-			selectedEvents.add(changedEvent);
+			resetSelectedEvents();
+			break;
+		}
+		case 'containsLoadonCompleted': {
+			console.log('containsLoadonCompleted');
+			resetSelectedEvents();
 			break;
 		}
 		default:
