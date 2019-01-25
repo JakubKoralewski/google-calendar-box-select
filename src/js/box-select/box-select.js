@@ -1,6 +1,7 @@
 import Selection from './selection.js';
 import Blocker from './blocker.js';
 import Slidedown from './slidedown.js';
+import repeatWebRequest from './repeat-web-request.js';
 
 let SELECT_KEY = 'b';
 let DELETE_KEY = 'q';
@@ -17,7 +18,7 @@ const slidedown = new Slidedown();
 
 let popupModeDelete = false;
 
-chrome.runtime.onMessage.addListener(async function(request) {
+chrome.runtime.onMessage.addListener(function(request) {
 	switch (request.action) {
 		case 'boxSelect':
 			console.log('boxSelect');
@@ -34,25 +35,37 @@ chrome.runtime.onMessage.addListener(async function(request) {
 			});
 			console.log('delete');
 			break;
-		case 'webRequestBefore': {
+		case 'onBeforeRequest': {
 			/* Check if that request pertains to actions made to events */
 			let webRequestEventId = request.details.requestBody.formData.eid[0];
 			let idIsInTheSelectedEvents = selectedEventsIds.includes(webRequestEventId);
 
 			if (idIsInTheSelectedEvents) {
 				uncompletedRequest.requestId = request.details.requestId;
-				uncompletedRequest.details = request.details;
+				uncompletedRequest.onBeforeRequest = request.details;
 				console.log(request.details);
 			}
 			break;
 		}
-		case 'webRequestCompleted': {
+		case 'onSendHeaders': {
 			if (uncompletedRequest.requestId !== request.details.requestId) return;
+			console.log('onSendHeaders: ');
+			console.log(request.details);
+			uncompletedRequest.onSendHeaders = request.details;
 
-			let webRequestEventId = uncompletedRequest.details.requestBody.formData.eid[0];
+			repeatWebRequest(selectedEvents, uncompletedRequest);
+			break;
+		}
+		case 'onCompleted': {
+			if (uncompletedRequest.requestId !== request.details.requestId) return;
+			console.log('onCompleted:');
+			console.log(request.details);
+
+			let webRequestEventId = uncompletedRequest.onBeforeRequest.requestBody.formData.eid[0];
 			let eventInQuestion = [...selectedEvents].find(
 				evt => evt.dataset.eventid === webRequestEventId
 			);
+			/* Clean up current selectedEvents */
 			selectedEvents.delete(eventInQuestion);
 
 			/* If dragged to another day event changes place
@@ -60,9 +73,11 @@ chrome.runtime.onMessage.addListener(async function(request) {
 			let changedEvent = getEvents().find(
 				event => event.dataset.eventid === webRequestEventId
 			);
-			changedEvent.id = 'selected';
-			selectedEvents.add(changedEvent);
 			/* Re-add the selected id */
+			changedEvent.id = 'selected';
+
+			/* Replace with the new changedEvent */
+			selectedEvents.add(changedEvent);
 			break;
 		}
 		default:
@@ -212,8 +227,6 @@ function showPossibleEvents(evts) {
 		evt.style.background = backgroundText;
 		evt.style.backgroundSize = '400% 400%';
 
-		evt.oldZIndex = evt.style.zIndex;
-
 		evt.style.zIndex = '10002';
 
 		evt.classList.add('possible');
@@ -225,12 +238,12 @@ function showPossibleEvents(evts) {
  *  Removes the 'possible' class from events.
  * */
 function hidePossibleEvents(evts) {
+	console.log('restoring old zindex and color');
 	evts.forEach(evt => {
 		evt.style.background = '';
-		console.log(`evt.oldColor = ${evt.oldColor}`);
 
 		evt.style.backgroundColor = evt.oldColor;
-		evt.style.zIndex = evt.OldZIndex;
+		evt.style.zIndex = '4';
 		evt.classList.remove('possible');
 	});
 }

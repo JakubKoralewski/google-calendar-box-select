@@ -25,8 +25,7 @@
         "storage",
         "webRequest",
         "webRequestBlocking",
-        "<all_urls>",
-        "*://*/"
+        "*://calendar.google.com/*"
     ],
     "options_page": "options.html",
     "web_accessible_resources": ["script.js", "globalStyles.css", "slidedown.html"],

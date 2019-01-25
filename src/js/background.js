@@ -16,11 +16,25 @@ chrome.webRequest.onBeforeRequest.addListener(
 		}
 
 		chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-			chrome.tabs.sendMessage(tabs[0].id, { action: 'webRequestBefore', details });
+			chrome.tabs.sendMessage(tabs[0].id, { action: 'onBeforeRequest', details });
 		});
 	},
 	{ urls: ['*://calendar.google.com/*'] },
 	['requestBody']
+);
+
+chrome.webRequest.onSendHeaders.addListener(
+	function(details) {
+		console.log('Send headers:');
+		console.log(new Date(details.timeStamp));
+		console.log(details);
+
+		chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+			chrome.tabs.sendMessage(tabs[0].id, { action: 'onSendHeaders', details });
+		});
+	},
+	{ urls: ['*://calendar.google.com/*'] },
+	['requestHeaders']
 );
 
 chrome.webRequest.onCompleted.addListener(
@@ -30,8 +44,9 @@ chrome.webRequest.onCompleted.addListener(
 		console.log(details);
 
 		chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-			chrome.tabs.sendMessage(tabs[0].id, { action: 'webRequestCompleted', details });
+			chrome.tabs.sendMessage(tabs[0].id, { action: 'onCompleted', details });
 		});
 	},
-	{ urls: ['*://calendar.google.com/*'] }
+	{ urls: ['*://calendar.google.com/*'] },
+	['responseHeaders']
 );
