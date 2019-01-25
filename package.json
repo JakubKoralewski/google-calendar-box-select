@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"scripts": {
 		"build": "node utils/build.js",
-        "package": "cd build/ && zip latest_build",
+        "package": "zip -r latest_build.zip build",
 		"dev": "node utils/webserver.js"
 	},
 	"devDependencies": {
