@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+  - "node"
+
+branches:
+  only:
+    - master
+
+env:
+  global:
+    - NODE_ENV=production
+
+before_deploy:
+  script: npm run build && cd build/ && zip latest_build
+
+deploy:
+  provider: releases
+  api_key: "GITHUB OAUTH TOKEN"
+  file: "build/latest_build.zip"
+  skip_cleanup: true
