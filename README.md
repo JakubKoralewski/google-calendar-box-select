@@ -57,13 +57,13 @@ $ npm run dev
 
 ## Build
 
-Set NODE_ENV variable to 'production' to minify, uglify JS, not create source maps. Use 'development' apart from that to get blazing fast hot reload.
+Set NODE_ENV variable to 'production' to minify, uglify JS and delete source maps. Use 'development' apart from that to get blazing fast hot reload.
 
 ```bash
 $ npm run build
 ```
 
-Deploys to _dist/_ folder.
+Deploys to `build/` folder.
 
 ## Contributions
 
