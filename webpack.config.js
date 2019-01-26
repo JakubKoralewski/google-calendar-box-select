@@ -31,7 +31,7 @@ var options = {
 	entry: {
 		popup: path.join(__dirname, 'src', 'popup', 'popup.js'),
 		options: path.join(__dirname, 'src', 'options', 'options.js'),
-		boxSelect: path.join(__dirname, 'src', 'js', 'box-select', 'box-select.js'),
+		boxSelect: path.join(__dirname, 'src', 'js', 'boxSelect', 'boxSelect.js'),
 		background: path.join(__dirname, 'src', 'js', 'background.js'),
 		globalStyles: path.join(__dirname, 'src', 'injected', 'globalStyles.scss')
 	},

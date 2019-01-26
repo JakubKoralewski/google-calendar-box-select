@@ -21,7 +21,7 @@ function serialize(data) {
 }
 
 /** Repeats a web request for selectedEvents.
- * @param {Array.<{dataset: {eventid: string}}>} selectedEvents - set/array of events to repeat the web request to
+ * @param {{dataset: {eventid: string}}[] selectedEvents - set/array of events to repeat the web request to
  * @param {{onBeforeRequest: {requestBody: {formData: Object}}, onSendHeaders: {method: string}}} uncompletedRequest - data gathered about the web request
  */
 function repeatWebRequest(selectedEvents, uncompletedRequest) {
@@ -60,6 +60,11 @@ function repeatWebRequest(selectedEvents, uncompletedRequest) {
 		console.log(newHeaders);
 
 		const requestBody = uncompletedRequest.onBeforeRequest.requestBody.formData;
+		//TODO: DRAGGING / change duration
+		/* If new time applied */
+		/* Get current time */
+		/* Calculate delta offset */
+		/* Offset rest like this too */
 		let newBody = serialize({ requestBody, eventId });
 
 		const method = uncompletedRequest.onSendHeaders.method;

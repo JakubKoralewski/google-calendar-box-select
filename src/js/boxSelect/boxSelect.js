@@ -1,7 +1,7 @@
-import Selection from './selection.js';
-import Blocker from './blocker.js';
-import Slidedown from './slidedown.js';
-import repeatWebRequest from './repeat-web-request.js';
+import Selection from './classes/Selection.js';
+import Blocker from './classes/Blocker.js';
+import Slidedown from './classes/Slidedown.js';
+import repeatWebRequest from './repeatWebRequest.js';
 
 let SELECT_KEY = 'b';
 let DELETE_KEY = 'q';
