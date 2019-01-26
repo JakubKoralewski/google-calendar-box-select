@@ -1,11 +1,29 @@
 {
-	"eslint.autoFixOnSave": true,
-	"[javascript]": {
-		"editor.formatOnSave": false
-	},
-	"prettier.disableLanguages": ["js"],
-	"editor.formatOnSave": true,
-	"editor.detectIndentation": true,
-	"editor.insertSpaces": false,
-	"editor.tabSize": 4
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    /* Disable auto-close-tag for typescript */
+    "auto-close-tag.activationOnLanguage": [
+        "xml",
+        "php",
+        "blade",
+        "ejs",
+        "jinja",
+        "javascript",
+        "javascriptreact",
+        "typescriptreact",
+        "plaintext",
+        "markdown",
+        "vue",
+        "liquid",
+        "erb",
+        "lang-cfml",
+        "cfml",
+        "HTML (Eex)"
+    ],
+    "[typescript]": {
+        "editor.formatOnSave": false
+    },
+    "prettier.disableLanguages": ["ts"],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.tslint": true
+    }
 }

@@ -29,10 +29,10 @@ if (fileSystem.existsSync(secretsPath)) {
 var options = {
 	mode: process.env.NODE_ENV || 'development',
 	entry: {
-		popup: path.join(__dirname, 'src', 'popup', 'popup.js'),
-		options: path.join(__dirname, 'src', 'options', 'options.js'),
-		boxSelect: path.join(__dirname, 'src', 'js', 'boxSelect', 'boxSelect.js'),
-		background: path.join(__dirname, 'src', 'js', 'background.js'),
+		popup: path.join(__dirname, 'src', 'popup', 'popup.ts'),
+		options: path.join(__dirname, 'src', 'options', 'options.ts'),
+		boxSelect: path.join(__dirname, 'src', 'js', 'boxSelect', 'boxSelect.ts'),
+		background: path.join(__dirname, 'src', 'js', 'background.ts'),
 		globalStyles: path.join(__dirname, 'src', 'injected', 'globalStyles.scss')
 	},
 	chromeExtensionBoilerplate: {
@@ -63,6 +63,14 @@ var options = {
 	},
 	module: {
 		rules: [
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				options: {
+					fix: true,
+				},
+				exclude: /node_modules/
+			},
 			{
 				test: /\.(s*)css$/,
 				use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],

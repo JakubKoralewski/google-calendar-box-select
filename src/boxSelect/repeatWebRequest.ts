@@ -4,7 +4,7 @@
  * @param {{eventId: string, requestBody: Object}} data
  * @returns {string} serialized object
  */
-function serialize(data) {
+function serialize(data: { eventId: string; requestBody: object; }): string {
 	const eventId = data.eventId;
 	const obj = data.requestBody;
 
@@ -20,11 +20,8 @@ function serialize(data) {
 		.join('&');
 }
 
-/** Repeats a web request for selectedEvents.
- * @param {{dataset: {eventid: string}}[] selectedEvents - set/array of events to repeat the web request to
- * @param {{onBeforeRequest: {requestBody: {formData: Object}}, onSendHeaders: {method: string}}} uncompletedRequest - data gathered about the web request
- */
-function repeatWebRequest(selectedEvents, uncompletedRequest) {
+/** Repeats a web request for selectedEvents. */
+function repeatWebRequest(selectedEvents: { dataset: { eventid: string; }; }[], uncompletedRequest: { onBeforeRequest: { requestBody: { formData: object; }; }; onSendHeaders: { method: string; }; }) {
 	console.log('repeatWebRequest');
 	/* console.log(selectedEvents, uncompletedRequest); */
 

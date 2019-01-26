@@ -1,5 +1,11 @@
 class Selection {
-	constructor(startX, startY, parent) {
+	public x: number;
+	public y: number;
+	public element: HTMLElement;
+	public parent: HTMLElement;
+	public static visible: boolean;
+
+	constructor(startX: number, startY: number, parent: HTMLElement) {
 		this.x = startX;
 		this.y = startY;
 
@@ -16,7 +22,7 @@ class Selection {
 		this.parent.insertBefore(this.element, this.parent.firstChild);
 	}
 
-	display(x, y) {
+	display(x: number, y: number) {
 		// https://stackoverflow.com/questions/30983000/how-to-workaround-a-negative-height-and-width
 
 		this.element.style.width = Math.abs(x - this.x) + 'px';
@@ -37,27 +43,27 @@ class Selection {
 		Selection.visible = false;
 	}
 
-	selectedEvents(events) {
+	selectedEvents(events: HTMLElement[]) {
 		let selected = new Set();
 		let ids = [];
 
 		// 102px (string) -> 102 (number)
-		let left = this.element.style.left;
+		let left: string | number = this.element.style.left;
 		left = parseInt(left.substring(0, left.length - 2));
 
-		let top = this.element.style.top;
+		let top: string | number = this.element.style.top;
 		top = parseInt(top.substring(0, top.length - 2));
 
-		let height = this.element.style.height;
+		let height: string | number = this.element.style.height;
 		height = parseInt(height.substring(0, height.length - 2));
 
-		let width = this.element.style.width;
+		let width: string | number = this.element.style.width;
 		width = parseInt(width.substring(0, width.length - 2));
 
 		let right = left + width;
 		let bottom = top + height;
 
-		events.forEach(event => {
+		events.forEach((event: { getBoundingClientRect: () => DOMRect, dataset: { eventid: string }}) => {
 			let b = event.getBoundingClientRect();
 
 			const eventsLeftEdgeToTheLeftOfRightEdge = b.left < right;

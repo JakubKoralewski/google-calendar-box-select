@@ -1,0 +1,14 @@
+{
+    "extends": [
+        "tslint:recommended"
+    ],
+    "rules": {
+        "no-console": false,
+        "quotemark": [true, "single", "avoid-escape"],
+        "semicolon": [true, "always"],
+        "indent": [true, "tabs", 4],
+        "linebreak-style": [true, "CRLF"],
+        "arrow-return-shorthand": [true],
+        "no-unused-expression": [true, "allow-fast-null-checks"]
+    }
+}

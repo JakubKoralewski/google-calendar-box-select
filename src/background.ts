@@ -1,6 +1,6 @@
-import '../img/icon-16.png';
-import '../img/icon-48.png';
-import '../img/icon-128.png';
+import './img/icon-16.png';
+import './img/icon-48.png';
+import './img/icon-128.png';
 
 chrome.webRequest.onBeforeRequest.addListener(
 	function(details) {
@@ -8,14 +8,8 @@ chrome.webRequest.onBeforeRequest.addListener(
 		console.log(new Date(details.timeStamp));
 		console.log(details);
 
-		try {
-			// Check if that web request has an event id
-			details.requestBody.formData.eid[0];
-		} catch (err) {
-			return;
-		}
 
-		chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+		details.requestBody.formData.eid[0] && chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
 			chrome.tabs.sendMessage(tabs[0].id, { action: 'onBeforeRequest', details });
 		});
 	},
