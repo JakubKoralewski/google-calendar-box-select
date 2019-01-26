@@ -98,12 +98,16 @@ console.log('Box select extension on google calendar webpage active.');
 
 // https://stackoverflow.com/questions/9602022/chrome-extension-retrieving-global-variable-from-webpage/9636008#9636008
 // https://stackoverflow.com/questions/9515704/insert-code-into-the-page-context-using-a-content-script/9517879#9517879
-/* const s = document.createElement('script');
+const s = document.createElement('script');
 s.src = chrome.runtime.getURL('script.js');
-document.body.appendChild(s);
+document.body.insertBefore(s, parent.lastChild);
 s.onload = function() {
 	this.remove();
-}; */
+};
+let initialEvents;
+window.addEventListener('injectedScriptInitialData', function(data) {
+	initialEvents = data.detail;
+});
 
 // Inject stylesheet into website
 var style = document.createElement('link');
