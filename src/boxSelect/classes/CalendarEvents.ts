@@ -1,17 +1,24 @@
+import CalendarEvent from './CalendarEvent';
 class CalendarEvents {
+	private _events: Set<CalendarEvent> = new Set();
 	/** CalendarEvent object constructor
 	 * @param {CalendarEvent[]} CalendarEventsArray events to populate the class
 	 * @type {Object} CalendarEvents.events events
 	 */
-	constructor(CalendarEventsArray) {
-		/** @type {Array} events  */
-		this.events = new Set(CalendarEventsArray);
+	constructor(CalendarEventsArray?: Set<CalendarEvent>) {
+		if (CalendarEventsArray) {
+			this._events = new Set(CalendarEventsArray);
+		}
 	}
 	/** Add to CalendarEvent to CalendarEvents
 	 * @param {CalendarEvent} event added event
 	 */
-	push(event) {
-		this.events.add(event);
+	public add(event: CalendarEvent) {
+		this._events.add(event);
+	}
+
+	get events(): Set<CalendarEvent> {
+		return this._events;
 	}
 }
 

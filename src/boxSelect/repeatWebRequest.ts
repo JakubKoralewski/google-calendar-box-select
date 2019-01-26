@@ -1,10 +1,13 @@
+import CalendarEvent from './classes/CalendarEvent';
+import IUncompletedRequest from './interfaces/IUncompletedRequest';
+
 /** Turn object into serialized data.
  *  The object's value need to be an array.
  *  Specified eventId will replace the old one.
  * @param {{eventId: string, requestBody: Object}} data
  * @returns {string} serialized object
  */
-function serialize(data: { eventId: string; requestBody: object; }): string {
+function serialize(data: { eventId: string; requestBody: object }): string {
 	const eventId = data.eventId;
 	const obj = data.requestBody;
 
@@ -13,7 +16,9 @@ function serialize(data: { eventId: string; requestBody: object; }): string {
 			return obj[k].map(value => {
 				/* k = action */
 				/* value = EDIT */
-				if (k === 'eid') value = eventId;
+				if (k === 'eid') {
+					value = eventId;
+				}
 				return encodeURIComponent(k) + '=' + value;
 			});
 		})
@@ -21,19 +26,23 @@ function serialize(data: { eventId: string; requestBody: object; }): string {
 }
 
 /** Repeats a web request for selectedEvents. */
-function repeatWebRequest(selectedEvents: { dataset: { eventid: string; }; }[], uncompletedRequest: { onBeforeRequest: { requestBody: { formData: object; }; }; onSendHeaders: { method: string; }; }) {
+function repeatWebRequest(
+	selectedEvents: Set<CalendarEvent>,
+	uncompletedRequest: IUncompletedRequest
+) {
 	console.log('repeatWebRequest');
 	/* console.log(selectedEvents, uncompletedRequest); */
 
 	/* Event that got sent originally */
-	let originalEventId = uncompletedRequest.onBeforeRequest.requestBody.formData.eid[0];
+	const originalEventId =
+		uncompletedRequest.onBeforeRequest.requestBody.formData.eid[0];
 	selectedEvents.forEach(event => {
-		let eventId = event.dataset.eventid;
+		const eventId = event.dataset.eventid;
 		/* No need to repeat action for event that actually triggered the action. */
 		if (eventId === originalEventId) return;
 
-		let newHeaders = {};
-		let possibleHeaderValues = [
+		const newHeaders = {};
+		const possibleHeaderValues = [
 			'accept',
 			'accept-language',
 			'cache-control',
@@ -45,8 +54,8 @@ function repeatWebRequest(selectedEvents: { dataset: { eventid: string; }; }[], 
 		];
 
 		const headers = uncompletedRequest.onSendHeaders.requestHeaders;
-		for (let item of headers) {
-			//debugger;
+		for (const item of headers) {
+			// debugger;
 			if (possibleHeaderValues.includes(item.name.toLowerCase())) {
 				newHeaders[item.name] = item.value;
 				console.log(`newHeaders[${item.name}] = ${item.value}`);
@@ -56,13 +65,14 @@ function repeatWebRequest(selectedEvents: { dataset: { eventid: string; }; }[], 
 		console.log('newHeaders:');
 		console.log(newHeaders);
 
-		const requestBody = uncompletedRequest.onBeforeRequest.requestBody.formData;
-		//TODO: DRAGGING / change duration
+		const requestBody =
+			uncompletedRequest.onBeforeRequest.requestBody.formData;
+		// TODO: DRAGGING / change duration
 		/* If new time applied */
 		/* Get current time */
 		/* Calculate delta offset */
 		/* Offset rest like this too */
-		let newBody = serialize({ requestBody, eventId });
+		const newBody = serialize({ requestBody, eventId });
 
 		const method = uncompletedRequest.onSendHeaders.method;
 		/* Create copied web request settings*/
@@ -81,7 +91,7 @@ function repeatWebRequest(selectedEvents: { dataset: { eventid: string; }; }[], 
 
 		const requestURL = uncompletedRequest.onBeforeRequest.url;
 		/* Send request */
-		fetch(requestURL, OPTIONS).then(response => {
+		fetch(requestURL, OPTIONS as RequestInit).then(response => {
 			console.log(response);
 		});
 	});

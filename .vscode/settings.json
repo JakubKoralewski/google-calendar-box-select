@@ -1,29 +1,33 @@
 {
-    "typescript.tsdk": "node_modules\\typescript\\lib",
-    /* Disable auto-close-tag for typescript */
-    "auto-close-tag.activationOnLanguage": [
-        "xml",
-        "php",
-        "blade",
-        "ejs",
-        "jinja",
-        "javascript",
-        "javascriptreact",
-        "typescriptreact",
-        "plaintext",
-        "markdown",
-        "vue",
-        "liquid",
-        "erb",
-        "lang-cfml",
-        "cfml",
-        "HTML (Eex)"
-    ],
-    "[typescript]": {
-        "editor.formatOnSave": false
-    },
-    "prettier.disableLanguages": ["ts"],
-    "editor.codeActionsOnSave": {
-        "source.fixAll.tslint": true
-    }
+	"typescript.tsdk": "node_modules\\typescript\\lib",
+	/* Disable auto-close-tag for typescript */
+	"auto-close-tag.activationOnLanguage": [
+		"xml",
+		"php",
+		"blade",
+		"ejs",
+		"jinja",
+		"javascript",
+		"javascriptreact",
+		"typescriptreact",
+		"plaintext",
+		"markdown",
+		"vue",
+		"liquid",
+		"erb",
+		"lang-cfml",
+		"cfml",
+		"HTML (Eex)"
+	],
+	"editor.codeActionsOnSave": {
+		"source.fixAll.tslint": true
+	},
+	"prettier.useTabs": true,
+	"prettier.arrowParens": "avoid",
+	"prettier.semi": true,
+	"prettier.tabWidth": 4,
+	"prettier.printWidth": 80,
+	"prettier.singleQuote": true,
+	"eslint.enable": false,
+	"editor.insertSpaces": false
 }

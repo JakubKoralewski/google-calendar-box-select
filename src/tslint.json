@@ -1,14 +1,22 @@
 {
-    "extends": [
-        "tslint:recommended"
-    ],
-    "rules": {
-        "no-console": false,
-        "quotemark": [true, "single", "avoid-escape"],
-        "semicolon": [true, "always"],
-        "indent": [true, "tabs", 4],
-        "linebreak-style": [true, "CRLF"],
-        "arrow-return-shorthand": [true],
-        "no-unused-expression": [true, "allow-fast-null-checks"]
-    }
+	"extends": [
+		"tslint:recommended"
+	],
+	"rules": {
+		"align": false,
+		"max-line-length": false,
+		"variable-name": false,
+		"no-console": false,
+		"curly": false,
+		"object-literal-sort-keys": false,
+
+		"arrow-parens": [true, "ban-single-arg-parens"],
+		"quotemark": [true, "single", "avoid-escape"],
+		"semicolon": [true, "always"],
+		"trailing-comma": [true, "always"],
+		"indent": [true, "tabs", 4],
+		"linebreak-style": [true, "CRLF"],
+		"arrow-return-shorthand": [true],
+		"no-unused-expression": [true, "allow-fast-null-checks"]
+	}
 }

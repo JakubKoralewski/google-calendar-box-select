@@ -1,13 +1,10 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es6",
-        "lib": ["es6", "es5", "es2015", "es2016", "es7", "dom", "es2017", "es2018"],
-        "sourceMap": false,
-        "noEmitOnError": true,
-        "allowJs": false,
-    }
-    /* "plugins": [{
-        "name": "typescript-tslint-plugin"
-    }] */
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es2017",
+		"lib": ["es6", "es5", "es2015", "es2015.iterable", "es2016", "es7", "dom", "es2017", "es2018", "dom.iterable"],
+		"sourceMap": false,
+		"noEmitOnError": true,
+		"allowJs": false,
+	}
 }

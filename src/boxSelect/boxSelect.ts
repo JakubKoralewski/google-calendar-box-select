@@ -1,17 +1,22 @@
-import Blocker from './classes/Blocker.js';
-import Selection from './classes/Selection.js';
-import Slidedown from './classes/Slidedown.js';
-import repeatWebRequest from './repeatWebRequest.js';
+import Blocker from './classes/Blocker';
+import CalendarEvent from './classes/CalendarEvent';
+import CalendarEvents from './classes/CalendarEvents';
+import Selection from './classes/Selection';
+import Slidedown from './classes/Slidedown';
+import ICalendarEventHTMLElement from './interfaces/ICalendarEventHTMLElement';
+import IUncompletedRequest from './interfaces/IUncompletedRequest';
+import repeatWebRequest from './repeatWebRequest';
 
 let SELECT_KEY = 'b';
 let DELETE_KEY = 'q';
 // is the key with the SELECT_KEY being pressed
 let isKeyPressed = false;
 let selector: Selection;
-let events: HTMLElement[];
-let selectedEvents: Set<HTMLElement> = new Set();
+let eventsHTMLElements: ICalendarEventHTMLElement[];
+let allEvents: CalendarEvents;
+let selectedEvents: Set<CalendarEvent> = new Set();
 let selectedEventsIds: string[] = [];
-const uncompletedRequest = {};
+const uncompletedRequest: IUncompletedRequest = {onBeforeRequest: null, onSendHeaders: null, requestId: null};
 
 const blocker = new Blocker();
 const slidedown = new Slidedown();
@@ -21,45 +26,47 @@ let popupModeDelete = false;
 function resetSelectedEvents() {
 	console.log('selectedEvents before reload:');
 	console.log(selectedEvents);
-	selectedEvents.forEach((event) => {
-		event.id = '';
+	selectedEvents.forEach(event => {
+		event.element.id = '';
 	});
 	selectedEvents.clear();
 	getEvents();
-	const newSelectedEvents = events.filter((event) =>
-	{
+	const newSelectedEvents = eventsHTMLElements.filter(event => {
 		return selectedEventsIds.includes(event.dataset.eventid);
 	});
-	newSelectedEvents.forEach((event) => {
+	newSelectedEvents.forEach(event => {
 		event.id = 'selected';
 	});
 	selectedEvents = new Set(newSelectedEvents);
-	selectedEventsIds = newSelectedEvents.map((event) => event.dataset.eventid);
+	selectedEventsIds = newSelectedEvents.map(event => event.dataset.eventid);
 	console.log('selectedEvents after reload:');
 	console.log(selectedEvents);
 }
 
-chrome.runtime.onMessage.addListener(function(request) {
+chrome.runtime.onMessage.addListener(request => {
 	switch (request.action) {
 		case 'boxSelect':
 			console.log('boxSelect');
 			popupModeDelete = true;
 
 			keyDown({
-				key: 'b',
+				key: 'b'
 			});
 			break;
 		case 'delete':
 			window.focus();
 			keyDown({
-				key: 'q',
+				key: 'q'
 			});
 			console.log('delete');
 			break;
 		case 'onBeforeRequest': {
 			/* Check if that request pertains to actions made to events */
-			const webRequestEventId = request.details.requestBody.formData.eid[0];
-			const idIsInTheSelectedEvents = selectedEventsIds.includes(webRequestEventId);
+			const webRequestEventId =
+				request.details.requestBody.formData.eid[0];
+			const idIsInTheSelectedEvents = selectedEventsIds.includes(
+				webRequestEventId
+			);
 
 			if (idIsInTheSelectedEvents) {
 				uncompletedRequest.requestId = request.details.requestId;
@@ -69,7 +76,9 @@ chrome.runtime.onMessage.addListener(function(request) {
 			break;
 		}
 		case 'onSendHeaders': {
-			if (uncompletedRequest.requestId !== request.details.requestId) { return; }
+			if (uncompletedRequest.requestId !== request.details.requestId) {
+				return;
+			}
 			console.log('onSendHeaders: ');
 			console.log(request.details);
 			uncompletedRequest.onSendHeaders = request.details;
@@ -78,7 +87,9 @@ chrome.runtime.onMessage.addListener(function(request) {
 			break;
 		}
 		case 'onCompleted': {
-			if (uncompletedRequest.requestId !== request.details.requestId) { return; }
+			if (uncompletedRequest.requestId !== request.details.requestId) {
+				return;
+			}
 			console.log('onCompleted:');
 			console.log(request.details);
 
@@ -87,6 +98,8 @@ chrome.runtime.onMessage.addListener(function(request) {
 		}
 		case 'containsLoadonCompleted': {
 			console.log('containsLoadonCompleted');
+			// TODO: if new events present add to all events / update allEvents
+
 			resetSelectedEvents();
 			break;
 		}
@@ -97,17 +110,18 @@ chrome.runtime.onMessage.addListener(function(request) {
 
 console.log('Box select extension on google calendar webpage active.');
 
-// https://stackoverflow.com/questions/9602022/chrome-extension-retrieving-global-variable-from-webpage/9636008#9636008
-// https://stackoverflow.com/questions/9515704/insert-code-into-the-page-context-using-a-content-script/9517879#9517879
 const s: HTMLScriptElement = document.createElement('script');
 s.src = chrome.runtime.getURL('script.js');
 document.body.insertBefore(s, document.documentElement.lastChild);
 s.onload = () => {
 	s.remove();
 };
-let initialEvents;
-window.addEventListener('injectedScriptInitialData', function(data: CustomEvent) {
-	initialEvents = data.detail;
+
+window.addEventListener('injectedScriptInitialData', (data: CustomEvent) => {
+	allEvents = data.detail.map(event => {
+		const constructor = {eid: event.eid, title: event.title, startDate: event.startDate, endDate: event.endDate};
+		return new CalendarEvent(constructor);
+	});
 });
 
 // Inject stylesheet into website
@@ -125,13 +139,13 @@ Set.prototype.union = function(setB) {
 	return union;
 };
 
-chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], function(data) {
+chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], data => {
 	SELECT_KEY = data.boxSelectHotkey || SELECT_KEY;
 	DELETE_KEY = data.deleteHotkey || DELETE_KEY;
 });
 console.log(`SELECT_KEY: ${SELECT_KEY}; DELETE_KEY: ${DELETE_KEY}`);
 
-chrome.storage.onChanged.addListener(function(data) {
+chrome.storage.onChanged.addListener(data => {
 	console.log(data);
 	SELECT_KEY = data.boxSelectHotkey.newValue || SELECT_KEY;
 	DELETE_KEY = data.deleteHotkey.newValue || DELETE_KEY;
@@ -140,23 +154,27 @@ chrome.storage.onChanged.addListener(function(data) {
 function getEvents() {
 	// Get all visible events
 
-	events = Array.from(document.querySelectorAll('div[role~="button"], div[role~="presentation"]'));
-	events = events.filter((event) => {
+	eventsHTMLElements = Array.from(
+		document.querySelectorAll(
+			'div[role~="button"], div[role~="presentation"]'
+		)
+	);
+	eventsHTMLElements = eventsHTMLElements.filter(event => {
 		return event.dataset.eventid;
 	});
 	// console.log(events);
-	console.log(`Found ${events.length} events.`);
-	return events;
+	console.log(`Found ${eventsHTMLElements.length} events.`);
+	return eventsHTMLElements;
 }
 
-function highlightEvents(evts) {
-	evts.forEach((evt) => {
+function highlightEvents(evts: ICalendarEventHTMLElement[]) {
+	evts.forEach(evt => {
 		evt.id = 'selected';
 	});
 }
 
-function unHighlightEvents(evts) {
-	evts.forEach((evt) => {
+function unHighlightEvents(evts: ICalendarEventHTMLElement[]) {
+	evts.forEach(evt => {
 		evt.id = '';
 	});
 }
@@ -164,21 +182,22 @@ function unHighlightEvents(evts) {
 async function deleteEvents() {
 	// Let popup.js know when deleting starts and ends for UX animation purposes
 	chrome.runtime.sendMessage({
-		action: 'deleteStart',
+		action: 'deleteStart'
 	});
 	console.log('deleting these events:');
 	console.log(selectedEvents);
-	const OK_PATH = 'div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';
+	const OK_PATH =
+		'div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';
 	const TRASH_PATH =
 		'#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div';
 	for (const entry of selectedEvents) {
 		// event
 		entry.click();
 		while (!document.querySelector(TRASH_PATH)) {
-			await new Promise((r) => setTimeout(r, 50));
+			await new Promise(r => setTimeout(r, 50));
 		}
 
-		document.querySelector(TRASH_PATH).click();
+		(document.querySelector(TRASH_PATH) as ICalendarEventHTMLElement).click();
 
 		/* The whole deal with the i variable below is important!
 		   There are multiple ways a delete process in Google Calendar works.
@@ -195,45 +214,51 @@ async function deleteEvents() {
 				break;
 			}
 			// console.log(i);
-			await new Promise((r) => setTimeout(r, 50));
+			await new Promise(r => setTimeout(r, 50));
 			// console.log(document.querySelector(OK_PATH));
 			i++;
 		}
-		if (!reoccurringEvent) { continue; }
+		if (!reoccurringEvent) {
+			continue;
+		}
 
-		document.querySelector(OK_PATH).click();
+		(document.querySelector(OK_PATH) as ICalendarEventHTMLElement).click();
 		console.log('waiting for ok to disappear');
 		while (document.querySelector(OK_PATH)) {
-			await new Promise((r) => setTimeout(r, 250));
+			await new Promise(r => setTimeout(r, 250));
 		}
 		while (document.querySelector(TRASH_PATH)) {
-			await new Promise((r) => setTimeout(r, 350));
+			await new Promise(r => setTimeout(r, 350));
 		}
 		console.log('disappeared');
 	}
 	unHighlightEvents(selectedEvents);
 	chrome.runtime.sendMessage({
-		action: 'deleteEnd',
+		action: 'deleteEnd'
 	});
 }
 
 /**
  * Instead of creating a bland, blue blocker overlay. Highlight the possible events, by changing their color!
  * Adds a 'possible' class to events.
- * */
+ */
 function showPossibleEvents(evts) {
-	evts.forEach((evt) => {
+	evts.forEach((evt: ICalendarEventHTMLElement) => {
 		/* evtColor = rgb(202, 189, 191) */
-		const evtColor = evt.style.backgroundColor;
+		const evtColor: string = evt.style.backgroundColor;
 
 		/* Extract numbers from rgb string to create brightened color. */
-		let brColor = evtColor.match(/\d+/g).map(number => parseInt(number));
+		let brColor: number[] | string = evtColor
+			.match(/\d+/g)
+			.map((colorValue: string) => parseInt(colorValue, 10));
 
 		/* Add 20 to every value to brighten it. */
-		brColor = brColor.map(number => (number + 20 > 255 ? 255 : number + 20));
+		brColor = brColor.map(colorValue =>
+			colorValue + 20 > 255 ? 255 : colorValue + 20
+		);
 		brColor = `rgb(${brColor[0]}, ${brColor[1]}, ${brColor[2]})`;
 
-		evt.oldColor = evtColor;
+		evt.setAttribute('oldColor', evtColor);
 
 		const backgroundText = `-webkit-linear-gradient(left, ${evtColor} 0%, ${brColor} 50%, ${evtColor} 100%), linear-gradient(to right, ${evtColor} 0%, ${brColor} 50%,${evtColor} 100%)`;
 		evt.style.background = backgroundText;
@@ -248,27 +273,29 @@ function showPossibleEvents(evts) {
 /**
  *  Same as showPossibleEvents but in reverse.
  *  Removes the 'possible' class from events.
- * */
-function hidePossibleEvents(evts) {
+ */
+function hidePossibleEvents(evts: ICalendarEventHTMLElement[]) {
 	console.log('restoring old zindex and color');
-	evts.forEach((evt) => {
+	evts.forEach(evt => {
 		evt.style.background = '';
 
-		evt.style.backgroundColor = evt.oldColor;
+		evt.style.backgroundColor = evt.getAttribute('oldColor');
 		evt.style.zIndex = '4';
 		evt.classList.remove('possible');
 	});
 }
 
-function keyDown(e) {
+function keyDown(e: { key: string }) {
 	// Q
 	if (e.key === DELETE_KEY) {
 		deleteEvents();
 	}
-	if (e.key !== SELECT_KEY) { return; }
+	if (e.key !== SELECT_KEY) {
+		return;
+	}
 
 	if (!blocker.created) {
-		blocker.setState(document.body, 1);
+		blocker.setState(document.body, true);
 
 		if (!Slidedown.created) {
 			Slidedown.created = true;
@@ -280,22 +307,24 @@ function keyDown(e) {
 		unHighlightEvents(selectedEvents);
 		getEvents();
 
-		showPossibleEvents(events);
+		showPossibleEvents(eventsHTMLElements);
 		isKeyPressed = true;
 		selectedEvents.clear();
 	}
 }
 
-function keyUp(e) {
-	if (e.key !== SELECT_KEY) { return; }
+function keyUp(e: {key: string}) {
+	if (e.key !== SELECT_KEY) {
+		return;
+	}
 
 	slidedown.up();
 
-	hidePossibleEvents(events);
+	hidePossibleEvents(eventsHTMLElements);
 
 	// Delete blocker
 	if (blocker.created) {
-		blocker.setState(document.body, 0);
+		blocker.setState(document.body, false);
 	}
 
 	if (Selection.visible) {
@@ -305,9 +334,11 @@ function keyUp(e) {
 	isKeyPressed = false;
 }
 
-function boxSelectDown(e) {
+function boxSelectDown(e: MouseEvent) {
 	// If B is not being held dont do anything
-	if (!isKeyPressed) { return; }
+	if (!isKeyPressed) {
+		return;
+	}
 	// If it's a right click dont create selection
 	// 2 = right button
 	if (e.button === 2) {
@@ -322,19 +353,27 @@ function boxSelectDown(e) {
 	}
 }
 
-function boxSelectMove(e) {
-	if (!isKeyPressed) { return; }
-	if (!Selection.visible) { return; }
+function boxSelectMove(e: MouseEvent) {
+	if (!isKeyPressed) {
+		return;
+	}
+	if (!Selection.visible) {
+		return;
+	}
 
 	// e.target = blocker
 	selector.display(e.clientX, e.clientY);
 }
 
 function boxSelectUp() {
-	if (!Selection.visible) { return; }
+	if (!Selection.visible) {
+		return;
+	}
 	let newSelectedEvents = null;
 
-	({ newSelectedEvents, selectedEventsIds } = selector.selectedEvents(events));
+	({ newSelectedEvents, selectedEventsIds } = selector.selectedEvents(
+		eventsHTMLElements
+	));
 
 	// Merge current selected events with the newly selected ones
 	selectedEvents = selectedEvents.union(newSelectedEvents);
@@ -345,12 +384,12 @@ function boxSelectUp() {
 	// If triggered from popup/popup.html then remember to remove the blocker!
 	if (popupModeDelete) {
 		keyUp({
-			key: 'b',
+			key: 'b'
 		});
 
 		// Get rid of highlight when box select div active in popup.html
 		chrome.runtime.sendMessage({
-			action: 'boxSelectOff',
+			action: 'boxSelectOff'
 		});
 
 		popupModeDelete = false;

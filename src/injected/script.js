@@ -1,6 +1,6 @@
 class CalendarEvent {
 	constructor(array) {
-		this.key = array[0];
+		this.eid = array[0];
 		this.title = array[1];
 		this.startDate = array[2];
 		this.endDate = array[3];

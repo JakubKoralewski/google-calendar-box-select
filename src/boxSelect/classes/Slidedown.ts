@@ -1,12 +1,11 @@
 /**
  * Provides user feedback for when the select button is being held.
  */
-
 class Slidedown {
 	public static created: boolean;
 	public element: HTMLElement;
 
-	constructor(public parent: HTMLElement) {
+	constructor() {
 		this.element = document.createElement('div');
 		this.element.id = 'slidedown';
 		Slidedown.created = false;
