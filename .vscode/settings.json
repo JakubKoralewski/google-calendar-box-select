@@ -1,8 +1,11 @@
 {
-    "eslint.autoFixOnSave": true,
-    "[javascript]": {
-        "editor.formatOnSave": false
-    },
-    "prettier.disableLanguages": ["js"],
-    "editor.formatOnSave": true,
+	"eslint.autoFixOnSave": true,
+	"[javascript]": {
+		"editor.formatOnSave": false
+	},
+	"prettier.disableLanguages": ["js"],
+	"editor.formatOnSave": true,
+	"editor.detectIndentation": true,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4
 }
