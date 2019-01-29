@@ -6,5 +6,6 @@
 		"sourceMap": false,
 		"noEmitOnError": true,
 		"allowJs": false,
+		"resolveJsonModule": true
 	}
 }

@@ -1,7 +1,7 @@
-interface ICalendarEventHTMLElement extends HTMLElement {
+interface IcalendarEventHTMLElement extends HTMLElement {
 	dataset: {
 		eventid: string;
 	};
 }
 
-export default ICalendarEventHTMLElement;
+export default IcalendarEventHTMLElement;

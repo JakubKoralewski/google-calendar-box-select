@@ -1,4 +1,5 @@
-import ICalendarEventHTMLElement from '../interfaces/ICalendarEventHTMLElement';
+import IcalendarEventHTMLElement from '../interfaces/IcalendarEventHTMLElement';
+import IselectionReturn from '../interfaces/IselectionReturn';
 
 class Selection {
 	public static visible: boolean;
@@ -26,7 +27,6 @@ class Selection {
 
 	public display(x: number, y: number) {
 		// https://stackoverflow.com/questions/30983000/how-to-workaround-a-negative-height-and-width
-
 		this.element.style.width = Math.abs(x - this.x) + 'px';
 		this.element.style.height = Math.abs(y - this.y) + 'px';
 
@@ -34,6 +34,7 @@ class Selection {
 			this.element.style.top = y + 'px';
 			this.element.style.height = Math.abs(y - this.y) + 'px';
 		}
+
 		if (x < this.x) {
 			this.element.style.left = x + 'px';
 			this.element.style.width = Math.abs(x - this.x) + 'px';
@@ -45,7 +46,7 @@ class Selection {
 		Selection.visible = false;
 	}
 
-	public selectedEvents(events: ICalendarEventHTMLElement[]) {
+	public select(events: ICalendarEventHTMLElement[]) {
 		const selected = new Set();
 		const ids = [];
 
@@ -65,7 +66,7 @@ class Selection {
 		const right = left + width;
 		const bottom = top + height;
 
-		events.forEach((event: ICalendarEventHTMLElement) => {
+		events.forEach((event: IcalendarEventHTMLElement) => {
 			const b = event.getBoundingClientRect();
 
 			const eventsLeftEdgeToTheLeftOfRightEdge = b.left < right;
@@ -84,7 +85,11 @@ class Selection {
 				selected.add(event);
 			}
 		});
-		return { newSelectedEvents: selected, selectedEventsIds: ids };
+
+		return {
+			newSelectedEvents: selected,
+			selectedEventsIds: ids
+		} as IselectionReturn;
 	}
 }
 

@@ -1,6 +1,6 @@
 // import CalendarEvent from '../classes/CalendarEvent';
 
-export interface IUncompletedRequest {
+export interface IuncompletedRequest {
 	onBeforeRequest: {
 		requestBody: {
 			formData: {
@@ -21,4 +21,4 @@ export interface IUncompletedRequest {
 	requestId: string;
 }
 
-export default IUncompletedRequest;
+export default IuncompletedRequest;

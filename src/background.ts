@@ -43,7 +43,7 @@ chrome.webRequest.onCompleted.addListener(
 
 		if (details.url.includes('load')) {
 			chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-				chrome.tabs.sendMessage(tabs[0].id, { action: 'containsLoadonCompleted', details });
+				chrome.tabs.sendMessage(tabs[0].id, { action: 'containsLoadOnCompleted', details });
 			});
 		}
 	},

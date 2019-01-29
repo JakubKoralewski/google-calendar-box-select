@@ -1,5 +1,6 @@
 import CalendarEvent from './classes/CalendarEvent';
-import IUncompletedRequest from './interfaces/IUncompletedRequest';
+import IcalendarEventHTMLElement from './interfaces/IcalendarEventHTMLElement';
+import IuncompletedRequest from './interfaces/IuncompletedRequest';
 
 /** Turn object into serialized data.
  *  The object's value need to be an array.
@@ -27,8 +28,8 @@ function serialize(data: { eventId: string; requestBody: object }): string {
 
 /** Repeats a web request for selectedEvents. */
 function repeatWebRequest(
-	selectedEvents: Set<CalendarEvent>,
-	uncompletedRequest: IUncompletedRequest
+	selectedEvents: Set<IcalendarEventHTMLElement>,
+	uncompletedRequest: IuncompletedRequest
 ) {
 	console.log('repeatWebRequest');
 	/* console.log(selectedEvents, uncompletedRequest); */

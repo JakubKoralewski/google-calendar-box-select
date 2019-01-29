@@ -1,11 +1,12 @@
-import ICalendarEventHTMLElement from '../interfaces/ICalendarEventHTMLElement';
+import IcalendarEventHTMLElement from '../interfaces/IcalendarEventHTMLElement';
 
 interface ICalendarEventConstructor {
 	eid: string;
 	title: string;
 	startDate: string;
 	endDate: string;
-	element?: ICalendarEventHTMLElement;
+	element?: IcalendarEventHTMLElement;
+	visible?: boolean;
 }
 
 class CalendarEvent {
@@ -13,7 +14,9 @@ class CalendarEvent {
 	public title: string;
 	public startDate: string;
 	public endDate: string;
-	public element: ICalendarEventHTMLElement;
+	public element: IcalendarEventHTMLElement;
+	public visible: boolean = false;
+	public selected: boolean = false;
 
 	/** CalendarEvent object constructor */
 	constructor(someObject: ICalendarEventConstructor) {
@@ -22,6 +25,7 @@ class CalendarEvent {
 		this.startDate = someObject.startDate;
 		this.endDate = someObject.endDate;
 		this.element = someObject.element;
+		this.visible = someObject.visible;
 	}
 
 	get timespan() {
