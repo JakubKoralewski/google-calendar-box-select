@@ -1,15 +1,14 @@
+import './img/icon-128.png';
 import './img/icon-16.png';
 import './img/icon-48.png';
-import './img/icon-128.png';
 
 chrome.webRequest.onBeforeRequest.addListener(
-	function(details) {
+	details => {
 		console.log('Before:');
 		console.log(new Date(details.timeStamp));
 		console.log(details);
 
-
-		details.requestBody.formData.eid[0] && chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+		details.requestBody.formData.eid[0] && chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 			chrome.tabs.sendMessage(tabs[0].id, { action: 'onBeforeRequest', details });
 		});
 	},
@@ -18,12 +17,12 @@ chrome.webRequest.onBeforeRequest.addListener(
 );
 
 chrome.webRequest.onSendHeaders.addListener(
-	function(details) {
+	details => {
 		console.log('Send headers:');
 		console.log(new Date(details.timeStamp));
 		console.log(details);
 
-		chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+		chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 			chrome.tabs.sendMessage(tabs[0].id, { action: 'onSendHeaders', details });
 		});
 	},
@@ -37,12 +36,12 @@ chrome.webRequest.onCompleted.addListener(
 		console.log(new Date(details.timeStamp));
 		console.log(details);
 
-		chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+		chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 			chrome.tabs.sendMessage(tabs[0].id, { action: 'onCompleted', details });
 		});
 
 		if (details.url.includes('load')) {
-			chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 				chrome.tabs.sendMessage(tabs[0].id, { action: 'containsLoadOnCompleted', details });
 			});
 		}

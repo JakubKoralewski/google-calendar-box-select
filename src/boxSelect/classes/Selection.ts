@@ -1,3 +1,5 @@
+import CalendarEvent from '../classes/CalendarEvent';
+import CalendarEvents from '../classes/CalendarEvents';
 import IcalendarEventHTMLElement from '../interfaces/IcalendarEventHTMLElement';
 import IselectionReturn from '../interfaces/IselectionReturn';
 
@@ -46,10 +48,7 @@ class Selection {
 		Selection.visible = false;
 	}
 
-	public select(events: ICalendarEventHTMLElement[]) {
-		const selected = new Set();
-		const ids = [];
-
+	public select(calendarEvents: CalendarEvents) {
 		// 102px (string) -> 102 (number)
 		let left: string | number = this.element.style.left;
 		left = parseInt(left.substring(0, left.length - 2), 10);
@@ -66,7 +65,9 @@ class Selection {
 		const right = left + width;
 		const bottom = top + height;
 
-		events.forEach((event: IcalendarEventHTMLElement) => {
+		calendarEvents.events.forEach((calendarEvent: CalendarEvent) => {
+			const event: IcalendarEventHTMLElement = calendarEvent.element;
+
 			const b = event.getBoundingClientRect();
 
 			const eventsLeftEdgeToTheLeftOfRightEdge = b.left < right;
@@ -81,15 +82,9 @@ class Selection {
 				eventsTopAboveBottom &&
 				eventsBottomBelowTop
 			) {
-				ids.push(event.dataset.eventid);
-				selected.add(event);
+				calendarEvent.selected = true;
 			}
 		});
-
-		return {
-			newSelectedEvents: selected,
-			selectedEventsIds: ids
-		} as IselectionReturn;
 	}
 }
 

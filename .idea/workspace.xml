@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da31826f-e8fc-4a63-8076-1c9d27a464d2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/background.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/boxSelect/boxSelect.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/boxSelect/boxSelect.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/boxSelect/classes/CalendarEvent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/boxSelect/classes/CalendarEvent.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/boxSelect/classes/CalendarEvents.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/boxSelect/classes/CalendarEvents.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/boxSelect/classes/Selection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/boxSelect/classes/Selection.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/boxSelect/interfaces/ICalendarEventHTMLElement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/boxSelect/interfaces/ICalendarEventHTMLElement.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/boxSelect/interfaces/iUncompletedRequest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/boxSelect/interfaces/iUncompletedRequest.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/boxSelect/repeatWebRequest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/boxSelect/repeatWebRequest.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/boxSelect/types/Set.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tslint.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/tslint.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -43,11 +35,11 @@
     <favorites_list name="google-calendar-box-select" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/config.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-8">
+            <state relative-caret-position="-7">
               <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
             </state>
           </provider>
@@ -64,14 +56,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/boxSelect/classes/CalendarEvents.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-36">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
-              <folding>
-                <element signature="e#0#49#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="416">
+              <caret line="59" column="38" selection-start-line="59" selection-start-column="38" selection-end-line="59" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -79,22 +68,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/boxSelect/boxSelect.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="863">
+            <state relative-caret-position="-7">
               <caret line="145" selection-start-line="145" selection-end-line="145" />
               <folding>
                 <element signature="e#0#40#0" expanded="true" />
                 <element signature="e#388#455#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/background.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#27#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -117,22 +95,24 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/boxSelect/classes/CalendarEvents.ts" />
         <option value="$PROJECT_DIR$/src/boxSelect/boxSelect.ts" />
+        <option value="$PROJECT_DIR$/src/background.ts" />
+        <option value="$PROJECT_DIR$/src/boxSelect/classes/CalendarEvents.ts" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
     <option name="x" value="85" />
     <option name="y" value="25" />
     <option name="width" value="1750" />
-    <option name="height" value="993" />
+    <option name="height" value="994" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -156,7 +136,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -170,7 +149,7 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
     <property name="ts.external.directory.path" value="F:\projects\web\google-calendar-box-select\google-calendar-box-select\node_modules\typescript\lib" />
   </component>
   <component name="RunDashboard">
@@ -193,11 +172,12 @@
       <option name="presentableId" value="Default" />
       <updated>1548620641483</updated>
       <workItem from="1548620651445" duration="1970000" />
+      <workItem from="1548784819043" duration="407000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1970000" />
+    <option name="totallyTimeSpent" value="2377000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -209,23 +189,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
+    <frame x="0" y="0" width="1536" height="864" extended-state="6" />
     <layout>
       <window_info id="Image Layers" order="0" />
       <window_info id="Capture Tool" order="1" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Favorites" order="3" sideWeight="0.503663" side_tool="true" weight="0.12818792" />
       <window_info id="npm" order="4" sideWeight="0.50208336" side_tool="true" weight="0.22483222" />
-      <window_info id="Learn" order="5" weight="0.32985073" />
+      <window_info active="true" id="Learn" order="5" visible="true" weight="0.3295302" />
       <window_info id="Designer" order="6" />
-      <window_info content_ui="combo" id="Project" order="7" sideWeight="0.496337" visible="true" weight="0.23758389" />
+      <window_info content_ui="combo" id="Project" order="7" sideWeight="0.496337" weight="0.2409396" />
       <window_info id="Structure" order="8" sideWeight="0.503663" side_tool="true" weight="0.12818792" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32960895" />
       <window_info anchor="bottom" id="Docker" order="1" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50067115" side_tool="true" visible="true" weight="0.32960895" />
+      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.5013423" side_tool="true" weight="0.3289855" />
       <window_info anchor="bottom" id="Database Changes" order="3" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="4" sideWeight="0.49932885" visible="true" weight="0.32960895" />
-      <window_info anchor="bottom" id="TypeScript" order="5" sideWeight="0.49932885" weight="0.1368715" />
+      <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.4986577" weight="0.3289855" />
+      <window_info anchor="bottom" id="TypeScript" order="5" sideWeight="0.49932885" weight="0.13623188" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" />
       <window_info anchor="bottom" id="Run" order="8" />
@@ -242,6 +222,38 @@
       <window_info anchor="right" id="Ant Build" order="6" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Image Layers" order="0" />
+      <window_info id="Capture Tool" order="1" />
+      <window_info id="UI Designer" order="2" />
+      <window_info id="Favorites" order="3" sideWeight="0.503663" side_tool="true" weight="0.12818792" />
+      <window_info id="npm" order="4" sideWeight="0.50208336" side_tool="true" weight="0.22483222" />
+      <window_info id="Learn" order="5" weight="0.32985073" />
+      <window_info id="Designer" order="6" />
+      <window_info content_ui="combo" id="Project" order="7" sideWeight="0.496337" weight="0.2409396" />
+      <window_info id="Structure" order="8" sideWeight="0.503663" side_tool="true" weight="0.12818792" />
+      <window_info anchor="bottom" id="Terminal" order="0" weight="0.32960895" />
+      <window_info anchor="bottom" id="Docker" order="1" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.5013423" side_tool="true" weight="0.3289855" />
+      <window_info anchor="bottom" id="Database Changes" order="3" />
+      <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.4986577" weight="0.3289855" />
+      <window_info active="true" anchor="bottom" id="TypeScript" order="5" sideWeight="0.49932885" visible="true" weight="0.13623188" />
+      <window_info anchor="bottom" id="Message" order="6" />
+      <window_info anchor="bottom" id="Find" order="7" />
+      <window_info anchor="bottom" id="Run" order="8" />
+      <window_info anchor="bottom" id="Debug" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="12" sideWeight="0.49530202" weight="0.23743017" />
+      <window_info anchor="right" id="Capture Analysis" order="0" />
+      <window_info anchor="right" id="Database" order="1" weight="0.3295302" />
+      <window_info anchor="right" id="Palette&#9;" order="2" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="5" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="6" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -271,6 +283,20 @@
         </entry>
       </map>
     </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/google-calendar-box-select.iml">
@@ -283,20 +309,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/boxSelect/interfaces/IuncompletedRequest.ts">
+    <entry file="file://$PROJECT_DIR$/src/boxSelect/interfaces/iUncompletedRequest.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/boxSelect/classes/CalendarEvents.ts">
+    <entry file="file://$PROJECT_DIR$/src/config.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-36">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-7">
+          <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -309,16 +332,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/config.ts">
+    <entry file="file://$PROJECT_DIR$/node_modules/typescript/lib/lib.dom.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+        <state relative-caret-position="26">
+          <caret line="4996" column="13" selection-start-line="4996" selection-start-column="13" selection-end-line="4996" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/background.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1144">
+          <caret line="44" column="74" lean-forward="true" selection-start-line="44" selection-start-column="74" selection-end-line="44" selection-end-column="74" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/boxSelect/boxSelect.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="863">
+        <state relative-caret-position="-7">
           <caret line="145" selection-start-line="145" selection-end-line="145" />
           <folding>
             <element signature="e#0#40#0" expanded="true" />
@@ -327,12 +360,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/background.ts">
+    <entry file="file://$PROJECT_DIR$/src/boxSelect/classes/CalendarEvents.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#27#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="416">
+          <caret line="59" column="38" selection-start-line="59" selection-start-column="38" selection-end-line="59" selection-end-column="38" />
         </state>
       </provider>
     </entry>

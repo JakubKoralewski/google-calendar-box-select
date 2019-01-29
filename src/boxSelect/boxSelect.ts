@@ -1,6 +1,6 @@
 import Blocker from './classes/Blocker';
 import CalendarEvent from './classes/CalendarEvent';
-import CalendarEvents from './classes/AllEvents';
+import CalendarEvents from './classes/CalendarEvents';
 import Selection from './classes/Selection';
 import Slidedown from './classes/Slidedown';
 /* import IcalendarEventHTMLElement from './interfaces/IcalendarEventHTMLElement'; */
@@ -8,6 +8,7 @@ import Slidedown from './classes/Slidedown';
 import IuncompletedRequest from './interfaces/IuncompletedRequest';
 import repeatWebRequest from './repeatWebRequest';
 import './types/Set';
+import IcalendarEventHTMLElement from './interfaces/IcalendarEventHTMLElement';
 /* import IselectionReturn from './interfaces/IselectionReturn'; */
 
 let SELECT_KEY = 'b';
@@ -16,7 +17,7 @@ let DELETE_KEY = 'q';
 let isKeyPressed = false;
 let selector: Selection;
 // let eventsHTMLElements: IcalendarEventHTMLElement[];
-let events: CalendarEvents;
+const events: CalendarEvents = new CalendarEvents();
 /* let selectedEvents: Set<IcalendarEventHTMLElement> = new Set();
 let selectedEventsIds: string[] = []; */
 const uncompletedRequest: IuncompletedRequest = {
@@ -32,12 +33,9 @@ let popupModeDelete = false;
 
 /** Ran after load to find events that changed DOM hierarchy e.g. after dragging. */
 function resetSelectedEvents() {
-	console.log('selectedEvents before reload:');
-	console.log(selectedEvents);
-	selectedEvents.forEach(event => {
-		event.element.id = '';
-	});
-	selectedEvents.clear();
+	console.log('events.selected before reload:');
+	console.log(events.selected);;
+	/* (selectedEvents as Set<IcalendarEventHTMLElement>).clear(); */
 	events.getVisible();
 	const newSelectedEvents = eventsHTMLElements.filter(event => {
 		return selectedEventsIds.includes(event.dataset.eventid);

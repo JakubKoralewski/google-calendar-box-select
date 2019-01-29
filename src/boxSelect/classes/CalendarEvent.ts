@@ -5,7 +5,7 @@ interface ICalendarEventConstructor {
 	title: string;
 	startDate: string;
 	endDate: string;
-	element?: IcalendarEventHTMLElement;
+	element: IcalendarEventHTMLElement;
 	visible?: boolean;
 }
 
@@ -15,8 +15,8 @@ class CalendarEvent {
 	public startDate: string;
 	public endDate: string;
 	public element: IcalendarEventHTMLElement;
-	public visible: boolean = false;
-	public selected: boolean = false;
+	private _visible: boolean;
+	private _selected: boolean;
 
 	/** CalendarEvent object constructor */
 	constructor(someObject: ICalendarEventConstructor) {
@@ -25,11 +25,28 @@ class CalendarEvent {
 		this.startDate = someObject.startDate;
 		this.endDate = someObject.endDate;
 		this.element = someObject.element;
-		this.visible = someObject.visible;
+		this._visible = someObject.visible != null ? someObject.visible : false;
 	}
 
-	get timespan() {
+	get timespan(): string {
 		return `${this.startDate}/${this.endDate}`;
+	}
+
+	set selected(state: boolean) {
+		this.element.id = state ? 'selected' : '';
+		this._selected = state;
+	}
+
+	get selected(): boolean {
+		return this._selected;
+	}
+
+	set visible(state: boolean) {
+		this._visible = state;
+	}
+
+	get visible(): boolean {
+		return this._visible;
 	}
 }
 
