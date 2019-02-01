@@ -10,6 +10,8 @@
 		"curly": false,
 		"object-literal-sort-keys": false,
 		"interface-name": false,
+		"unified-signatures": false,
+		"no-angle-bracket-type-assertion": false,
 
 		"arrow-parens": [true, "ban-single-arg-parens"],
 		"quotemark": [true, "single", "avoid-escape"],

@@ -1,7 +1,4 @@
-import CalendarEvent from '../classes/CalendarEvent';
-import CalendarEvents from '../classes/CalendarEvents';
-import IcalendarEventHTMLElement from '../interfaces/IcalendarEventHTMLElement';
-import IselectionReturn from '../interfaces/IselectionReturn';
+import { CalendarEvent, CalendarEvents, IcalendarEventHTMLElement } from '..';
 
 class Selection {
 	public static visible: boolean;
@@ -65,7 +62,7 @@ class Selection {
 		const right = left + width;
 		const bottom = top + height;
 
-		calendarEvents.events.forEach((calendarEvent: CalendarEvent) => {
+		calendarEvents.calendarEvents.forEach((calendarEvent: CalendarEvent) => {
 			const event: IcalendarEventHTMLElement = calendarEvent.element;
 
 			const b = event.getBoundingClientRect();

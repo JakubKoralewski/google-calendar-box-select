@@ -1,4 +1,4 @@
-import IcalendarEventHTMLElement from './IcalendarEventHTMLElement';
+import { IcalendarEventHTMLElement } from '..';
 
 interface IselectionReturn {
 	newSelectedEvents: Set<IcalendarEventHTMLElement>;

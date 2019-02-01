@@ -1,6 +1,6 @@
-interface IsetOrArray<T> {
-	/** Array or Set.  */
-	multiple: T[] | Set<T>;
-}
+// interface IsetOrArray<T> {
+// 	/** Array or Set.  */
+// 	multiple: T[] | Set<T>;
+// }
 
-export default IsetOrArray; 
+// export default IsetOrArray;

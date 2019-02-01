@@ -1,16 +1,20 @@
+import { CalendarEvent, CalendarEvents, IcalendarEventHTMLElement } from '..';
 import { OK_PATH, TRASH_PATH } from '../../config';
-import IcalendarEventHTMLElement from '../interfaces/IcalendarEventHTMLElement';
-import CalendarEvent from './CalendarEvent';
-import CalendarEvents from './CalendarEvents';
 
-class SelectedEvents extends CalendarEvents {
+export class SelectedEvents extends CalendarEvents {
 	constructor(selectedEvents?: Set<CalendarEvent> | CalendarEvent[]) {
-		super(selectedEvents);
+		super();
+		for (const event of selectedEvents) {
+			this.events[event.eid] = event;
+		}
+	}
+
+	get ids(): string[] {
+		return Object.keys(this.events);
 	}
 
 	/** Delete selected events by clicking on the trashcan. */
 	public async delete() {
-
 		/* Let popup know when starts and ends for UX animation purposes */
 		chrome.runtime.sendMessage({
 			action: 'deleteStart'
@@ -19,8 +23,8 @@ class SelectedEvents extends CalendarEvents {
 		console.log('deleting these events:');
 		console.log(this.events);
 
-		for (const calendarEvent of this.events) {
-			const event = calendarEvent.element;
+		for (const calendarEvent of this.elements) {
+			const event = calendarEvent;
 			event.click();
 
 			/* Wait for trash can to appear. */
@@ -68,12 +72,32 @@ class SelectedEvents extends CalendarEvents {
 			}
 			console.log('disappeared');
 
-			this.remove(calendarEvent);
-			super.remove(calendarEvent);
+			delete this.events[calendarEvent.dataset.eventid];
 		}
 		chrome.runtime.sendMessage({
 			action: 'deleteEnd'
 		});
+	}
+
+	/** For all visible events it finds `HTMLElement`s of selected events.
+	 *
+	 *  Happens e.g. when event is dragged over to another day.
+	 */
+	public reset() {
+		super.findVisible();
+		/* FIXME: selected.reset() */
+	}
+
+	/** Sets all CalendarEvents.selected = false.
+	 *
+	 *  Makes this instance unusable! ( As a safeguard? )
+	 */
+	public unselect() {
+		this.calendarEvents.forEach((event: CalendarEvent) => {
+			event.selected = false;
+		});
+
+		delete this.events;
 	}
 }
 

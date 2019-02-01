@@ -31,7 +31,7 @@ chrome.webRequest.onSendHeaders.addListener(
 );
 
 chrome.webRequest.onCompleted.addListener(
-	function(details) {
+	details => {
 		console.log('Completed:');
 		console.log(new Date(details.timeStamp));
 		console.log(details);

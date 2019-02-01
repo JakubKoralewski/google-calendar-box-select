@@ -15,9 +15,6 @@ require('dotenv').config();
 
 const debug = process.env.NODE_ENV !== 'production';
 
-// load the secrets
-var alias = {};
-
 var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
 
 var fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
@@ -33,7 +30,8 @@ var options = {
 		options: path.join(__dirname, 'src', 'options', 'options.ts'),
 		boxSelect: path.join(__dirname, 'src', 'boxSelect', 'boxSelect.ts'),
 		background: path.join(__dirname, 'src', 'background.ts'),
-		globalStyles: path.join(__dirname, 'src', 'injected', 'globalStyles.scss')
+		globalStyles: path.join(__dirname, 'src', 'injected', 'globalStyles.scss'),
+		script: path.join(__dirname, 'src', 'injected', 'script.ts')
 	},
 	chromeExtensionBoilerplate: {
 		notHotReload: ['boxSelect']
@@ -67,10 +65,7 @@ var options = {
 				test: /\.tsx?$/,
 				use: [
 					{
-						loader: 'ts-loader'/* ,
-						options: {
-							fix: true,
-						}, */
+						loader: 'ts-loader'
 					}
 				],
 				exclude: /node_modules/
@@ -115,8 +110,9 @@ var options = {
 			}
 		]
 	},
+	/* Highly experimental change. */
 	resolve: {
-		alias
+		extensions: ['.ts', '.js', '.json']
 	},
 	plugins: [
 		// clean the build folder
@@ -137,9 +133,12 @@ var options = {
 					);
 				}
 			},
-			{
-				from: path.join(__dirname, 'src', 'injected', 'script.js')
-			},
+/* 			{
+				from: path.join(__dirname, 'src', 'injected', 'script.js'),
+				transform: function(content) {
+					return tsLoad
+				}
+			}, */
 			{
 				/* i18n */
 				from: path.join(__dirname, 'src', '_locales'),

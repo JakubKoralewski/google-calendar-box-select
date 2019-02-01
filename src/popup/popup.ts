@@ -14,7 +14,7 @@ boxSelect.addEventListener('click', () => {
 			active: true,
 			currentWindow: true
 		},
-		function(tabs) {
+		tabs => {
 			chrome.tabs.sendMessage(tabs[0].id, {
 				action: 'boxSelect'
 			});
@@ -28,7 +28,7 @@ del.addEventListener('click', () => {
 			active: true,
 			currentWindow: true
 		},
-		function(tabs) {
+		tabs => {
 			chrome.tabs.sendMessage(tabs[0].id, {
 				action: 'delete'
 			});
@@ -36,12 +36,12 @@ del.addEventListener('click', () => {
 	);
 });
 
-chrome.runtime.onMessage.addListener(function(request) {
-	if (request.action == 'boxSelectOff') {
+chrome.runtime.onMessage.addListener(request => {
+	if (request.action === 'boxSelectOff') {
 		boxSelect.classList.remove('select-active');
-	} else if (request.action == 'deleteStart') {
+	} else if (request.action === 'deleteStart') {
 		del.classList.add('delete-active');
-	} else if (request.action == 'deleteEnd') {
+	} else if (request.action === 'deleteEnd') {
 		del.classList.remove('delete-active');
 	}
 });

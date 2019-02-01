@@ -1,22 +1,23 @@
-import Blocker from './classes/Blocker';
-import CalendarEvent from './classes/CalendarEvent';
-import CalendarEvents from './classes/CalendarEvents';
-import Selection from './classes/Selection';
-import Slidedown from './classes/Slidedown';
-/* import IcalendarEventHTMLElement from './interfaces/IcalendarEventHTMLElement'; */
-/* import IselectionReturn from './interfaces/IselectionReturn'; */
-import IuncompletedRequest from './interfaces/IuncompletedRequest';
-import repeatWebRequest from './repeatWebRequest';
-import './types/Set';
-import IcalendarEventHTMLElement from './interfaces/IcalendarEventHTMLElement';
-/* import IselectionReturn from './interfaces/IselectionReturn'; */
+import {
+	Blocker,
+	CalendarEvent,
+	CalendarEvents,
+	Idetail,
+	IuncompletedRequest,
+	repeatWebRequest,
+	Selection,
+	Slidedown
+} from '.';
 
+/** Default: `b`  */
 let SELECT_KEY = 'b';
+/** Default: `q`  */
 let DELETE_KEY = 'q';
-// is the key with the SELECT_KEY being pressed
-let isKeyPressed = false;
+
+/** is the key with the SELECT_KEY being pressed */
+let isSelectKeyPressed = false;
 let selector: Selection;
-// let eventsHTMLElements: IcalendarEventHTMLElement[];
+// let events.elements: IcalendarEventHTMLElement[];
 const events: CalendarEvents = new CalendarEvents();
 /* let selectedEvents: Set<IcalendarEventHTMLElement> = new Set();
 let selectedEventsIds: string[] = []; */
@@ -31,23 +32,25 @@ const slidedown = new Slidedown();
 
 let popupModeDelete = false;
 
+/* FIXME: move to selectedevents.reset  */
 /** Ran after load to find events that changed DOM hierarchy e.g. after dragging. */
-function resetSelectedEvents() {
-	console.log('events.selected before reload:');
-	console.log(events.selected);;
-	/* (selectedEvents as Set<IcalendarEventHTMLElement>).clear(); */
-	events.getVisible();
-	const newSelectedEvents = eventsHTMLElements.filter(event => {
-		return selectedEventsIds.includes(event.dataset.eventid);
-	});
-	newSelectedEvents.forEach(event => {
-		event.id = 'selected';
-	});
-	selectedEvents = new Set(newSelectedEvents);
-	selectedEventsIds = newSelectedEvents.map(event => event.dataset.eventid);
-	console.log('selectedEvents after reload:');
-	console.log(selectedEvents);
-}
+// function resetSelected() {
+// 	console.log('events.selected before reload:');
+// 	console.log(events.selected);;
+// 	/* (selectedEvents as Set<IcalendarEventHTMLElement>).clear(); */
+// 	events.findVisible();
+// /* 	const newSelectedEvents = events.elements.filter(event => {
+// 		return selectedEventsIds.includes(event.dataset.eventid);
+// 	});
+// 	newSelectedEvents.forEach(event => {
+// 		event.id = 'selected';
+// 	});
+// 	selectedEvents = new Set(newSelectedEvents);
+// 	selectedEventsIds = newSelectedEvents.map(event => event.dataset.eventid); */
+// 	console.log('selectedEvents after reload:');
+
+// 	console.log(events.selected);
+// }
 
 chrome.runtime.onMessage.addListener(request => {
 	switch (request.action) {
@@ -99,14 +102,14 @@ chrome.runtime.onMessage.addListener(request => {
 			console.log('onCompleted:');
 			console.log(request.details);
 
-			resetSelectedEvents();
+			events.selected.reset();
 			break;
 		}
 		case 'containsLoadOnCompleted': {
 			console.log('containsLoadOnCompleted');
 			// TODO: if new events present add to all events / update allEvents
 
-			resetSelectedEvents();
+			events.selected.reset();
 			break;
 		}
 		default:
@@ -124,15 +127,9 @@ s.onload = () => {
 };
 
 window.addEventListener('injectedScriptInitialData', (data: CustomEvent) => {
-	events = new CalendarEvents(data.detail.map(event => {
-		const constructor = {
-			eid: event.eid,
-			title: event.title,
-			startDate: event.startDate,
-			endDate: event.endDate
-		};
-		return new CalendarEvent(constructor);
-	}));
+	data.detail.forEach((eventData: Idetail) => {
+		events.add(new CalendarEvent(eventData));
+	});
 });
 
 // Inject stylesheet into website
@@ -157,7 +154,7 @@ chrome.storage.onChanged.addListener(data => {
 function keyDown(e: { key: string } | KeyboardEvent) {
 	// Q
 	if (e.key === DELETE_KEY) {
-		events.clickTrashcan(events.selected);
+		events.selected.delete();
 	}
 	if (e.key !== SELECT_KEY) {
 		return;
@@ -173,13 +170,11 @@ function keyDown(e: { key: string } | KeyboardEvent) {
 
 		slidedown.down();
 
-		/* unHighlightEvents(selectedEvents) */
-		events.selected.setHighlight(false);
-		events.getVisible();
+		events.selected.unselect();
+		events.findVisible();
 
-		events.addGradientAnimation(eventsHTMLElements);
-		isKeyPressed = true;
-		selectedEvents.clear();
+		events.setGradientAnimation(true);
+		isSelectKeyPressed = true;
 	}
 }
 
@@ -190,7 +185,7 @@ function keyUp(e: { key: string } | KeyboardEvent) {
 
 	slidedown.up();
 
-	events.removeGradientAnimation(eventsHTMLElements);
+	events.setGradientAnimation(false);
 
 	// Delete blocker
 	if (blocker.created) {
@@ -201,12 +196,12 @@ function keyUp(e: { key: string } | KeyboardEvent) {
 		selector.destroy();
 	}
 
-	isKeyPressed = false;
+	isSelectKeyPressed = false;
 }
 
 function boxSelectDown(e: MouseEvent) {
 	// If B is not being held dont do anything
-	if (!isKeyPressed) {
+	if (!isSelectKeyPressed) {
 		return;
 	}
 	// If it's a right click dont create selection
@@ -224,7 +219,7 @@ function boxSelectDown(e: MouseEvent) {
 }
 
 function boxSelectMove(e: MouseEvent) {
-	if (!isKeyPressed) {
+	if (!isSelectKeyPressed) {
 		return;
 	}
 	if (!Selection.visible) {
@@ -239,16 +234,7 @@ function boxSelectUp() {
 	if (!Selection.visible) {
 		return;
 	}
-	let newSelectedEvents = selector.selectedEvents(
-		eventsHTMLElements
-	);
-	selectedEvents = newSelectedEvents.newSelectedEvents;
-	selectedEventsIds = newSelectedEvents.selectedEventsIds;
-
-	// Merge current selected events with the newly selected ones
-	selectedEvents = selectedEvents.union(newSelectedEvents);
-
-	highlightEvents(selectedEvents);
+	selector.select(events);
 	selector.destroy();
 
 	// If triggered from popup/popup.html then remember to remove the blocker!

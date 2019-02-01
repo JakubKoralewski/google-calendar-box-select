@@ -1,5 +1,6 @@
-import CalendarEvent from './classes/CalendarEvent';
-import IcalendarEventHTMLElement from './interfaces/IcalendarEventHTMLElement';
+/* import CalendarEvent from './classes/CalendarEvent'; */
+import SelectedEvents from './classes/SelectedEvents';
+/* import IcalendarEventHTMLElement from './interfaces/IcalendarEventHTMLElement'; */
 import IuncompletedRequest from './interfaces/IuncompletedRequest';
 
 /** Turn object into serialized data.
@@ -28,7 +29,7 @@ function serialize(data: { eventId: string; requestBody: object }): string {
 
 /** Repeats a web request for selectedEvents. */
 function repeatWebRequest(
-	selectedEvents: Set<IcalendarEventHTMLElement>,
+	selectedEvents: SelectedEvents,
 	uncompletedRequest: IuncompletedRequest
 ) {
 	console.log('repeatWebRequest');
@@ -37,7 +38,7 @@ function repeatWebRequest(
 	/* Event that got sent originally */
 	const originalEventId =
 		uncompletedRequest.onBeforeRequest.requestBody.formData.eid[0];
-	selectedEvents.forEach(event => {
+	selectedEvents.elements.forEach(event => {
 		const eventId = event.dataset.eventid;
 		/* No need to repeat action for event that actually triggered the action. */
 		if (eventId === originalEventId) return;
