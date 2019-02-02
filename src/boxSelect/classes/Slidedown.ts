@@ -1,7 +1,7 @@
 /**
  * Provides user feedback for when the select button is being held.
  */
-class Slidedown {
+export class Slidedown {
 	public static created: boolean;
 	public element: HTMLElement;
 
@@ -37,5 +37,3 @@ class Slidedown {
 		this.element.style.marginLeft = (-this.element.offsetWidth / 2).toString() + 'px';
 	}
 }
-
-export default Slidedown;

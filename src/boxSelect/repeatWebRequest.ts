@@ -1,7 +1,4 @@
-/* import CalendarEvent from './classes/CalendarEvent'; */
-import SelectedEvents from './classes/SelectedEvents';
-/* import IcalendarEventHTMLElement from './interfaces/IcalendarEventHTMLElement'; */
-import IuncompletedRequest from './interfaces/IuncompletedRequest';
+import {IuncompletedRequest, SelectedEvents} from '.';
 
 /** Turn object into serialized data.
  *  The object's value need to be an array.
@@ -28,7 +25,7 @@ function serialize(data: { eventId: string; requestBody: object }): string {
 }
 
 /** Repeats a web request for selectedEvents. */
-function repeatWebRequest(
+export function repeatWebRequest(
 	selectedEvents: SelectedEvents,
 	uncompletedRequest: IuncompletedRequest
 ) {
@@ -98,5 +95,3 @@ function repeatWebRequest(
 		});
 	});
 }
-
-export default repeatWebRequest;

@@ -12,6 +12,8 @@
 		"interface-name": false,
 		"unified-signatures": false,
 		"no-angle-bracket-type-assertion": false,
+		"max-classes-per-file": false,
+		"no-empty": false,
 
 		"arrow-parens": [true, "ban-single-arg-parens"],
 		"quotemark": [true, "single", "avoid-escape"],

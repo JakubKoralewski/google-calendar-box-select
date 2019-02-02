@@ -1,6 +1,10 @@
-import { CalendarEvent, CalendarEvents, IcalendarEventHTMLElement } from '..';
-import { OK_PATH, TRASH_PATH } from '../../config';
-
+import {
+	CalendarEvent,
+	CalendarEvents,
+	IcalendarEventHTMLElement,
+	OK_PATH,
+	TRASH_PATH
+} from '..';
 export class SelectedEvents extends CalendarEvents {
 	constructor(selectedEvents?: Set<CalendarEvent> | CalendarEvent[]) {
 		super();
@@ -13,7 +17,9 @@ export class SelectedEvents extends CalendarEvents {
 		return Object.keys(this.events);
 	}
 
-	/** Delete selected events by clicking on the trashcan. */
+	/** Delete selected events by clicking on the trashcan.
+	 *  Also deletes the events in this.events.
+	 */
 	public async delete() {
 		/* Let popup know when starts and ends for UX animation purposes */
 		chrome.runtime.sendMessage({
@@ -53,6 +59,7 @@ export class SelectedEvents extends CalendarEvents {
 				await new Promise(r => setTimeout(r, 50));
 				i++;
 			}
+
 			/* If doesn't require choice of type of deletion then you're done. */
 			if (!reoccurringEvent) continue;
 
@@ -100,5 +107,3 @@ export class SelectedEvents extends CalendarEvents {
 		delete this.events;
 	}
 }
-
-export default SelectedEvents;

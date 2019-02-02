@@ -1,4 +1,4 @@
-import Idetail from '../boxSelect/interfaces/Idetail';
+import { Idetail } from '../boxSelect';
 
 let events = JSON.parse((window as any).INITIAL_DATA[2][2][0]);
 events = events.map((event: string[]) => {

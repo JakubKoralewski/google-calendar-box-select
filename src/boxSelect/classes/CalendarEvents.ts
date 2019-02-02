@@ -1,13 +1,20 @@
-import { CalendarEvent, IcalendarEventHTMLElement, SelectedEvents } from '..';
-import { BRIGHTEN_BY, GRADIENT } from '../../config';
+import {
+	BRIGHTEN_BY,
+	CalendarEvent,
+	GRADIENT,
+	IcalendarEventHTMLElement,
+	SelectedEvents
+} from '..';
 
 interface IcalendarEvents {
 	[index: string]: CalendarEvent;
 }
 
-class CalendarEvents {
+export class CalendarEvents {
 	/** This variable is supposed to hold all possible events not just the visible HTMLElements.  */
 	public events: IcalendarEvents;
+
+	constructor() {}
 
 	/** Gets all visible event `HTMLElement`s.
 	 *
@@ -133,5 +140,3 @@ class CalendarEvents {
 			.map(event => event.element);
 	}
 }
-
-export default CalendarEvents;

@@ -20,5 +20,3 @@ export interface IuncompletedRequest {
 	};
 	requestId: string;
 }
-
-export default IuncompletedRequest;

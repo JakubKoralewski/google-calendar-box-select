@@ -1,8 +1,6 @@
 import { IcalendarEventHTMLElement } from '..';
 
-interface IselectionReturn {
+export interface IselectionReturn {
 	newSelectedEvents: Set<IcalendarEventHTMLElement>;
 	selectedEventsIds: string[];
 }
-
-export default IselectionReturn;

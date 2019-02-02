@@ -17,7 +17,7 @@ interface ICalendarEventConstructor {
 	visible?: boolean;
 } */
 
-class CalendarEvent {
+export class CalendarEvent {
 	public eid: string;
 	public title: string;
 	public startDate: string;
@@ -74,5 +74,3 @@ class CalendarEvent {
 		}
 	}
 }
-
-export default CalendarEvent;

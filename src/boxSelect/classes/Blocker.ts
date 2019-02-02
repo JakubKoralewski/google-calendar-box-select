@@ -2,7 +2,7 @@
  *  Blocker is a transparent overlay that allows for click and drag.
  *  Blocker will disable click reaction when holding e.g. 'B'
  */
-class Blocker {
+export class Blocker {
 	public lowerElement: HTMLDivElement;
 	public upperElement: HTMLDivElement;
 	public created: boolean;
@@ -36,5 +36,3 @@ class Blocker {
 		this.created = state;
 	}
 }
-
-export default Blocker;

@@ -1,6 +1,6 @@
 import { CalendarEvent, CalendarEvents, IcalendarEventHTMLElement } from '..';
 
-class Selection {
+export class Selection {
 	public static visible: boolean;
 	public x: number;
 	public y: number;
@@ -84,5 +84,3 @@ class Selection {
 		});
 	}
 }
-
-export default Selection;
