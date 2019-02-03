@@ -20,10 +20,10 @@ Instead of that the **trash can** is actually being clicked to delete events usi
 
 ```javascript
 document
-  .querySelector(
-    "#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div"
-  )
-  .click();
+	.querySelector(
+		'#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div'
+	)
+	.click();
 ```
 
 You can see this is not ideal.
@@ -49,38 +49,49 @@ $ npm install
 
 ## Develop
 
+For developing this extension I **strongly** recommend [VSCode][vscode] with these settings:
+
+[settings.json](.vscode/settings.json): running the [Prettier plugin][prettier] + [TSLint plugin][tslint] + [Debugger for Chrome][debugger] in [VSCode][vscode].
+
+It's written in TypeScript and provides great TypeScript IntelliSense.
+[Debugger for Chrome][debugger] allows you to debug compiled TypeScript in Chrome and TypeScript in synchrony.
+
+[prettier]: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+[tslint]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin
+[debugger]: https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
+[vscode]: https://code.visualstudio.com/
+
 ```bash
 $ npm run dev
 ```
 
 ## Build
 
-Set NODE_ENV variable to 'production' to minify, uglify JS, not create source maps. Use 'development' apart from that to get blazing fast hot reload.
+Set NODE_ENV variable to `production` to minify, uglify JS, not create source maps. Use `development` apart from that to get blazing fast hot reload.
 
 ```bash
 $ npm run build
 ```
 
-Deploys to _dist/_ folder.
+Deploys to `dist/` folder.
 
 ## Contributions
 
 Very welcome! Especially dealing with the dreaded... _PROBLEM_.
 
-Fairly opinionated stylistic choices. Using modern ES6 (potentially ECMAScript2018 available) syntax with TypeScript, gets compiled to ES5 for maximum compatibility.
+Modern ES6+ syntax in TypeScript compiled to ES5 for maximum compatibility.
 
-[tslint.json](src/tslint.json): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
+### Style ([`tslint.json`](src/tslint.json)):
+`tabs` (`4 spaces` long), `semicolons`, `single quotes`, `CRLF line endings`.
 
-[tsconfig.json](src/tsconfig.json): target: ES5, lib: "dom, es2018"
-
-[settings.json](.vscode/settings.json): running the [Prettier plugin](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [TSLint plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) in [VSCode](https://code.visualstudio.com/).
-
+### ES6+ features encouraged ([`tsconfig.json`](src/tsconfig.json)):
+target: `ES5`, lib: `dom, es2018`.
 
 ## Credits
 
 This boilerplate was used to allow for Webpack module bundling:
 
-- #### [Chrome Extension Webpack Boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
+-   #### [Chrome Extension Webpack Boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
 
 Additionally I'd like to personally thank the **StackOverflow community** :heart: :sparkling_heart: :exclamation: :exclamation:
 

@@ -4,7 +4,7 @@ export const OK_PATH =
 export const TRASH_PATH =
 	'#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div';
 
-/** The amount the evtColor gets increased by to form brColor.  */
+/** The amount added to evtColor forming brColor.  */
 export const BRIGHTEN_BY = 20;
 
 /** To be replaced using string.replace()...

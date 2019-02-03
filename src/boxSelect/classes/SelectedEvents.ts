@@ -1,14 +1,18 @@
 import {
 	CalendarEvent,
-	CalendarEvents,
+	Events,
 	IcalendarEventHTMLElement,
 	OK_PATH,
 	TRASH_PATH
 } from '..';
-export class SelectedEvents extends CalendarEvents {
-	constructor(selectedEvents?: CalendarEvent[]) {
-		super(selectedEvents);
-		delete this._selected;
+export class SelectedEvents extends Events {
+	constructor(selectedEvents: CalendarEvent[]) {
+		super();
+		if (selectedEvents != null) {
+			for (const event of selectedEvents) {
+				this.events[event.eid] = new CalendarEvent(event);
+			}
+		}
 	}
 
 	get ids(): string[] {
@@ -98,7 +102,7 @@ export class SelectedEvents extends CalendarEvents {
 		The selected events stay the same; however, the current instance of SelectedEvents may become obsolete.
 		*/
 
-		const allEvents = this.findVisible();
+		const allEvents = super.findInDOM();
 		for (const calendarEvent of this.calendarEvents) {
 			/* To solve this we find the visible events,
 				check if each new HTMLEvent's id is in the currently selected ones.

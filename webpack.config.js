@@ -171,20 +171,22 @@ var options = {
 				delete: ['build/globalStyles.bundle.js']
 			}
 		}),
-		new WriteFilePlugin(),
+		new WriteFilePlugin()/* ,
+		new webpack.SourceMapDevToolPlugin() *//* ,
 		new ChromeExtensionReloaderPlugin({
-			port: 9222, // Which port use to create the server
+			port: 9223, // Which port use to create the server
 			reloadPage: true, // Force the reload of the page also
 			entries: {
 				contentScript: ['boxSelect'],
 				background: 'background'
 			}
-		})
+		}) */
 	]
 };
 
 if (debug) {
 	options.devtool = 'source-map';
+	/* options.devtool = 'cheap-module-eval-source-map'; */
 } else {
 	options.devtool = 'false';
 	options.performance = {

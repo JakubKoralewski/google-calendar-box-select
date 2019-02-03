@@ -3,7 +3,9 @@
 		"module": "commonjs",
 		"target": "es2015",
 		"lib": ["dom", "es2018"],
-		"sourceMap": false,
+		"sourceMap": true,
+		/* "mapRoot": "src/",
+		"sourceRoot": "../src/", */
 		"noEmitOnError": true,
 		"allowJs": false,
 		"resolveJsonModule": true

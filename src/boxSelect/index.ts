@@ -1,6 +1,7 @@
 export * from '../config';
 export * from './classes/Blocker';
 export * from './classes/CalendarEvent';
+export * from './classes/Events';
 export * from './classes/CalendarEvents';
 export * from './classes/SelectedEvents';
 export * from './classes/Selection';

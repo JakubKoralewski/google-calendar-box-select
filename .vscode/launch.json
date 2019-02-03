@@ -8,12 +8,12 @@
 		"type": "chrome",
 		"request": "attach",
 		"port": 9222,
-		"url": "https://calendar.google.com/calendar/r",
-		"webRoot": "${workspaceFolder}/build",
 		"sourceMaps": true,
-		/* "sourceMapPathOverrides": {
-			"webpack:///src/*": "${webRoot}/*",
-		}, */
+		"urlFilter": "https://calendar.google.com/*",
+		"webRoot": "${workspaceFolder}/build",
+		"sourceMapPathOverrides": { 
+			"webpack:///./src/*": "${workspaceRoot}/src/*" 
+		},
 		"smartStep": true
 	}]
 }
