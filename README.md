@@ -2,7 +2,7 @@
 
 # ![logo](docs/img/main_logo.png)
 
-<h4 align="center">Chrome Extension to (Box) Select multiple Google Calendar events. Currently you can only delete events. </h4>
+<h4 align="center">Chrome Extension to (Box) Select multiple Google Calendar events. Built with TypeScript and Webpack. </h4>
 
 ![trailer](docs/img/demo.gif)
 
@@ -65,18 +65,16 @@ Deploys to _dist/_ folder.
 
 ## Contributions
 
-Very welcome!
+Very welcome! Especially dealing with the dreaded... _PROBLEM_.
 
-Especially dealing with the dreaded... _PROBLEM_.
+Fairly opinionated stylistic choices. Using modern ES6 (potentially ECMAScript2018 available) syntax with TypeScript, gets compiled to ES5 for maximum compatibility.
 
-#### Fairly opinionated stylistic choices.
+[tslint.json](src/tslint.json): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
 
-Using modern ES6 syntax.
-Running Prettier with ESLint.
+[tsconfig.json](src/tsconfig.json): target: ES5, lib: "dom, es2018"
 
-Ideal development experience with VSCode and the ESLint plugin :)
+[settings.json](.vscode/settings.json): running the [Prettier plugin](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [TSLint plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) in [VSCode](https://code.visualstudio.com/).
 
-[_.eslintrc.js_](.eslintrc.js): tabs (4 spaces), semicolons, single quotes, CRLF line endings.
 
 ## Credits
 
