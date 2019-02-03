@@ -1,33 +1,33 @@
 {
-    "name": "__MSG_appName__",
-    "version": "0.1",
-    "description": "__MSG_appDesc__",
-    "short_name": "__MSG_shortAppName__",
-    "default_locale": "en",
-    "manifest_version": 2,
-    "content_scripts": [{
-        "matches": ["*://calendar.google.com/*/*"],
-        "js": ["boxSelect.bundle.js"]
-    }],
-    "background": {
-        "scripts": ["background.bundle.js"],
-        "persistent": true
-    },
-    "icons": {
-        "16": "icon-16.png",
-        "48": "icon-48.png",
-        "128": "icon-128.png"
-    },
-    "browser_action": {
-        "default_popup": "popup.html"
-    },
-    "permissions": [
-        "storage",
-        "webRequest",
-        "webRequestBlocking",
-        "*://calendar.google.com/*"
-    ],
-    "options_page": "options.html",
-    "web_accessible_resources": ["script.js", "globalStyles.css", "slidedown.html"],
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+	"name": "__MSG_appName__",
+	"version": "0.1",
+	"description": "__MSG_appDesc__",
+	"short_name": "__MSG_shortAppName__",
+	"default_locale": "en",
+	"manifest_version": 2,
+	"content_scripts": [{
+		"matches": ["*://calendar.google.com/*/*"],
+		"js": ["boxSelect.bundle.js"]
+	}],
+	"background": {
+		"scripts": ["background.bundle.js"],
+		"persistent": true
+	},
+	"icons": {
+		"16": "icon-16.png",
+		"48": "icon-48.png",
+		"128": "icon-128.png"
+	},
+	"browser_action": {
+		"default_popup": "popup.html"
+	},
+	"permissions": [
+		"storage",
+		"webRequest",
+		"webRequestBlocking",
+		"*://calendar.google.com/*"
+	],
+	"options_page": "options.html",
+	"web_accessible_resources": ["script.bundle.js", "globalStyles.css", "slidedown.html"],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

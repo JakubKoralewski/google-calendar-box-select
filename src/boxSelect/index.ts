@@ -8,5 +8,5 @@ export * from './classes/Slidedown';
 export * from './interfaces/IcalendarEventHTMLElement';
 export * from './interfaces/Idetail';
 export * from './interfaces/IuncompletedRequest';
-export * from './repeatWebRequest';
+export * from './utils/repeatWebRequest';
 export * from '../config';

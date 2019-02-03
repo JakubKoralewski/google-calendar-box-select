@@ -32,26 +32,6 @@ const slidedown = new Slidedown();
 
 let popupModeDelete = false;
 
-/* FIXME: move to selectedevents.reset  */
-/** Ran after load to find events that changed DOM hierarchy e.g. after dragging. */
-// function resetSelected() {
-// 	console.log('events.selected before reload:');
-// 	console.log(events.selected);;
-// 	/* (selectedEvents as Set<IcalendarEventHTMLElement>).clear(); */
-// 	events.findVisible();
-// /* 	const newSelectedEvents = events.elements.filter(event => {
-// 		return selectedEventsIds.includes(event.dataset.eventid);
-// 	});
-// 	newSelectedEvents.forEach(event => {
-// 		event.id = 'selected';
-// 	});
-// 	selectedEvents = new Set(newSelectedEvents);
-// 	selectedEventsIds = newSelectedEvents.map(event => event.dataset.eventid); */
-// 	console.log('selectedEvents after reload:');
-
-// 	console.log(events.selected);
-// }
-
 chrome.runtime.onMessage.addListener(request => {
 	switch (request.action) {
 		case 'boxSelect':
@@ -73,9 +53,8 @@ chrome.runtime.onMessage.addListener(request => {
 			/* Check if that request pertains to actions made to events */
 			const webRequestEventId =
 				request.details.requestBody.formData.eid[0];
-			const idIsInTheSelectedEvents = events.selected.ids.includes(
-				webRequestEventId
-			);
+			const idIsInTheSelectedEvents =
+				events.selected.ids.includes(webRequestEventId) || false;
 
 			if (idIsInTheSelectedEvents) {
 				uncompletedRequest.requestId = request.details.requestId;
@@ -88,6 +67,7 @@ chrome.runtime.onMessage.addListener(request => {
 			if (uncompletedRequest.requestId !== request.details.requestId) {
 				return;
 			}
+			if (!events.selected) return;
 			console.log('onSendHeaders: ');
 			console.log(request.details);
 			uncompletedRequest.onSendHeaders = request.details;
@@ -99,6 +79,7 @@ chrome.runtime.onMessage.addListener(request => {
 			if (uncompletedRequest.requestId !== request.details.requestId) {
 				return;
 			}
+			if (!events.selected) return;
 			console.log('onCompleted:');
 			console.log(request.details);
 
@@ -106,6 +87,10 @@ chrome.runtime.onMessage.addListener(request => {
 			break;
 		}
 		case 'containsLoadOnCompleted': {
+			if (uncompletedRequest.requestId !== request.details.requestId) {
+				return;
+			}
+			if (!events.selected) return;
 			console.log('containsLoadOnCompleted');
 			// TODO: if new events present add to all events / update allEvents
 
@@ -120,8 +105,8 @@ chrome.runtime.onMessage.addListener(request => {
 console.log('Box select extension on google calendar webpage active.');
 
 const s: HTMLScriptElement = document.createElement('script');
-s.src = chrome.runtime.getURL('script.js');
-document.body.insertBefore(s, document.documentElement.lastChild);
+s.src = chrome.runtime.getURL('script.bundle.js');
+document.body.insertBefore(s, document.body.lastChild);
 s.onload = () => {
 	s.remove();
 };
@@ -154,6 +139,7 @@ chrome.storage.onChanged.addListener(data => {
 function keyDown(e: { key: string } | KeyboardEvent) {
 	// Q
 	if (e.key === DELETE_KEY) {
+		if (!events.selected) return;
 		events.selected.delete();
 	}
 	if (e.key !== SELECT_KEY) {
@@ -169,12 +155,13 @@ function keyDown(e: { key: string } | KeyboardEvent) {
 		}
 
 		slidedown.down();
-
-		events.selected.unselect();
-		events.findVisible();
-
+		events.updateVisible();
 		events.setGradientAnimation(true);
 		isSelectKeyPressed = true;
+
+		if (events.selected) {
+			events.selected.unselect();
+		}
 	}
 }
 
@@ -234,7 +221,9 @@ function boxSelectUp() {
 	if (!Selection.visible) {
 		return;
 	}
-	selector.select(events);
+	selector.select(events.visible);
+	// FIXME: not giving events.selected new events
+	// events.resetSelected();
 	selector.destroy();
 
 	// If triggered from popup/popup.html then remember to remove the blocker!

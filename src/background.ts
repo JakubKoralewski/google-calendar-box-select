@@ -8,7 +8,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 		console.log(new Date(details.timeStamp));
 		console.log(details);
 
-		details.requestBody.formData.eid[0] && chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+		details.requestBody.formData.eid[0] != null && chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 			chrome.tabs.sendMessage(tabs[0].id, { action: 'onBeforeRequest', details });
 		});
 	},

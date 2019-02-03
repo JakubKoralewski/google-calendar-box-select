@@ -3,7 +3,8 @@ import {
 	CalendarEvent,
 	GRADIENT,
 	IcalendarEventHTMLElement,
-	SelectedEvents
+	SelectedEvents,
+	Selection
 } from '..';
 
 interface IcalendarEvents {
@@ -12,17 +13,19 @@ interface IcalendarEvents {
 
 export class CalendarEvents {
 	/** This variable is supposed to hold all possible events not just the visible HTMLElements.  */
-	public events: IcalendarEvents;
+	public events: IcalendarEvents | {} = {};
+	public _selected: SelectedEvents;
 
-	constructor() {}
+	/** Constructor only supplied when SelectedEvents is created.  */
+	constructor(selectedEvents?: CalendarEvent[]) {
+		if (selectedEvents != null) {
+			for (const event of selectedEvents) {
+				this.events[event.eid] = new CalendarEvent(event);
+			}
+		}
+	}
 
-	/** Gets all visible event `HTMLElement`s.
-	 *
-	 *  Assigns that element to `this.events` or creates a new `CalendarEvent` if one is not found.
-	 *
-	 * @returns {void} it assigns the found events to `this.events`
-	 */
-	public findVisible(): IcalendarEventHTMLElement[] {
+	public getVisible() {
 		let eventsHTMLElements: IcalendarEventHTMLElement[] = Array.from(
 			document.querySelectorAll(
 				'div[role~="button"], div[role~="presentation"]'
@@ -37,26 +40,25 @@ export class CalendarEvents {
 		console.log(`Found ${eventsHTMLElements.length} events.`);
 
 		/* Assume all elements are invisible. */
-		this.calendarEvents.forEach(
-			(event: CalendarEvent) => (event.visible = false)
-		);
+		this.calendarEvents.forEach((event: CalendarEvent) => {
+			event.visible = false;
+		});
 
+		/* FIXME: The following loop cannot be ran in SelectedEvents, as it adds also unselected events. */
 		eventsHTMLElements.forEach((event: IcalendarEventHTMLElement) => {
 			const eventId = event.dataset.eventid;
-
-			/* The found ones must be visible so set visible as true. */
-			if (this.events[eventId].element != null) {
-				this.events[eventId].element = event;
-				this.events[eventId].visible = true;
-			} else {
+			/* The found ones must be visible. */
+			if (this.events[eventId] == null) {
 				this.events[eventId] = new CalendarEvent({
 					eid: eventId,
 					element: event,
 					visible: true
 				});
+			} else {
+				(this.events[eventId] as CalendarEvent).element = event;
+				(this.events[eventId] as CalendarEvent).visible = true;
 			}
 		});
-
 		return eventsHTMLElements;
 	}
 
@@ -64,7 +66,14 @@ export class CalendarEvents {
 	 * @param {CalendarEvent} event added event
 	 */
 	public add(event: CalendarEvent) {
-		this.events[event.eid] = Object.assign(this.events[event.eid], event);
+		if (this.events[event.eid] == null) {
+			this.events[event.eid] = event;
+		} else {
+			this.events[event.eid] = Object.assign(
+				this.events[event.eid],
+				event
+			);
+		}
 	}
 
 	/** Remove element from ever being able to access it again!
@@ -119,24 +128,74 @@ export class CalendarEvents {
 	}
 
 	get calendarEvents(): CalendarEvent[] {
-		return Object.values(this.events);
+		return Object.values(this.events || {});
 	}
 
 	get elements(): IcalendarEventHTMLElement[] {
 		return this.calendarEvents.map(event => event.element);
 	}
 
-	get selected(): SelectedEvents {
-		return new SelectedEvents(
-			this.calendarEvents.filter((event: CalendarEvent) => {
-				return event.selected;
-			})
+	/* get selected(): SelectedEvents {
+		const newSelectedEvents = this.calendarEvents.filter(
+			(event: CalendarEvent) => {
+				return event.selected === true;
+			}
 		);
+		console.log('newSelectedEvents:', newSelectedEvents);
+		return new SelectedEvents(newSelectedEvents);
+	} */
+
+	/** May be null if no selected events present.
+	 *  @returns {SelectedEvents | null} null or SelectedEvents
+	 */
+	get selected(): SelectedEvents | null {
+		/* If no selected already created then create. */
+		if (this._selected == null) {
+			const newSelectedEvents = this.findSelected();
+			if (newSelectedEvents.length === 0) {
+				return null;
+			}
+			this._selected = new SelectedEvents(newSelectedEvents);
+		}
+		return this._selected;
 	}
 
 	get visibleElements(): IcalendarEventHTMLElement[] {
-		return this.calendarEvents
-			.filter(event => event.visible)
-			.map(event => event.element);
+		return this.visible.map(event => event.element);
+	}
+
+	get visible(): CalendarEvent[] {
+		return this.calendarEvents.filter(event => event.visible);
+	}
+
+	protected findVisible(): IcalendarEventHTMLElement[] {
+		let eventsHTMLElements: IcalendarEventHTMLElement[] = Array.from(
+			document.querySelectorAll(
+				'div[role~="button"], div[role~="presentation"]'
+			)
+		);
+
+		/* Filter only these events that ocntain the event.dataset.eventid property. */
+		eventsHTMLElements = eventsHTMLElements.filter(event => {
+			return event.dataset.eventid;
+		});
+
+		console.log(`Found ${eventsHTMLElements.length} events.`);
+
+		/* Assume all elements are invisible. */
+		this.calendarEvents.forEach((event: CalendarEvent) => {
+			event.visible = false;
+		});
+
+		return eventsHTMLElements;
+	}
+
+	private findSelected(): CalendarEvent[] {
+		const newSelectedEvents = this.calendarEvents.filter(
+			event => {
+				return event.selected === true;
+			}
+		);
+		return newSelectedEvents;
 	}
 }

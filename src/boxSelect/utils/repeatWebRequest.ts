@@ -1,4 +1,4 @@
-import {IuncompletedRequest, SelectedEvents} from '.';
+import { IuncompletedRequest, SelectedEvents } from '..';
 
 /** Turn object into serialized data.
  *  The object's value need to be an array.
@@ -38,7 +38,10 @@ export function repeatWebRequest(
 	selectedEvents.elements.forEach(event => {
 		const eventId = event.dataset.eventid;
 		/* No need to repeat action for event that actually triggered the action. */
-		if (eventId === originalEventId) return;
+		if (eventId === originalEventId) {
+			return;
+		}
+		console.group(`event${event.dataset.eventid}`);
 
 		const newHeaders = {};
 		const possibleHeaderValues = [
@@ -57,7 +60,6 @@ export function repeatWebRequest(
 			// debugger;
 			if (possibleHeaderValues.includes(item.name.toLowerCase())) {
 				newHeaders[item.name] = item.value;
-				console.log(`newHeaders[${item.name}] = ${item.value}`);
 			}
 		}
 
@@ -93,5 +95,7 @@ export function repeatWebRequest(
 		fetch(requestURL, OPTIONS as RequestInit).then(response => {
 			console.log(response);
 		});
+
+		console.groupEnd();
 	});
 }

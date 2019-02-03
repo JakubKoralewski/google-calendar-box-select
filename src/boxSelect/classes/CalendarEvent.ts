@@ -8,14 +8,6 @@ interface ICalendarEventConstructor {
 	element?: IcalendarEventHTMLElement;
 	visible?: boolean;
 }
-/* interface ICalendarEventAssignment {
-	eid?: string;
-	title?: string;
-	startDate?: string;
-	endDate?: string;
-	element?: IcalendarEventHTMLElement;
-	visible?: boolean;
-} */
 
 export class CalendarEvent {
 	public eid: string;
@@ -24,7 +16,7 @@ export class CalendarEvent {
 	public endDate: string;
 	public element: IcalendarEventHTMLElement;
 	private _visible: boolean;
-	private _selected: boolean = false;
+	private _selected: boolean;
 
 	/** CalendarEvent object constructor */
 	constructor(someObject: ICalendarEventConstructor) {
@@ -34,14 +26,24 @@ export class CalendarEvent {
 		this.endDate = someObject.endDate || null;
 		this.element = someObject.element || null;
 		this._visible = someObject.visible || false;
+		this._selected = false;
 	}
 
 	get timespan(): string {
+		if (!this.startDate || !this.endDate) {
+			console.error(
+				`this.startDate: ${this.startDate}; this.endDate: ${
+					this.endDate
+				}`
+			);
+			return 'eror';
+		}
 		return `${this.startDate}/${this.endDate}`;
 	}
-
+	// FIXME: _selected = false, selected = true ??
 	set selected(state: boolean) {
 		this.element.id = state ? 'selected' : '';
+		console.log('setting', this, 'as', state ? 'selected' : 'unselected');
 		this._selected = state;
 	}
 

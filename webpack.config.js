@@ -9,7 +9,8 @@ const webpack = require('webpack'),
 	MiniCssExtractPlugin = require('mini-css-extract-plugin'),
 	FileManagerWebpackPlugin = require('filemanager-webpack-plugin'),
 	TerserPlugin = require('terser-webpack-plugin'),
-	JSONMinifyPlugin = require('node-json-minify');
+	JSONMinifyPlugin = require('node-json-minify'),
+	ChromeExtensionReloaderPlugin = require('webpack-chrome-extension-reloader');
 
 require('dotenv').config();
 
@@ -170,7 +171,15 @@ var options = {
 				delete: ['build/globalStyles.bundle.js']
 			}
 		}),
-		new WriteFilePlugin()
+		new WriteFilePlugin(),
+		new ChromeExtensionReloaderPlugin({
+			port: 9222, // Which port use to create the server
+			reloadPage: true, // Force the reload of the page also
+			entries: {
+				contentScript: ['boxSelect'],
+				background: 'background'
+			}
+		})
 	]
 };
 

@@ -6,15 +6,13 @@ import {
 	TRASH_PATH
 } from '..';
 export class SelectedEvents extends CalendarEvents {
-	constructor(selectedEvents?: Set<CalendarEvent> | CalendarEvent[]) {
-		super();
-		for (const event of selectedEvents) {
-			this.events[event.eid] = event;
-		}
+	constructor(selectedEvents?: CalendarEvent[]) {
+		super(selectedEvents);
+		delete this._selected;
 	}
 
 	get ids(): string[] {
-		return Object.keys(this.events);
+		return Object.keys(this.events || {});
 	}
 
 	/** Delete selected events by clicking on the trashcan.
@@ -89,21 +87,41 @@ export class SelectedEvents extends CalendarEvents {
 	/** For all visible events it finds `HTMLElement`s of selected events.
 	 *
 	 *  Happens e.g. when event is dragged over to another day.
+	 *  Ran after load to find events that changed DOM hierarchy e.g. after dragging.
 	 */
 	public reset() {
-		super.findVisible();
-		/* FIXME: selected.reset() */
+		console.log('reset()\nbefore:');
+		console.log(this.events);
+		/*
+		I write this to understand what happens for the present and future self :)
+		When super.findVisible() is ran it assigns an HTMLElement to the coresponding property.
+		The selected events stay the same; however, the current instance of SelectedEvents may become obsolete.
+		*/
+
+		const allEvents = this.findVisible();
+		for (const calendarEvent of this.calendarEvents) {
+			/* To solve this we find the visible events,
+				check if each new HTMLEvent's id is in the currently selected ones.
+			*/
+
+			const newEvent = allEvents.find(
+				HTMLEvent => HTMLEvent.dataset.eventid === calendarEvent.eid
+			);
+			/* The old HTMLEvent is replaced with the newly found one. */
+			this.events[calendarEvent.eid].element = newEvent;
+		}
+		console.log('after:');
+		console.log(this.events);
 	}
 
 	/** Sets all CalendarEvents.selected = false.
 	 *
-	 *  Makes this instance unusable! ( As a safeguard? )
 	 */
 	public unselect() {
 		this.calendarEvents.forEach((event: CalendarEvent) => {
 			event.selected = false;
 		});
-
-		delete this.events;
+		// FIXME: the selected events are never readded here
+		this.events = {};
 	}
 }

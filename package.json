@@ -35,6 +35,7 @@
 		"typescript": "^3.2.4",
 		"typescript-tslint-plugin": "^0.3.0",
 		"webpack": "4.28.4",
+		"webpack-chrome-extension-reloader": "^1.1.2",
 		"webpack-cli": "^3.2.1",
 		"webpack-dev-server": "3.1.14",
 		"write-file-webpack-plugin": "4.5.0"
