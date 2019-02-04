@@ -6,7 +6,7 @@ interface IcalendarEvents {
 
 /** This is a parent class of both CalendarEvents and SelectedEvents.  */
 export abstract class Events {
-	/** This variable is holds all possible events not just the visible HTMLElements.
+	/** This variable is holds all possible events not just the selectable HTMLElements.
 	 *  This is done for timestamps.
 	 */
 	protected events: IcalendarEvents | {};
@@ -15,11 +15,11 @@ export abstract class Events {
 		this.events = {};
 	}
 
-	/** Takes care of the visible property of CalendarEvent's.  */
+	/** Takes care of the selectable property of CalendarEvent's.  */
 	protected findInDOM(): IcalendarEventHTMLElement[] {
-		/* Assume all elements are invisible.  */
+		/* Assume all elements are inselectable.  */
 		this.calendarEvents.forEach(calendarEvent => {
-			calendarEvent.visible = false;
+			calendarEvent.selectable = false;
 		});
 
 		const eventsHTMLElements: IcalendarEventHTMLElement[] = Array.from(
@@ -27,12 +27,7 @@ export abstract class Events {
 				'div[role~="button"], div[role~="presentation"]'
 			) as NodeListOf<IcalendarEventHTMLElement>
 		).filter((event: IcalendarEventHTMLElement) => {
-			return event.dataset.eventid;
-		});
-
-		/* Set only the found events as visible. */
-		eventsHTMLElements.forEach(event => {
-			this.events[event.dataset.eventid].visible = true;
+			return !!event.dataset.eventid;
 		});
 
 		console.log(`Found ${eventsHTMLElements.length} events in DOM.`);
@@ -48,11 +43,11 @@ export abstract class Events {
 		return this.calendarEvents.map(event => event.element);
 	}
 
-	get visible(): CalendarEvent[] {
-		return this.calendarEvents.filter(event => event.visible);
+	get selectable(): CalendarEvent[] {
+		return this.calendarEvents.filter(event => event.selectable);
 	}
 
-	get visibleElements(): IcalendarEventHTMLElement[] {
-		return this.visible.map(event => event.element);
+	get selectableElements(): IcalendarEventHTMLElement[] {
+		return this.selectable.map(event => event.element);
 	}
 }

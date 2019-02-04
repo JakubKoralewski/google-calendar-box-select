@@ -6,16 +6,16 @@ interface ICalendarEventConstructor {
 	startDate?: string;
 	endDate?: string;
 	element?: IcalendarEventHTMLElement;
-	visible?: boolean;
+	selectable?: boolean;
 }
 
 export class CalendarEvent {
-	public eid: string;
+	public readonly eid: string;
 	public title: string;
 	public startDate: string;
 	public endDate: string;
-	public element: IcalendarEventHTMLElement;
-	private _visible: boolean;
+	private _element: IcalendarEventHTMLElement;
+	private _selectable: boolean;
 	private _selected: boolean;
 
 	/** CalendarEvent object constructor */
@@ -24,9 +24,18 @@ export class CalendarEvent {
 		this.title = someObject.title || null;
 		this.startDate = someObject.startDate || null;
 		this.endDate = someObject.endDate || null;
-		this.element = someObject.element || null;
-		this._visible = someObject.visible || false;
+		this._element = someObject.element || null;
+		this._selectable = someObject.selectable || false;
 		this._selected = false;
+	}
+
+	get element(): IcalendarEventHTMLElement {
+		return this._element;
+	}
+
+	set element(newElement: IcalendarEventHTMLElement) {
+		newElement.id = this._selected ? 'selected' : '';
+		this._element = newElement;
 	}
 
 	get timespan(): string {
@@ -40,7 +49,7 @@ export class CalendarEvent {
 		}
 		return `${this.startDate}/${this.endDate}`;
 	}
-	// FIXME: _selected = false, selected = true ??
+
 	set selected(state: boolean) {
 		this.element.id = state ? 'selected' : '';
 		console.log('setting', this, 'as', state ? 'selected' : 'unselected');
@@ -51,12 +60,12 @@ export class CalendarEvent {
 		return this._selected;
 	}
 
-	set visible(state: boolean) {
-		this._visible = state;
+	set selectable(state: boolean) {
+		this._selectable = state;
 	}
 
-	get visible(): boolean {
-		return this._visible;
+	get selectable(): boolean {
+		return this._selectable;
 	}
 
 	/* public assign(object: IcalendarEventHTMLElement): void;

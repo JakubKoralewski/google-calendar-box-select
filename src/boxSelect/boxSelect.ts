@@ -94,7 +94,7 @@ chrome.runtime.onMessage.addListener(request => {
 			console.log('containsLoadOnCompleted');
 			// TODO: if new events present add to all events / update allEvents
 
-			events.selected.reset();
+			/* events.selected.reset(); */
 			break;
 		}
 		default:
@@ -221,7 +221,7 @@ function boxSelectUp() {
 	if (!Selection.visible) {
 		return;
 	}
-	selector.select(events.visible);
+	selector.select(events.selectable);
 	// FIXME: not giving events.selected new events
 	// events.resetSelected();
 	selector.destroy();

@@ -10,7 +10,7 @@ export class SelectedEvents extends Events {
 		super();
 		if (selectedEvents != null) {
 			for (const event of selectedEvents) {
-				this.events[event.eid] = new CalendarEvent(event);
+				this.events[event.eid] = event;
 			}
 		}
 	}
@@ -102,7 +102,18 @@ export class SelectedEvents extends Events {
 		The selected events stay the same; however, the current instance of SelectedEvents may become obsolete.
 		*/
 
-		const allEvents = super.findInDOM();
+		const allEvents = this.findInDOM();
+		/* Set only the found events as selectable. */
+		allEvents.forEach(event => {
+			const eventId = event.dataset.eventid;
+			if (this.events.hasOwnProperty(eventId)) {
+				/* this.events[eventId] = new CalendarEvent({
+					eid: eventId,
+					element: event
+				}); */
+				this.events[eventId].selectable = true;
+			}
+		});
 		for (const calendarEvent of this.calendarEvents) {
 			/* To solve this we find the visible events,
 				check if each new HTMLEvent's id is in the currently selected ones.

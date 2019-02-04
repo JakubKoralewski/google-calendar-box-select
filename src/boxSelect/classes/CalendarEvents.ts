@@ -22,16 +22,16 @@ export class CalendarEvents extends Events {
 
 		eventsHTMLElements.forEach((event: IcalendarEventHTMLElement) => {
 			const eventId = event.dataset.eventid;
-			/* The found ones must be visible. */
+			/* The found ones must be selectable. */
 			if (this.events[eventId] == null) {
 				this.events[eventId] = new CalendarEvent({
 					eid: eventId,
 					element: event,
-					visible: true
+					selectable: true
 				});
 			} else {
 				(this.events[eventId] as CalendarEvent).element = event;
-				(this.events[eventId] as CalendarEvent).visible = true;
+				(this.events[eventId] as CalendarEvent).selectable = true;
 			}
 		});
 		return eventsHTMLElements;
@@ -51,26 +51,14 @@ export class CalendarEvents extends Events {
 		}
 	}
 
-	/* Remove element from ever being able to access it again!
-	 *
-	 *  **Use only if the element is permanently deleted.**
-	 *  @param {string} x - eid of element to delete
-	 * 	@param {CalendarEvent} x - CalendarEvent instance to delete
-	 */
-	/* public remove(x: string): void {
-		if (typeof x === 'string') {
-			delete this.events[x];
-		}
-	} */
-
 	/** Adds gradient animation to indicate the possibility of being selected.
 	 *
-	 * Only adds gradient to visible elements.
+	 * Only adds gradient to selectable elements.
 	 * @param {boolean} state - gradient animation **ON** or **OFF**.
 	 */
 	public setGradientAnimation(state: boolean): void {
 		if (state) {
-			this.visibleElements.forEach((evt: IcalendarEventHTMLElement) => {
+			this.selectableElements.forEach((evt: IcalendarEventHTMLElement) => {
 				/** example value: 'rgb(202, 189, 191)' */
 				const evtColor: string = evt.style.backgroundColor;
 
@@ -95,7 +83,7 @@ export class CalendarEvents extends Events {
 				evt.classList.add('possible');
 			});
 		} else {
-			this.visibleElements.forEach((evt: IcalendarEventHTMLElement) => {
+			this.selectableElements.forEach((evt: IcalendarEventHTMLElement) => {
 				evt.style.background = '';
 				evt.style.backgroundColor = evt.oldColor;
 				evt.style.zIndex = '4';
@@ -118,28 +106,6 @@ export class CalendarEvents extends Events {
 		}
 		return this._selected;
 	}
-
-	/* 	protected findVisible(): IcalendarEventHTMLElement[] {
-		let eventsHTMLElements: IcalendarEventHTMLElement[] = Array.from(
-			document.querySelectorAll(
-				'div[role~="button"], div[role~="presentation"]'
-			)
-		);
-
-		/* Filter only these events that ocntain the event.dataset.eventid property. */
-	/* 		eventsHTMLElements = eventsHTMLElements.filter(event => {
-			return event.dataset.eventid;
-		}); */
-
-	/* 		console.log(`Found ${eventsHTMLElements.length} events.`); */
-
-	/* Assume all elements are invisible. */
-	/* 		this.calendarEvents.forEach((event: CalendarEvent) => {
-			event.visible = false;
-		});
-
-		return eventsHTMLElements; */
-	/* 	}  */
 
 	private getSelected(): CalendarEvent[] {
 		return this.calendarEvents.filter(event => {
