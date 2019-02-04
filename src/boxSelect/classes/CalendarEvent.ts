@@ -14,7 +14,7 @@ export class CalendarEvent {
 	public title: string;
 	public startDate: string;
 	public endDate: string;
-	private _element: IcalendarEventHTMLElement;
+	public element: IcalendarEventHTMLElement;
 	private _selectable: boolean;
 	private _selected: boolean;
 
@@ -24,19 +24,19 @@ export class CalendarEvent {
 		this.title = someObject.title || null;
 		this.startDate = someObject.startDate || null;
 		this.endDate = someObject.endDate || null;
-		this._element = someObject.element || null;
+		this.element = someObject.element || null;
 		this._selectable = someObject.selectable || false;
 		this._selected = false;
 	}
 
-	get element(): IcalendarEventHTMLElement {
+	/* 	get element(): IcalendarEventHTMLElement {
 		return this._element;
 	}
 
 	set element(newElement: IcalendarEventHTMLElement) {
 		newElement.id = this._selected ? 'selected' : '';
 		this._element = newElement;
-	}
+	} */
 
 	get timespan(): string {
 		if (!this.startDate || !this.endDate) {

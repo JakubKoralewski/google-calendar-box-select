@@ -7,9 +7,10 @@ export const TRASH_PATH =
 /** The amount added to evtColor forming brColor.  */
 export const BRIGHTEN_BY = 20;
 
-/** To be replaced using string.replace()...
+/** To be replaced using string.replace() and regular expressions
+ *  Could be done with ``eval('`' + GRADIENT + '`');`` as well
  * @param {string} evtColor old color
  * @param {string} brColor brightened, new color
  */
 export const GRADIENT =
-	'-webkit-linear-gradient(left, ${evtColor} 0%, ${brColor} 50%, ${evtColor} 100%), linear-gradient(to right, ${evtColor} 0%, ${brColor} 50%, ${evtColor} 100%)';
+	'-webkit-linear-gradient(left, EVT_COLOR 0%, BRIGHTENED_COLOR 50%, EVT_COLOR 100%), linear-gradient(to right, EVT_COLOR 0%, BRIGHTENED_COLOR 50%, EVT_COLOR 100%)';

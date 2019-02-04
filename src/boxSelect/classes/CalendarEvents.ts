@@ -58,7 +58,8 @@ export class CalendarEvents extends Events {
 	 */
 	public setGradientAnimation(state: boolean): void {
 		if (state) {
-			this.selectableElements.forEach((evt: IcalendarEventHTMLElement) => {
+			this.selectable.forEach((event: CalendarEvent) => {
+				const evt = event.element;
 				/** example value: 'rgb(202, 189, 191)' */
 				const evtColor: string = evt.style.backgroundColor;
 
@@ -73,21 +74,25 @@ export class CalendarEvents extends Events {
 				evt.oldColor = evtColor;
 
 				const backgroundText = GRADIENT.replace(
-					'${evtColor}',
+					/EVT_COLOR/g,
 					evtColor
-				).replace('${brColor', brColor);
+				).replace(/BRIGHTENED_COLOR/g, brColor);
 
 				evt.style.background = backgroundText;
 				evt.style.backgroundSize = '400% 400%';
 				evt.style.zIndex = '10002';
 				evt.classList.add('possible');
+
+				event.element = evt;
 			});
 		} else {
-			this.selectableElements.forEach((evt: IcalendarEventHTMLElement) => {
+			this.selectable.forEach((event: CalendarEvent) => {
+				const evt = event.element;
 				evt.style.background = '';
 				evt.style.backgroundColor = evt.oldColor;
 				evt.style.zIndex = '4';
 				evt.classList.remove('possible');
+				event.element = evt;
 			});
 		}
 	}
@@ -97,7 +102,8 @@ export class CalendarEvents extends Events {
 	 */
 	get selected(): SelectedEvents | null {
 		/* If no selected already created then create. */
-		if (this._selected == null) {
+		/* if (!this._selected || this._selected.events === {}) { */
+		if (!this._selected) {
 			const newSelectedEvents = this.getSelected();
 			if (newSelectedEvents.length === 0) {
 				return null;

@@ -9,7 +9,7 @@ export abstract class Events {
 	/** This variable is holds all possible events not just the selectable HTMLElements.
 	 *  This is done for timestamps.
 	 */
-	protected events: IcalendarEvents | {};
+	public events: IcalendarEvents | {};
 
 	constructor() {
 		this.events = {};

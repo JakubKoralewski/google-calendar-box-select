@@ -92,38 +92,31 @@ export class SelectedEvents extends Events {
 	 *
 	 *  Happens e.g. when event is dragged over to another day.
 	 *  Ran after load to find events that changed DOM hierarchy e.g. after dragging.
+	 *
+	 *  // FIXME: when event's HTMLElement DOESN'T change place the id of `selected` gets lost and then when keyDown is triggered id stays!
 	 */
 	public reset() {
 		console.log('reset()\nbefore:');
 		console.log(this.events);
-		/*
-		I write this to understand what happens for the present and future self :)
-		When super.findVisible() is ran it assigns an HTMLElement to the coresponding property.
-		The selected events stay the same; however, the current instance of SelectedEvents may become obsolete.
-		*/
 
 		const allEvents = this.findInDOM();
+
 		/* Set only the found events as selectable. */
 		allEvents.forEach(event => {
 			const eventId = event.dataset.eventid;
 			if (this.events.hasOwnProperty(eventId)) {
-				/* this.events[eventId] = new CalendarEvent({
-					eid: eventId,
-					element: event
-				}); */
 				this.events[eventId].selectable = true;
 			}
 		});
-		for (const calendarEvent of this.calendarEvents) {
-			/* To solve this we find the visible events,
-				check if each new HTMLEvent's id is in the currently selected ones.
-			*/
 
+		for (const calendarEvent of this.calendarEvents) {
 			const newEvent = allEvents.find(
 				HTMLEvent => HTMLEvent.dataset.eventid === calendarEvent.eid
 			);
+
 			/* The old HTMLEvent is replaced with the newly found one. */
 			this.events[calendarEvent.eid].element = newEvent;
+			this.events[calendarEvent.eid].selected = true;
 		}
 		console.log('after:');
 		console.log(this.events);
