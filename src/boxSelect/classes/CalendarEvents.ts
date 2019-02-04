@@ -10,7 +10,8 @@ import {
 	1. TODO: Update CalendarEvents on load webRequest.
 */
 export class CalendarEvents extends Events {
-	public _selected: SelectedEvents;
+	private _selected: SelectedEvents;
+	private _selectedObsolete: boolean = false;
 
 	/** Constructor only supplied when SelectedEvents is created.  */
 	constructor() {
@@ -18,6 +19,8 @@ export class CalendarEvents extends Events {
 	}
 
 	public updateVisible() {
+		this.calendarEvents.forEach(event => (event.selectable = false));
+
 		const eventsHTMLElements = this.findInDOM();
 
 		eventsHTMLElements.forEach((event: IcalendarEventHTMLElement) => {
@@ -103,19 +106,19 @@ export class CalendarEvents extends Events {
 	get selected(): SelectedEvents | null {
 		/* If no selected already created then create. */
 		/* if (!this._selected || this._selected.events === {}) { */
-		if (!this._selected) {
+		if (!this._selected || this._selectedObsolete) {
 			const newSelectedEvents = this.getSelected();
 			if (newSelectedEvents.length === 0) {
 				return null;
 			}
-			this._selected = new SelectedEvents(newSelectedEvents);
+			this._selected = new SelectedEvents(newSelectedEvents, this);
+			this._selectedObsolete = false;
 		}
 		return this._selected;
 	}
 
-	private getSelected(): CalendarEvent[] {
-		return this.calendarEvents.filter(event => {
-			return event.selected === true;
-		});
+	/** The idea is to force a new events.selected instance.  */
+	public selectedObsolete() {
+		this._selectedObsolete = true;
 	}
 }

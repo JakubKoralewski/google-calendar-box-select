@@ -256,7 +256,7 @@ function boxSelectUp() {
 	}
 	selector.select(events.selectable);
 	// FIXME: not giving events.selected new events
-	// events.resetSelected();
+	events.selected.reset();
 	selector.destroy();
 
 	// If triggered from popup/popup.html then remember to remove the blocker!

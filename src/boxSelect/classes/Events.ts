@@ -17,11 +17,6 @@ export abstract class Events {
 
 	/** Takes care of the selectable property of CalendarEvent's.  */
 	protected findInDOM(): IcalendarEventHTMLElement[] {
-		/* Assume all elements are inselectable.  */
-		this.calendarEvents.forEach(calendarEvent => {
-			calendarEvent.selectable = false;
-		});
-
 		const eventsHTMLElements: IcalendarEventHTMLElement[] = Array.from(
 			document.querySelectorAll(
 				'div[role~="button"], div[role~="presentation"]'
@@ -47,7 +42,9 @@ export abstract class Events {
 		return this.calendarEvents.filter(event => event.selectable);
 	}
 
-/* 	get selectableElements(): IcalendarEventHTMLElement[] {
-		return this.selectable.map(event => event.element);
-	} */
+	protected getSelected(): CalendarEvent[] {
+		return this.calendarEvents.filter(event => {
+			return event.selected === true;
+		});
+	}
 }

@@ -1,18 +1,22 @@
 import {
 	CalendarEvent,
+	CalendarEvents,
 	Events,
 	IcalendarEventHTMLElement,
 	OK_PATH,
 	TRASH_PATH
 } from '..';
 export class SelectedEvents extends Events {
-	constructor(selectedEvents: CalendarEvent[]) {
+	private allEvents: CalendarEvents;
+
+	constructor(selectedEvents: CalendarEvent[], allEvents: CalendarEvents) {
 		super();
 		if (selectedEvents != null) {
 			for (const event of selectedEvents) {
 				this.events[event.eid] = event;
 			}
 		}
+		this.allEvents = allEvents;
 	}
 
 	get ids(): string[] {
@@ -100,15 +104,9 @@ export class SelectedEvents extends Events {
 		console.log('reset()\nbefore:');
 		console.log(this.events);
 
-		const allEvents = this.findInDOM();
+		/* this.calendarEvents.forEach(event => (event.selectable = false)); */
 
-		/* Set only the found events as selectable. */
-		allEvents.forEach(event => {
-			const eventId = event.dataset.eventid;
-			if (this.events.hasOwnProperty(eventId)) {
-				this.events[eventId].selectable = true;
-			}
-		});
+		const allEvents = this.findInDOM();
 
 		for (const calendarEvent of this.calendarEvents) {
 			/** // FIXME: newEvent undefined in edge case when reset is set when HTMLElement changes place, but calendarEvent is an object with property of selectable = true */
@@ -120,9 +118,9 @@ export class SelectedEvents extends Events {
 			}
 
 			/* The old HTMLEvent is replaced with the newly found one. */
-			// FIXME: Cannot set property 'element' of undefined
 			this.events[calendarEvent.eid].element = newEvent;
 			this.events[calendarEvent.eid].selected = true;
+			this.events[calendarEvent.eid].selectable = true;
 		}
 		console.log('after:');
 		console.log(this.events);
@@ -132,14 +130,10 @@ export class SelectedEvents extends Events {
 
 	/** Sets all `CalendarEvent`s.selected = false.
 	 *
-	 *  Sets this.events = {};
 	 */
 	public unselect() {
-		this.calendarEvents.forEach((event: CalendarEvent) => {
-			event.selected = false;
-
-			// FIXME: leads to problems
-			this.events[event.eid] = {};
-		});
+		this.calendarEvents.forEach(event => (event.selected = false));
+		delete this.events;
+		this.allEvents.selectedObsolete();
 	}
 }
