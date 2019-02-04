@@ -4,12 +4,39 @@ import './img/icon-48.png';
 
 chrome.webRequest.onBeforeRequest.addListener(
 	details => {
-		console.log('Before:');
-		console.log(new Date(details.timeStamp));
-		console.log(details);
+		try {
+			/* details.requestBody.formData.emf[0] || details.requestBody.formData.load[0]; */
+			// tslint:disable-next-line: no-unused-expression
+			details.requestBody.formData;
+		} catch (err) {
+			console.log(err);
+			console.log(details);
+			return;
+		}
 
-		details.requestBody.formData.eid[0] != null && chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-			chrome.tabs.sendMessage(tabs[0].id, { action: 'onBeforeRequest', details });
+		console.group('Before:', new Date(details.timeStamp));
+
+		if (details.url.includes('load')) {
+			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+				chrome.tabs.sendMessage(tabs[0].id, {
+					action: 'containsLoadOnBeforeRequest',
+					details
+				});
+			});
+			console.groupCollapsed('containsLoadOnBeforeRequest');
+			console.log(details);
+			console.groupEnd();
+			console.groupEnd();
+			return;
+		}
+		console.log(details);
+		console.groupEnd();
+
+		chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+			chrome.tabs.sendMessage(tabs[0].id, {
+				action: 'onBeforeRequest',
+				details
+			});
 		});
 	},
 	{ urls: ['*://calendar.google.com/*'] },
@@ -18,12 +45,30 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 chrome.webRequest.onSendHeaders.addListener(
 	details => {
-		console.log('Send headers:');
-		console.log(new Date(details.timeStamp));
+		console.group('Send headers', new Date(details.timeStamp));
+
+		if (details.url.includes('load')) {
+			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+				chrome.tabs.sendMessage(tabs[0].id, {
+					action: 'containsLoadOnSendHeaders',
+					details
+				});
+			});
+			console.groupCollapsed('containsLoadOnSendHeaders');
+			console.log(details);
+			console.groupEnd();
+			console.groupEnd();
+			return;
+		}
+
 		console.log(details);
+		console.groupEnd();
 
 		chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-			chrome.tabs.sendMessage(tabs[0].id, { action: 'onSendHeaders', details });
+			chrome.tabs.sendMessage(tabs[0].id, {
+				action: 'onSendHeaders',
+				details
+			});
 		});
 	},
 	{ urls: ['*://calendar.google.com/*'] },
@@ -32,19 +77,31 @@ chrome.webRequest.onSendHeaders.addListener(
 
 chrome.webRequest.onCompleted.addListener(
 	details => {
-		console.log('Completed:');
-		console.log(new Date(details.timeStamp));
-		console.log(details);
-
-		chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-			chrome.tabs.sendMessage(tabs[0].id, { action: 'onCompleted', details });
-		});
+		console.group('Completed:', new Date(details.timeStamp));
 
 		if (details.url.includes('load')) {
 			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-				chrome.tabs.sendMessage(tabs[0].id, { action: 'containsLoadOnCompleted', details });
+				chrome.tabs.sendMessage(tabs[0].id, {
+					action: 'containsLoadOnCompleted',
+					details
+				});
 			});
+			console.groupCollapsed('containsLoadOnCompleted');
+			console.log(details);
+			console.groupEnd();
+			console.groupEnd();
+			return;
 		}
+
+		console.log(details);
+		console.groupEnd();
+
+		chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+			chrome.tabs.sendMessage(tabs[0].id, {
+				action: 'onCompleted',
+				details
+			});
+		});
 	},
 	{ urls: ['*://calendar.google.com/*'] },
 	['responseHeaders']

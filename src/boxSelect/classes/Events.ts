@@ -47,7 +47,7 @@ export abstract class Events {
 		return this.calendarEvents.filter(event => event.selectable);
 	}
 
-	get selectableElements(): IcalendarEventHTMLElement[] {
+/* 	get selectableElements(): IcalendarEventHTMLElement[] {
 		return this.selectable.map(event => event.element);
-	}
+	} */
 }

@@ -52,7 +52,8 @@ export class CalendarEvent {
 
 	set selected(state: boolean) {
 		this.element.id = state ? 'selected' : '';
-		console.log('setting', this, 'as', state ? 'selected' : 'unselected');
+		console.log('setting', this.element, `id to`);
+		console.log(state ? 'selected' : '%cEMPTY', state ? '' : 'color: red');
 		this._selected = state;
 	}
 

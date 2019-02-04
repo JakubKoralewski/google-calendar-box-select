@@ -2,6 +2,7 @@
 	"typescript.tsdk": "node_modules\\typescript\\lib",
 	"files.exclude": {
 		".history/**": true,
+		"node_modules": true
 	},
 	/* Disable auto-close-tag for typescript */
 	"auto-close-tag.activationOnLanguage": [

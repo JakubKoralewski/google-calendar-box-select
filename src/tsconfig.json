@@ -8,6 +8,6 @@
 		"sourceRoot": "../src/", */
 		"noEmitOnError": true,
 		"allowJs": false,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
 	}
 }

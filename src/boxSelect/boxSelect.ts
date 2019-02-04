@@ -26,13 +26,16 @@ const uncompletedRequest: IuncompletedRequest = {
 	onSendHeaders: null,
 	requestId: null
 };
+const uncompletedLoadRequest = {
+	requestId: null
+};
 
 const blocker = new Blocker();
 const slidedown = new Slidedown();
 
 let popupModeDelete = false;
 
-chrome.runtime.onMessage.addListener(request => {
+chrome.runtime.onMessage.addListener(async request => {
 	switch (request.action) {
 		case 'boxSelect':
 			console.log('boxSelect');
@@ -49,8 +52,12 @@ chrome.runtime.onMessage.addListener(request => {
 			});
 			console.log('delete');
 			break;
+
+		// The order of these events corresponds to the order they come in!
+
 		case 'onBeforeRequest': {
 			/* Check if that request pertains to actions made to events */
+			// FIXME: Cannot read property 'formData' of undefined
 			const webRequestEventId =
 				request.details.requestBody.formData.eid[0];
 			const idIsInTheSelectedEvents =
@@ -67,12 +74,18 @@ chrome.runtime.onMessage.addListener(request => {
 			if (uncompletedRequest.requestId !== request.details.requestId) {
 				return;
 			}
+			// FIXME: property exists with weird values when it shouldn't! [image](https://i.imgur.com/MCIMQJd.png)
 			if (!events.selected) return;
 			console.log('onSendHeaders: ');
 			console.log(request.details);
 			uncompletedRequest.onSendHeaders = request.details;
 
+			/* //FIXME:
+				1. events.selected doesnt have `selected` property.
+				2. events.events one key is undefined
+			*/
 			repeatWebRequest(events.selected, uncompletedRequest);
+			events.selected.reset();
 			break;
 		}
 		case 'onCompleted': {
@@ -86,15 +99,35 @@ chrome.runtime.onMessage.addListener(request => {
 			events.selected.reset();
 			break;
 		}
-		case 'containsLoadOnCompleted': {
-			if (uncompletedRequest.requestId !== request.details.requestId) {
-				return;
-			}
-			if (!events.selected) return;
-			console.log('containsLoadOnCompleted');
+
+		// The order of these load events corresponds to the order they come in!
+		case 'containsLoadOnBeforeRequest': {
 			// TODO: if new events present add to all events / update allEvents
 
-			events.selected.reset();
+			console.log(request.details);
+
+			if (!events.selected) return;
+			console.log('containsLoadOnBeforeRequest');
+			break;
+		}
+		case 'containsLoadOnSendHeaders': {
+			if (!events.selected) return;
+			console.log('containsLoadOnSendHeaders');
+			break;
+		}
+		case 'containsLoadOnCompleted': {
+			if (!events.selected) return;
+			console.log('containsLoadOnCompleted');
+
+			/** Number of tries before you give up waiting. */
+			let i: number = 5;
+
+			// Wait a few times for div to change place
+			while (!events.selected.reset() && i) {
+				await new Promise(r => setTimeout(r, 100));
+				i--;
+			}
+
 			break;
 		}
 		default:

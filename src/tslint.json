@@ -14,6 +14,7 @@
 		"no-angle-bracket-type-assertion": false,
 		"max-classes-per-file": false,
 		"no-empty": false,
+		"no-debugger": false,
 
 		"arrow-parens": [true, "ban-single-arg-parens"],
 		"quotemark": [true, "single", "avoid-escape"],

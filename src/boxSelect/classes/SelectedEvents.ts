@@ -94,8 +94,9 @@ export class SelectedEvents extends Events {
 	 *  Ran after load to find events that changed DOM hierarchy e.g. after dragging.
 	 *
 	 *  // FIXME: when event's HTMLElement DOESN'T change place the id of `selected` gets lost and then when keyDown is triggered id stays!
+	 * @returns {boolean} have any elements been found
 	 */
-	public reset() {
+	public reset(): boolean {
 		console.log('reset()\nbefore:');
 		console.log(this.events);
 
@@ -110,26 +111,35 @@ export class SelectedEvents extends Events {
 		});
 
 		for (const calendarEvent of this.calendarEvents) {
+			/** // FIXME: newEvent undefined in edge case when reset is set when HTMLElement changes place, but calendarEvent is an object with property of selectable = true */
 			const newEvent = allEvents.find(
 				HTMLEvent => HTMLEvent.dataset.eventid === calendarEvent.eid
 			);
+			if (!newEvent) {
+				debugger;
+			}
 
 			/* The old HTMLEvent is replaced with the newly found one. */
+			// FIXME: Cannot set property 'element' of undefined
 			this.events[calendarEvent.eid].element = newEvent;
 			this.events[calendarEvent.eid].selected = true;
 		}
 		console.log('after:');
 		console.log(this.events);
+
+		return allEvents.length > 0;
 	}
 
-	/** Sets all CalendarEvents.selected = false.
+	/** Sets all `CalendarEvent`s.selected = false.
 	 *
+	 *  Sets this.events = {};
 	 */
 	public unselect() {
 		this.calendarEvents.forEach((event: CalendarEvent) => {
 			event.selected = false;
+
+			// FIXME: leads to problems
+			this.events[event.eid] = {};
 		});
-		// FIXME: the selected events are never readded here
-		this.events = {};
 	}
 }
