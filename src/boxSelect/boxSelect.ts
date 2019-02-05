@@ -57,7 +57,6 @@ chrome.runtime.onMessage.addListener(async request => {
 
 		case 'onBeforeRequest': {
 			/* Check if that request pertains to actions made to events */
-			// FIXME: Cannot read property 'formData' of undefined
 			const webRequestEventId =
 				request.details.requestBody.formData.eid[0];
 			const idIsInTheSelectedEvents =
@@ -74,16 +73,12 @@ chrome.runtime.onMessage.addListener(async request => {
 			if (uncompletedRequest.requestId !== request.details.requestId) {
 				return;
 			}
-			// FIXME: property exists with weird values when it shouldn't! [image](https://i.imgur.com/MCIMQJd.png)
+
 			if (!events.selected) return;
 			console.log('onSendHeaders: ');
 			console.log(request.details);
 			uncompletedRequest.onSendHeaders = request.details;
 
-			/* //FIXME:
-				1. events.selected doesnt have `selected` property.
-				2. events.events one key is undefined
-			*/
 			repeatWebRequest(events.selected, uncompletedRequest);
 			events.selected.reset();
 			break;
@@ -255,7 +250,6 @@ function boxSelectUp() {
 		return;
 	}
 	selector.select(events.selectable);
-	// FIXME: not giving events.selected new events
 	events.selected.reset();
 	selector.destroy();
 

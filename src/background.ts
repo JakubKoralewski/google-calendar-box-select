@@ -7,7 +7,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 		try {
 			/* details.requestBody.formData.emf[0] || details.requestBody.formData.load[0]; */
 			// tslint:disable-next-line: no-unused-expression
-			details.requestBody.formData;
+			details.requestBody.formData.eid;
 		} catch (err) {
 			console.log(err);
 			console.log(details);

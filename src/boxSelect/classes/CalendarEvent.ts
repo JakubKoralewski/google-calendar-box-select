@@ -1,4 +1,4 @@
-import { IcalendarEventHTMLElement } from '..';
+import { IcalendarEventHTMLElement} from '..';
 
 interface ICalendarEventConstructor {
 	eid: string;
@@ -38,14 +38,14 @@ export class CalendarEvent {
 		this._element = newElement;
 	} */
 
-	get timespan(): string {
+	get timestamp(): string | boolean {
 		if (!this.startDate || !this.endDate) {
 			console.error(
 				`this.startDate: ${this.startDate}; this.endDate: ${
 					this.endDate
 				}`
 			);
-			return 'eror';
+			return false;
 		}
 		return `${this.startDate}/${this.endDate}`;
 	}

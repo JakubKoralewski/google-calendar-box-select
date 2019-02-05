@@ -1,4 +1,10 @@
-import { IuncompletedRequest, SelectedEvents } from '..';
+import {
+	calculateTimeOffset,
+	CalendarEvent,
+	ItimeOffset,
+	IuncompletedRequest,
+	SelectedEvents
+} from '..';
 
 /** Turn object into serialized data.
  *  The object's value need to be an array.
@@ -32,13 +38,26 @@ export function repeatWebRequest(
 	console.log('repeatWebRequest');
 	/* console.log(selectedEvents, uncompletedRequest); */
 
-	/* Event that got sent originally */
+	/** Event that got sent originally */
 	const originalEventId =
 		uncompletedRequest.onBeforeRequest.requestBody.formData.eid[0];
-	selectedEvents.elements.forEach(event => {
+	let deltaOffset: boolean | ItimeOffset = false;
+	selectedEvents.calendarEvents.forEach((calendarEvent: CalendarEvent) => {
+		const event = calendarEvent.element;
 		const eventId = event.dataset.eventid;
-		/* No need to repeat action for event that actually triggered the action. */
+		const requestBody =
+			uncompletedRequest.onBeforeRequest.requestBody.formData;
+
 		if (eventId === originalEventId) {
+			if (calendarEvent.timestamp !== requestBody.dates[0]) {
+				const newTime = requestBody.dates[0];
+
+				deltaOffset = calculateTimeOffset(
+					newTime,
+					calendarEvent.timestamp as string
+				);
+			}
+			/* No need to repeat action for event that actually triggered the action. */
 			return;
 		}
 		console.group(`event${event.dataset.eventid}`);
@@ -66,13 +85,14 @@ export function repeatWebRequest(
 		console.log('newHeaders:');
 		console.log(newHeaders);
 
-		const requestBody =
-			uncompletedRequest.onBeforeRequest.requestBody.formData;
-		// TODO: DRAGGING / change duration
-		/* If new time applied */
-		/* Get current time */
-		/* Calculate delta offset */
-		/* Offset rest like this too */
+		if (deltaOffset) {
+			// TODO: DRAGGING / change duration
+			/* If new time applied */
+			/* Get current time */
+			/* Calculate delta offset */
+			/* Offset rest like this too */
+		}
+
 		const newBody = serialize({ requestBody, eventId });
 
 		const method = uncompletedRequest.onSendHeaders.method;

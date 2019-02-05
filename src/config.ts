@@ -14,3 +14,13 @@ export const BRIGHTEN_BY = 20;
  */
 export const GRADIENT =
 	'-webkit-linear-gradient(left, EVT_COLOR 0%, BRIGHTENED_COLOR 50%, EVT_COLOR 100%), linear-gradient(to right, EVT_COLOR 0%, BRIGHTENED_COLOR 50%, EVT_COLOR 100%)';
+
+/** The specification for parsing ISO Datetime strings: e.g.: `20190204T141500`  */
+export const timeTemplates = [
+	{ name: 'year', start: 0, end: 4 },
+	{ name: 'month', start: 4, end: 6 },
+	{ name: 'day', start: 6, end: 8 },
+	{ name: 'hour', start: 9, end: 11 },
+	{ name: 'minutes', start: 11, end: 13 },
+	{ name: 'seconds', start: 13, end: 15 }
+];

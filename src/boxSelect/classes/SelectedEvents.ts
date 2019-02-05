@@ -97,7 +97,6 @@ export class SelectedEvents extends Events {
 	 *  Happens e.g. when event is dragged over to another day.
 	 *  Ran after load to find events that changed DOM hierarchy e.g. after dragging.
 	 *
-	 *  // FIXME: when event's HTMLElement DOESN'T change place the id of `selected` gets lost and then when keyDown is triggered id stays!
 	 * @returns {boolean} have any elements been found
 	 */
 	public reset(): boolean {
@@ -109,7 +108,6 @@ export class SelectedEvents extends Events {
 		const allEvents = this.findInDOM();
 
 		for (const calendarEvent of this.calendarEvents) {
-			/** // FIXME: newEvent undefined in edge case when reset is set when HTMLElement changes place, but calendarEvent is an object with property of selectable = true */
 			const newEvent = allEvents.find(
 				HTMLEvent => HTMLEvent.dataset.eventid === calendarEvent.eid
 			);
