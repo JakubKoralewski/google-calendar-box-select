@@ -3,7 +3,8 @@ import {
 	CalendarEvent,
 	ItimeOffset,
 	IuncompletedRequest,
-	SelectedEvents
+	SelectedEvents,
+	timeTemplates
 } from '..';
 
 /** Turn object into serialized data.
@@ -41,22 +42,29 @@ export function repeatWebRequest(
 	/** Event that got sent originally */
 	const originalEventId =
 		uncompletedRequest.onBeforeRequest.requestBody.formData.eid[0];
+	const requestBody = uncompletedRequest.onBeforeRequest.requestBody.formData;
+
 	let deltaOffset: boolean | ItimeOffset = false;
+
+	const originalEvent = selectedEvents.calendarEvents.find(
+		(calendarEvent: CalendarEvent) => calendarEvent.eid === originalEventId
+	);
+
+	/* First find the original event to have the delta calculated for all events. */
+	if (originalEvent.timestamp !== requestBody.dates[0]) {
+		const newTime = requestBody.dates[0];
+
+		deltaOffset = calculateTimeOffset(
+			newTime,
+			originalEvent.timestamp as string
+		);
+	}
+
 	selectedEvents.calendarEvents.forEach((calendarEvent: CalendarEvent) => {
 		const event = calendarEvent.element;
 		const eventId = event.dataset.eventid;
-		const requestBody =
-			uncompletedRequest.onBeforeRequest.requestBody.formData;
 
 		if (eventId === originalEventId) {
-			if (calendarEvent.timestamp !== requestBody.dates[0]) {
-				const newTime = requestBody.dates[0];
-
-				deltaOffset = calculateTimeOffset(
-					newTime,
-					calendarEvent.timestamp as string
-				);
-			}
 			/* No need to repeat action for event that actually triggered the action. */
 			return;
 		}
@@ -91,6 +99,40 @@ export function repeatWebRequest(
 			/* Get current time */
 			/* Calculate delta offset */
 			/* Offset rest like this too */
+
+			// FIXME: old values are actually new values!????
+			const oldValues = [calendarEvent.startDate, calendarEvent.endDate];
+
+			for (const timeTemplate of timeTemplates) {
+				for (const [index, startOrEnd] of ['start', 'end'].entries()) {
+					const offset: number =
+						deltaOffset[startOrEnd][timeTemplate.name];
+
+					/* When particular offset of time is false no need to take action. */
+					if (!offset) {
+						continue;
+					}
+
+					const oldValue = parseInt(
+						oldValues[index].substring(
+							timeTemplate.start,
+							timeTemplate.end
+						),
+						10
+					);
+
+					const newValue =
+						oldValues[index].substring(0, timeTemplate.start) +
+						padNumber(oldValue + offset) +
+						oldValues[index].substring(timeTemplate.end);
+
+					oldValues[index] = newValue;
+
+					debugger;
+				}
+			}
+
+			requestBody.dates[0] = oldValues.join('/');
 		}
 
 		const newBody = serialize({ requestBody, eventId });
@@ -118,4 +160,9 @@ export function repeatWebRequest(
 
 		console.groupEnd();
 	});
+}
+
+function padNumber(number: number, n?: number) {
+	if (n == undefined) n = 2;
+	return (new Array(n).join('0') + number).slice(-n);
 }

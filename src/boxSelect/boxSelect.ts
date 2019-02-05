@@ -56,9 +56,12 @@ chrome.runtime.onMessage.addListener(async request => {
 		// The order of these events corresponds to the order they come in!
 
 		case 'onBeforeRequest': {
+			if (!events.selected) return;
+
 			/* Check if that request pertains to actions made to events */
 			const webRequestEventId =
 				request.details.requestBody.formData.eid[0];
+			// FIXME: ids undefined when not selected
 			const idIsInTheSelectedEvents =
 				events.selected.ids.includes(webRequestEventId) || false;
 

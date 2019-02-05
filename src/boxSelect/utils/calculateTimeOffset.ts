@@ -52,14 +52,10 @@ export function calculateTimeOffset(
 			);
 
 			const offset = parseInt(time1, 10) - parseInt(time2, 10);
+
+			/* If 0 will return false. */
 			rv[startOrEnd][timeTemplate.name] = offset || !!offset;
 		}
 	}
-	/* If 0 will return false. */
 	return rv as ItimeOffset;
 }
-
-/* function padNumber(number: number, n?: number) {
-	if (n == undefined) n = 2;
-	return (new Array(n).join('0') + number).slice(-n);
-} */

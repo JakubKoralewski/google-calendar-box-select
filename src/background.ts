@@ -16,6 +16,15 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 		console.group('Before:', new Date(details.timeStamp));
 
+		if (details.url.includes('calendar.google.com/calendar/ping')) {
+			console.log(
+				'%ccontains ping not sending to boxSelect!!!',
+				'color: red'
+			);
+			console.groupEnd();
+			return;
+		}
+
 		if (details.url.includes('load')) {
 			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 				chrome.tabs.sendMessage(tabs[0].id, {
