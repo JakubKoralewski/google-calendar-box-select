@@ -69,7 +69,6 @@ chrome.runtime.onMessage.addListener(async request => {
 			/* Check if that request pertains to actions made to events */
 			const webRequestEventId =
 				request.details.requestBody.formData.eid[0];
-			// FIXME: ids undefined when not selected
 			const idIsInTheSelectedEvents =
 				events.selected.ids.includes(webRequestEventId) || false;
 
@@ -90,7 +89,6 @@ chrome.runtime.onMessage.addListener(async request => {
 			console.log(request.details);
 			uncompletedRequest.onSendHeaders = request.details;
 
-			// FIXME: events.selected has only the originalEvent :/
 			repeatWebRequest(events.selected, uncompletedRequest);
 			events.selected.reset();
 			break;
@@ -112,7 +110,6 @@ chrome.runtime.onMessage.addListener(async request => {
 			/* if (!events.selected) return; */
 			console.log('eventLoaded');
 
-			// TODO: if new events present add to all events / update allEvents
 			console.log(request.details);
 			const loadFormData: IloadFormData =
 				request.details.requestBody.formData;
@@ -207,9 +204,6 @@ window.addEventListener(
 				);
 
 				if (!foundEvent) {
-					/* FIXME: this actually happens! should it? */
-					/* debugger; */
-
 					/* Event created while extension was online. Create new one? */
 					events.add(new CalendarEvent(eventData));
 				} else {
@@ -301,7 +295,7 @@ function boxSelectDown(e: MouseEvent) {
 	// If it's a right click dont create selection
 	// 2 = right button
 	if (e.button === 2) {
-		// TODO: context menu
+		// TODO: context menu [#8](https://github.com/JakubKoralewski/google-calendar-box-select/issues/8)
 		// contextMenu = new ContextMenu(e.clientX, e.clientY, e.button);
 		return;
 	}

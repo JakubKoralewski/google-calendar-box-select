@@ -15,7 +15,7 @@ interface Window {
 	cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
 }
 
-/* TODO:
+/*
 intercept ping/load data
 https://medium.com/@tarundugar1992/chrome-extension-intercepting-and-reading-the-body-of-http-requests-dd9ebdf2348b
 */

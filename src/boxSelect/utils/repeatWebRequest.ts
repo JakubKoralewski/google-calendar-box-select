@@ -97,13 +97,11 @@ export function repeatWebRequest(
 		console.log(newHeaders);
 
 		if (deltaOffset) {
-			// TODO: DRAGGING / change duration
 			/* If new time applied */
 			/* Get current time */
 			/* Calculate delta offset */
 			/* Offset rest like this too */
 
-			// FIXME: old values are actually new values!????
 			const oldValues = [calendarEvent.startDate, calendarEvent.endDate];
 
 			for (const timeTemplate of timeTemplates) {
@@ -116,7 +114,6 @@ export function repeatWebRequest(
 						continue;
 					}
 
-					// FIXME: oldValues undefined because event was created during the extension's life and it didnt catch the startDate and endDate
 					const oldValue = parseInt(
 						oldValues[index].substring(
 							timeTemplate.start,

@@ -38,7 +38,6 @@ export class CalendarEvent {
 	/** CalendarEvent object constructor */
 	constructor(someObject: IcalendarEventConstructor) {
 		this.eid = someObject.eid;
-		// TODO: update title on load
 		this.title = someObject.title || null;
 		this.startDate = someObject.startDate || null;
 		this.endDate = someObject.endDate || null;
