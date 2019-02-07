@@ -13,26 +13,6 @@ multilingual locale support
 
 </h5>
 
-## :warning: Problem
-
-The process of deleting events is very hacked together since no hooking into underlying (minified) JavaScript code is being done.
-Instead of that the **trash can** is actually being clicked to delete events using a **querySelector**, something like this:
-
-```javascript
-document
-	.querySelector(
-		'#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div'
-	)
-	.click();
-```
-
-You can see this is not ideal.
-Because of this the ideal goal of this extension would be to acquire so many users as to pressure the Google Calendar team into creating a real, stable system of multiple selection, deletion and edition...
-
-## the ideal goal of this extension would be to... [**die**](https://getyarn.io/yarn-clip/9f143220-ed9d-4525-b4ef-b37fd5413768)
-
-![Not the hero we deserved but the one we needed.](https://i.imgur.com/NN4nmKR.gif)
-
 ## Usage
 
 `B` - (hold) enter selection mode
@@ -51,10 +31,11 @@ $ npm install
 
 For developing this extension I **strongly** recommend [VSCode][vscode] with these settings:
 
-[settings.json](.vscode/settings.json): running the [Prettier plugin][prettier] + [TSLint plugin][tslint] + [Debugger for Chrome][debugger] in [VSCode][vscode].
+### VSCode settings ([`settings.json`](.vscode/settings.json)):
+[Prettier plugin][prettier] + [TSLint plugin][tslint] + (optionally) [Debugger for Chrome][debugger] in [VSCode][vscode].
 
-It's written in TypeScript and provides great TypeScript IntelliSense.
-[Debugger for Chrome][debugger] allows you to debug compiled TypeScript in Chrome and TypeScript in synchrony.
+This extension is written in TypeScript and [VSCode][vscode] provides great TypeScript IntelliSense.
+[Debugger for Chrome][debugger] allows you to debug compiled TypeScript in Chrome and TypeScript synchronously.
 
 [prettier]: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
 [tslint]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin
@@ -86,6 +67,26 @@ Modern ES6+ syntax in TypeScript compiled to ES5 for maximum compatibility.
 
 ### ES6+ features encouraged ([`tsconfig.json`](src/tsconfig.json)):
 target: `ES5`, lib: `dom, es2018`.
+
+## :warning: Problem
+
+The process of deleting events is very hacked together since no hooking into underlying (minified) JavaScript code is being done.
+Instead of that the **trash can** is actually being clicked to delete events using a **querySelector**, something like this:
+
+```javascript
+document
+	.querySelector(
+		'#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div'
+	)
+	.click();
+```
+
+You can see this is not ideal.
+Because of this the ideal goal of this extension would be to acquire so many users as to pressure the Google Calendar team into creating a real, stable system of multiple selection, deletion and edition...
+
+## the ideal goal of this extension would be to... [**die**](https://getyarn.io/yarn-clip/9f143220-ed9d-4525-b4ef-b37fd5413768)
+
+![Not the hero we deserved but the one we needed.](https://i.imgur.com/NN4nmKR.gif)
 
 ## Credits
 
