@@ -8,6 +8,7 @@ export * from './classes/Selection';
 export * from './classes/Slidedown';
 export * from './interfaces/IcalendarEventHTMLElement';
 export * from './interfaces/Idetail';
+export * from './interfaces/IeventLoad';
 export * from './interfaces/IwebRequests';
 export * from './interfaces/IparseTime';
 export * from './utils/calculateTimeOffset';

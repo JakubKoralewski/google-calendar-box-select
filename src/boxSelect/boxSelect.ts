@@ -1,15 +1,27 @@
+// tslint:disable: ordered-imports
 import {
+	/* Classes */
 	Blocker,
 	CalendarEvent,
 	CalendarEvents,
+	Selection,
+	Slidedown,
+
+	/* Utilities */
+	repeatWebRequest,
+
+	/* Config */
 	DEFAULT_DELETE_KEY,
 	DEFAULT_SELECT_KEY,
+
+	/* Interfaces */
 	Idetail,
+	IeventData,
+	IeventLoadCustomEvent,
 	IloadFormData,
-	IuncompletedRequest,
-	repeatWebRequest,
-	Selection,
-	Slidedown
+	IrawEventData,
+	IsingleEventLoad,
+	IuncompletedRequest
 } from '.';
 
 let SELECT_KEY = DEFAULT_SELECT_KEY;
@@ -20,8 +32,6 @@ let isSelectKeyPressed = false;
 let selector: Selection;
 // let events.elements: IcalendarEventHTMLElement[];
 const events: CalendarEvents = new CalendarEvents();
-/* let selectedEvents: Set<IcalendarEventHTMLElement> = new Set();
-let selectedEventsIds: string[] = []; */
 const uncompletedRequest: IuncompletedRequest = {
 	onBeforeRequest: null,
 	onSendHeaders: null,
@@ -164,37 +174,6 @@ window.addEventListener('injectedScriptInitialData', (data: CustomEvent) => {
 	});
 });
 
-interface IeventLoadCustomEvent extends CustomEvent {
-	detail: string;
-}
-
-interface IsingleEventLoad extends Array<number | string> {
-	[index: number]: string;
-}
-
-interface IrawEventData {
-	[index: number]: any;
-
-	/** event id  */
-	[0]: string;
-
-	/** title  */
-	[1]: string;
-
-	/** start date timestamp  */
-	[2]: string;
-
-	/** end date timestamp  */
-	[3]: string;
-}
-
-interface IeventData {
-	eid: string;
-	startDate: string;
-	endDate: string;
-	title: string;
-}
-
 /* Load new event data caused by an overwrite of XHR prototype's functions. */
 window.addEventListener(
 	'injectedScriptEventLoad',
@@ -250,12 +229,14 @@ style.type = 'text/css';
 style.href = chrome.runtime.getURL('globalStyles.css');
 (document.head || document.documentElement).appendChild(style);
 
+// Restore hotkeys for select and dlete from localStorage
 chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], data => {
 	SELECT_KEY = data.boxSelectHotkey || SELECT_KEY;
 	DELETE_KEY = data.deleteHotkey || DELETE_KEY;
 });
 console.log(`SELECT_KEY: ${SELECT_KEY}; DELETE_KEY: ${DELETE_KEY}`);
 
+// When value is changed while extension is running also update hotkeys
 chrome.storage.onChanged.addListener(data => {
 	console.log(data);
 	SELECT_KEY = data.boxSelectHotkey.newValue || SELECT_KEY;
