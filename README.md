@@ -1,4 +1,4 @@
-# Google Calendar Box Select
+# Google Calendar Box Select [![](https://img.shields.io/travis/com/JakubKoralewski/google-calendar-box-select/master.svg)](https://travis-ci.com/JakubKoralewski/google-calendar-box-select/builds) [![](https://img.shields.io/github/release/JakubKoralewski/google-calendar-box-select.svg?label=stable)](https://github.com/JakubKoralewski/google-calendar-box-select/releases/latest) [![](https://img.shields.io/github/release-pre/JakubKoralewski/google-calendar-box-select.svg?label=unstable)](https://github.com/JakubKoralewski/google-calendar-box-select/releases/tag/experimental)
 
 # ![logo](docs/img/main_logo.png)
 
@@ -73,7 +73,7 @@ Set NODE_ENV variable to `production` to minify, uglify JS, not create source ma
 $ npm run build
 ```
 
-Deploys to `dist/` folder.
+Deploys to `build/` folder.
 
 ## Contributions
 
