@@ -1,6 +1,6 @@
 import { IcalendarEventHTMLElement } from '..';
 
-interface ICalendarEventConstructor {
+interface IcalendarEventConstructor {
 	eid: string;
 	title?: string;
 	startDate?: string;
@@ -8,7 +8,7 @@ interface ICalendarEventConstructor {
 	element?: IcalendarEventHTMLElement;
 	selectable?: boolean;
 }
-interface ICalendarEventAssignment {
+interface IcalendarEventAssignment {
 	eid?: string;
 	title?: string;
 	startDate?: string;
@@ -17,7 +17,7 @@ interface ICalendarEventAssignment {
 	selectable?: boolean;
 }
 
-interface ICalendarEventAssignmentEntries {
+interface IcalendarEventAssignmentEntries {
 	[index: number]: [string, string];
 }
 
@@ -28,7 +28,7 @@ enum TYPE {
 
 export class CalendarEvent {
 	public readonly eid: string;
-	public title: string;
+	public readonly title: string;
 	public startDate: string;
 	public endDate: string;
 	public element: IcalendarEventHTMLElement;
@@ -36,7 +36,7 @@ export class CalendarEvent {
 	private _selected: boolean;
 
 	/** CalendarEvent object constructor */
-	constructor(someObject: ICalendarEventConstructor) {
+	constructor(someObject: IcalendarEventConstructor) {
 		this.eid = someObject.eid;
 		// TODO: update title on load
 		this.title = someObject.title || null;
@@ -93,18 +93,10 @@ export class CalendarEvent {
 		return this._selectable;
 	}
 
-	/* public assign(object: IcalendarEventHTMLElement): void;
-	public assign(object: ICalendarEventAssignment): void;
-	public assign(object: CalendarEvent): void;
-
-	*/
-	/* public assign(object: IcalendarEventHTMLElement): void; */
-	/* public static assign(object: ICalendarEventAssignment): void; */
-	/* public assign(object: CalendarEvent): CalendarEvent; */
 	/** Supply new data to be assigned to the particular event.
 	 *  Overrites other data of the same type.
 	 */
-	public assign(object: ICalendarEventAssignment): void;
+	public assign(object: IcalendarEventAssignment): void;
 	public assign(object: IcalendarEventHTMLElement): void;
 	public assign(object: any): any {
 		let objectType: TYPE;
@@ -125,7 +117,7 @@ export class CalendarEvent {
 			console.log('Not assigning an element, but an object.');
 
 			for (const entry of Object.entries(
-				object as ICalendarEventAssignment
+				object as IcalendarEventAssignment
 			)) {
 				/*
 				Where entry[0]: string is the key (e.g.: "eid", "startDate")

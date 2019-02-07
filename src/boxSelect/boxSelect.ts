@@ -27,9 +27,6 @@ const uncompletedRequest: IuncompletedRequest = {
 	onSendHeaders: null,
 	requestId: null
 };
-const uncompletedLoadRequest = {
-	requestId: null
-};
 
 const blocker = new Blocker();
 const slidedown = new Slidedown();
