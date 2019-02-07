@@ -21,6 +21,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 				'%ccontains ping not sending to boxSelect!!!',
 				'color: red'
 			);
+			console.log(details);
 			console.groupEnd();
 			return;
 		}
@@ -28,11 +29,11 @@ chrome.webRequest.onBeforeRequest.addListener(
 		if (details.url.includes('load')) {
 			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 				chrome.tabs.sendMessage(tabs[0].id, {
-					action: 'containsLoadOnBeforeRequest',
+					action: 'eventLoaded',
 					details
 				});
 			});
-			console.groupCollapsed('containsLoadOnBeforeRequest');
+			console.groupCollapsed('eventLoaded');
 			console.log(details);
 			console.groupEnd();
 			console.groupEnd();
@@ -56,7 +57,7 @@ chrome.webRequest.onSendHeaders.addListener(
 	details => {
 		console.group('Send headers', new Date(details.timeStamp));
 
-		if (details.url.includes('load')) {
+		/* if (details.url.includes('load')) {
 			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 				chrome.tabs.sendMessage(tabs[0].id, {
 					action: 'containsLoadOnSendHeaders',
@@ -68,7 +69,7 @@ chrome.webRequest.onSendHeaders.addListener(
 			console.groupEnd();
 			console.groupEnd();
 			return;
-		}
+		} */
 
 		console.log(details);
 		console.groupEnd();

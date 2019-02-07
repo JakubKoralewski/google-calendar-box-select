@@ -120,5 +120,8 @@ export class CalendarEvents extends Events {
 	/** The idea is to force a new events.selected instance.  */
 	public selectedObsolete() {
 		this._selectedObsolete = true;
+
+		/* Should I do this?: */
+		/* this._selected = null; */
 	}
 }

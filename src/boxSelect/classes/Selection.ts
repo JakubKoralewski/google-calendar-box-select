@@ -45,7 +45,7 @@ export class Selection {
 		Selection.visible = false;
 	}
 
-	public select(calendarEvents: CalendarEvent[]) {
+	public select(events: CalendarEvents) {
 		// 102px (string) -> 102 (number)
 		let left: string | number = this.element.style.left;
 		left = parseInt(left.substring(0, left.length - 2), 10);
@@ -61,6 +61,8 @@ export class Selection {
 
 		const right = left + width;
 		const bottom = top + height;
+
+		const calendarEvents = events.selectable;
 
 		calendarEvents.forEach((calendarEvent: CalendarEvent) => {
 			const event: IcalendarEventHTMLElement = calendarEvent.element;
@@ -82,5 +84,7 @@ export class Selection {
 				calendarEvent.selected = true;
 			}
 		});
+
+		events.selectedObsolete();
 	}
 }

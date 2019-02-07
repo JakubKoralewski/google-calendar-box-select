@@ -32,7 +32,8 @@ var options = {
 		boxSelect: path.join(__dirname, 'src', 'boxSelect', 'boxSelect.ts'),
 		background: path.join(__dirname, 'src', 'background.ts'),
 		globalStyles: path.join(__dirname, 'src', 'injected', 'globalStyles.scss'),
-		script: path.join(__dirname, 'src', 'injected', 'script.ts')
+		script: path.join(__dirname, 'src', 'injected', 'script.ts'),
+		documentStart: path.join(__dirname, 'src', 'injected', 'documentStart.ts')
 	},
 	chromeExtensionBoilerplate: {
 		notHotReload: ['boxSelect']

@@ -113,6 +113,7 @@ export function repeatWebRequest(
 						continue;
 					}
 
+					// FIXME: oldValues undefined because event was created during the extension's life and it didnt catch the startDate and endDate
 					const oldValue = parseInt(
 						oldValues[index].substring(
 							timeTemplate.start,
@@ -128,7 +129,7 @@ export function repeatWebRequest(
 
 					oldValues[index] = newValue;
 
-					debugger;
+					// debugger;
 				}
 			}
 
@@ -154,9 +155,17 @@ export function repeatWebRequest(
 
 		const requestURL = uncompletedRequest.onBeforeRequest.url;
 		/* Send request */
-		fetch(requestURL, OPTIONS as RequestInit).then(response => {
-			console.log(response);
-		});
+		fetch(requestURL, OPTIONS as RequestInit).then(
+			response => {
+				console.log('fetch response:');
+				console.log(response);
+				/* debugger; */
+			},
+			reject => {
+				console.warn('fetch reject:');
+				console.log(reject);
+			}
+		);
 
 		console.groupEnd();
 	});

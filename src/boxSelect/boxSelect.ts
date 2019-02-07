@@ -3,6 +3,7 @@ import {
 	CalendarEvent,
 	CalendarEvents,
 	Idetail,
+	IloadFormData,
 	IuncompletedRequest,
 	repeatWebRequest,
 	Selection,
@@ -82,6 +83,7 @@ chrome.runtime.onMessage.addListener(async request => {
 			console.log(request.details);
 			uncompletedRequest.onSendHeaders = request.details;
 
+			// FIXME: events.selected has only the originalEvent :/
 			repeatWebRequest(events.selected, uncompletedRequest);
 			events.selected.reset();
 			break;
@@ -99,20 +101,37 @@ chrome.runtime.onMessage.addListener(async request => {
 		}
 
 		// The order of these load events corresponds to the order they come in!
-		case 'containsLoadOnBeforeRequest': {
+		case 'eventLoaded': {
+			/* if (!events.selected) return; */
+			console.log('eventLoaded');
+
 			// TODO: if new events present add to all events / update allEvents
-
 			console.log(request.details);
+			const loadFormData: IloadFormData =
+				request.details.requestBody.formData;
+			const rawNewData: string = loadFormData.emf[0];
+			/* const newData: any = {}; */
 
-			if (!events.selected) return;
-			console.log('containsLoadOnBeforeRequest');
+			/* rawData = "I2NvbnRhY3RzQGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ 20190120/20190321 63685150699"  */
+			for (const rawData of rawNewData.split('\n')) {
+				const data = rawData.split(' ');
+				const eid = data[0];
+				const timestamp = data[1];
+				const calendarEvent = events.calendarEvents.find(
+					event => event.eid === eid
+				);
+				if (calendarEvent) {
+					calendarEvent.timestamp = timestamp;
+				}
+			}
+
 			break;
 		}
-		case 'containsLoadOnSendHeaders': {
+		/* case 'containsLoadOnSendHeaders': {
 			if (!events.selected) return;
 			console.log('containsLoadOnSendHeaders');
 			break;
-		}
+		} */
 		case 'containsLoadOnCompleted': {
 			if (!events.selected) return;
 			console.log('containsLoadOnCompleted');
@@ -147,6 +166,84 @@ window.addEventListener('injectedScriptInitialData', (data: CustomEvent) => {
 		events.add(new CalendarEvent(eventData));
 	});
 });
+
+interface IeventLoadCustomEvent extends CustomEvent {
+	detail: string;
+}
+
+interface IsingleEventLoad extends Array<number | string> {
+	[index: number]: string;
+}
+
+interface IrawEventData {
+	[index: number]: any;
+
+	/** event id  */
+	[0]: string;
+
+	/** title  */
+	[1]: string;
+
+	/** start date timestamp  */
+	[2]: string;
+
+	/** end date timestamp  */
+	[3]: string;
+}
+
+interface IeventData {
+	eid: string;
+	startDate: string;
+	endDate: string;
+	title: string;
+}
+
+window.addEventListener(
+	'injectedScriptEventLoad',
+	(data: IeventLoadCustomEvent) => {
+		console.group('injectedScriptEventLoad');
+		const detail: IsingleEventLoad[] = JSON.parse(
+			String.raw`${data.detail.substring(5)}`
+		);
+		console.log(detail);
+		for (const unknownDataElement of detail) {
+			/*
+				"a" - event
+				"v" - ?
+				"us" - ?
+			*/
+			if (unknownDataElement[0] === 'a') {
+				const rawEventData: IrawEventData = JSON.parse(
+					unknownDataElement[1]
+				);
+
+				const eventData: IeventData = {
+					/* no id, I think it's not needed */
+					eid: rawEventData[0],
+					title: rawEventData[1],
+					startDate: rawEventData[2],
+					endDate: rawEventData[3]
+				};
+
+				const foundEvent = events.calendarEvents.find(
+					event => event.eid === eventData.eid
+				);
+
+				if (!foundEvent) {
+					/* FIXME: this actually happens! should it? */
+					/* debugger; */
+
+					/* Event created while extension was online. Create new one? */
+					events.add(new CalendarEvent(eventData));
+				} else {
+					/* No need to assign if new event just got created. */
+					foundEvent.assign(eventData);
+				}
+			}
+		}
+		console.groupEnd();
+	}
+);
 
 // Inject stylesheet into website
 const style = document.createElement('link');
@@ -252,7 +349,7 @@ function boxSelectUp() {
 	if (!Selection.visible) {
 		return;
 	}
-	selector.select(events.selectable);
+	selector.select(events);
 	events.selected.reset();
 	selector.destroy();
 

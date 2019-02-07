@@ -1,4 +1,4 @@
-import { IcalendarEventHTMLElement} from '..';
+import { IcalendarEventHTMLElement } from '..';
 
 interface ICalendarEventConstructor {
 	eid: string;
@@ -7,6 +7,23 @@ interface ICalendarEventConstructor {
 	endDate?: string;
 	element?: IcalendarEventHTMLElement;
 	selectable?: boolean;
+}
+interface ICalendarEventAssignment {
+	eid?: string;
+	title?: string;
+	startDate?: string;
+	endDate?: string;
+	element?: IcalendarEventHTMLElement;
+	selectable?: boolean;
+}
+
+interface ICalendarEventAssignmentEntries {
+	[index: number]: [string, string];
+}
+
+enum TYPE {
+	HTML_ELEMENT,
+	OBJECT
 }
 
 export class CalendarEvent {
@@ -39,16 +56,22 @@ export class CalendarEvent {
 		this._element = newElement;
 	} */
 
-	get timestamp(): string | boolean {
+	get timestamp(): string {
 		if (!this.startDate || !this.endDate) {
 			console.error(
 				`this.startDate: ${this.startDate}; this.endDate: ${
 					this.endDate
 				}`
 			);
-			return false;
+			return;
 		}
 		return `${this.startDate}/${this.endDate}`;
+	}
+
+	set timestamp(newTimestamp: string) {
+		const newTimestamps = newTimestamp.split('/');
+		this.startDate = newTimestamps[0];
+		this.endDate = newTimestamps[1];
 	}
 
 	set selected(state: boolean) {
@@ -81,9 +104,35 @@ export class CalendarEvent {
 	/** Supply new data to be assigned to the particular event.
 	 *  Overrites other data of the same type.
 	 */
-	public assign(object: IcalendarEventHTMLElement): void {
-		if (object.dataset.eventid != null) {
-			this.element = object as IcalendarEventHTMLElement;
+	public assign(object: ICalendarEventAssignment): void;
+	public assign(object: IcalendarEventHTMLElement): void;
+	public assign(object: any): any {
+		let objectType: TYPE;
+
+		try {
+			// tslint:disable-next-line: no-unused-expression
+			(object as IcalendarEventHTMLElement).dataset.eventid;
+			objectType = TYPE.HTML_ELEMENT;
+		} catch (err) {
+			console.log('Not assigning an element, but an object.');
+			console.log(err);
+			objectType = TYPE.OBJECT;
+		}
+
+		if (objectType === TYPE.HTML_ELEMENT) {
+			this.element = object;
+		} else if (objectType === TYPE.OBJECT) {
+			console.log('Not assigning an element, but an object.');
+
+			for (const entry of Object.entries(
+				object as ICalendarEventAssignment
+			)) {
+				/*
+				Where entry[0]: string is the key (e.g.: "eid", "startDate")
+				and entry[1]: string is its value
+				*/
+				this[entry[0] as string] = entry[1] as string;
+			}
 		}
 	}
 }

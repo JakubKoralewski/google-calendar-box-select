@@ -8,7 +8,7 @@ export * from './classes/Selection';
 export * from './classes/Slidedown';
 export * from './interfaces/IcalendarEventHTMLElement';
 export * from './interfaces/Idetail';
-export * from './interfaces/IuncompletedRequest';
+export * from './interfaces/IwebRequests';
 export * from './interfaces/IparseTime';
 export * from './utils/calculateTimeOffset';
 export * from './utils/repeatWebRequest';

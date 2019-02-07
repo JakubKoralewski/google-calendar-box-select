@@ -8,7 +8,13 @@
 	"content_scripts": [{
 		"matches": ["*://calendar.google.com/*/*"],
 		"js": ["boxSelect.bundle.js"]
-	}],
+	},
+	{
+		"matches": ["*://calendar.google.com/*/*"],
+		"js": ["documentStart.bundle.js"],
+		"run_at": "document_start"
+	}
+	],
 	"background": {
 		"scripts": ["background.bundle.js"],
 		"persistent": true
