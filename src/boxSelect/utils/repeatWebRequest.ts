@@ -50,15 +50,18 @@ export function repeatWebRequest(
 		(calendarEvent: CalendarEvent) => calendarEvent.eid === originalEventId
 	);
 
-	/* First find the original event to have the delta calculated for all events. */
-	if (originalEvent.timestamp !== requestBody.dates[0]) {
-		const newTime = requestBody.dates[0];
+	console.assert(originalEvent instanceof CalendarEvent);
 
-		deltaOffset = calculateTimeOffset(
-			newTime,
-			originalEvent.timestamp as string
-		);
-	}
+	/* First find the original event to have the delta calculated for all events. */
+	if (requestBody.hasOwnProperty('dates'))
+		if (originalEvent.timestamp !== requestBody.dates[0]) {
+			const newTime = requestBody.dates[0];
+
+			deltaOffset = calculateTimeOffset(
+				newTime,
+				originalEvent.timestamp as string
+			);
+		}
 
 	selectedEvents.calendarEvents.forEach((calendarEvent: CalendarEvent) => {
 		const event = calendarEvent.element;
