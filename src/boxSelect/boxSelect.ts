@@ -2,6 +2,8 @@ import {
 	Blocker,
 	CalendarEvent,
 	CalendarEvents,
+	DEFAULT_DELETE_KEY,
+	DEFAULT_SELECT_KEY,
 	Idetail,
 	IloadFormData,
 	IuncompletedRequest,
@@ -10,10 +12,8 @@ import {
 	Slidedown
 } from '.';
 
-/** Default: `b`  */
-let SELECT_KEY = 'b';
-/** Default: `q`  */
-let DELETE_KEY = 'q';
+let SELECT_KEY = DEFAULT_SELECT_KEY;
+let DELETE_KEY = DEFAULT_DELETE_KEY;
 
 /** is the key with the SELECT_KEY being pressed */
 let isSelectKeyPressed = false;
@@ -198,6 +198,7 @@ interface IeventData {
 	title: string;
 }
 
+/* Load new event data caused by an overwrite of XHR prototype's functions. */
 window.addEventListener(
 	'injectedScriptEventLoad',
 	(data: IeventLoadCustomEvent) => {

@@ -4,7 +4,9 @@ export const OK_PATH =
 export const TRASH_PATH =
 	'#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div';
 
-/** The amount added to evtColor forming brColor.  */
+/** The amount added to evtColor forming brColor.
+ *  This is used for creating the gradient that's animating when select mode is on.
+ */
 export const BRIGHTEN_BY = 20;
 
 /** To be replaced using string.replace() and regular expressions
@@ -24,3 +26,8 @@ export const timeTemplates = [
 	{ name: 'minutes', start: 11, end: 13 },
 	{ name: 'seconds', start: 13, end: 15 }
 ];
+
+/** `b` */
+export let DEFAULT_SELECT_KEY = 'b';
+/** `q` */
+export let DEFAULT_DELETE_KEY = 'q';
