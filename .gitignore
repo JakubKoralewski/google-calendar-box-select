@@ -5,3 +5,5 @@
 # environment variables
 .env
 /docs/
+google-calendar-box-select.iml
+/.history/

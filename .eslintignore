@@ -1,6 +1,0 @@
-# dependencies
-/node_modules/
-# actual file that you zip and publish
-/build/
-# environment variables
-.env

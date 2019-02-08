@@ -1,8 +1,11 @@
 /**
  *  Blocker is a transparent overlay that allows for click and drag.
  *  Blocker will disable click reaction when holding e.g. 'B'
- * */
-class Blocker {
+ */
+export class Blocker {
+	public lowerElement: HTMLDivElement;
+	public upperElement: HTMLDivElement;
+	public created: boolean;
 	constructor() {
 		/* Lower element shows color */
 		this.lowerElement = document.createElement('div');
@@ -21,7 +24,7 @@ class Blocker {
 	 * @param {string} parent - The parent to become the first child of.
 	 * @param {number} state - 0 (off); 1 (on);
 	 */
-	setState(parent, state) {
+	public setState(parent: HTMLElement, state: boolean) {
 		if (state) {
 			parent.insertBefore(this.lowerElement, parent.childNodes[1]);
 			parent.insertBefore(this.upperElement, this.lowerElement);
@@ -33,5 +36,3 @@ class Blocker {
 		this.created = state;
 	}
 }
-
-export default Blocker;

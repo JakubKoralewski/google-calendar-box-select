@@ -9,14 +9,12 @@ const webpack = require('webpack'),
 	MiniCssExtractPlugin = require('mini-css-extract-plugin'),
 	FileManagerWebpackPlugin = require('filemanager-webpack-plugin'),
 	TerserPlugin = require('terser-webpack-plugin'),
-	JSONMinifyPlugin = require('node-json-minify');
+	JSONMinifyPlugin = require('node-json-minify'),
+	ChromeExtensionReloaderPlugin = require('webpack-chrome-extension-reloader');
 
 require('dotenv').config();
 
 const debug = process.env.NODE_ENV !== 'production';
-
-// load the secrets
-var alias = {};
 
 var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
 
@@ -29,11 +27,13 @@ if (fileSystem.existsSync(secretsPath)) {
 var options = {
 	mode: process.env.NODE_ENV || 'development',
 	entry: {
-		popup: path.join(__dirname, 'src', 'popup', 'popup.js'),
-		options: path.join(__dirname, 'src', 'options', 'options.js'),
-		boxSelect: path.join(__dirname, 'src', 'js', 'box-select', 'box-select.js'),
-		background: path.join(__dirname, 'src', 'js', 'background.js'),
-		globalStyles: path.join(__dirname, 'src', 'injected', 'globalStyles.scss')
+		popup: path.join(__dirname, 'src', 'popup', 'popup.ts'),
+		options: path.join(__dirname, 'src', 'options', 'options.ts'),
+		boxSelect: path.join(__dirname, 'src', 'boxSelect', 'boxSelect.ts'),
+		background: path.join(__dirname, 'src', 'background.ts'),
+		globalStyles: path.join(__dirname, 'src', 'injected', 'globalStyles.scss'),
+		script: path.join(__dirname, 'src', 'injected', 'script.ts'),
+		documentStart: path.join(__dirname, 'src', 'injected', 'documentStart.ts')
 	},
 	chromeExtensionBoilerplate: {
 		notHotReload: ['boxSelect']
@@ -63,6 +63,15 @@ var options = {
 	},
 	module: {
 		rules: [
+			{
+				test: /\.tsx?$/,
+				use: [
+					{
+						loader: 'ts-loader'
+					}
+				],
+				exclude: /node_modules/
+			},
 			{
 				test: /\.(s*)css$/,
 				use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
@@ -103,8 +112,9 @@ var options = {
 			}
 		]
 	},
+	/* Highly experimental change. */
 	resolve: {
-		alias
+		extensions: ['.ts', '.js', '.json']
 	},
 	plugins: [
 		// clean the build folder
@@ -125,9 +135,12 @@ var options = {
 					);
 				}
 			},
-			{
-				from: path.join(__dirname, 'src', 'injected', 'script.js')
-			},
+/* 			{
+				from: path.join(__dirname, 'src', 'injected', 'script.js'),
+				transform: function(content) {
+					return tsLoad
+				}
+			}, */
 			{
 				/* i18n */
 				from: path.join(__dirname, 'src', '_locales'),
@@ -159,12 +172,22 @@ var options = {
 				delete: ['build/globalStyles.bundle.js']
 			}
 		}),
-		new WriteFilePlugin()
+		new WriteFilePlugin()/* ,
+		new webpack.SourceMapDevToolPlugin() *//* ,
+		new ChromeExtensionReloaderPlugin({
+			port: 9223, // Which port use to create the server
+			reloadPage: true, // Force the reload of the page also
+			entries: {
+				contentScript: ['boxSelect'],
+				background: 'background'
+			}
+		}) */
 	]
 };
 
 if (debug) {
 	options.devtool = 'source-map';
+	/* options.devtool = 'cheap-module-eval-source-map'; */
 } else {
 	options.devtool = 'false';
 	options.performance = {
