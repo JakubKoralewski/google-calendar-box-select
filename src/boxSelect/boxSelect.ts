@@ -140,7 +140,7 @@ chrome.runtime.onMessage.addListener(async request => {
 
 			// Wait a few times for div to change place
 			while (!events.selected.reset() && i) {
-				await new Promise(r => setTimeout(r, 100));
+				await new Promise(r => setTimeout(r, 50));
 				i--;
 			}
 
