@@ -47,6 +47,7 @@ export class Selection {
 
 	public select(events: CalendarEvents) {
 		/* //TODO: [#7](https://github.com/JakubKoralewski/google-calendar-box-select/issues/7) */
+
 		// 102px (string) -> 102 (number)
 		let left: string | number = this.element.style.left;
 		left = parseInt(left.substring(0, left.length - 2), 10);

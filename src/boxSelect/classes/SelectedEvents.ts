@@ -23,7 +23,8 @@ export class SelectedEvents extends Events {
 		return Object.keys(this.events || {});
 	}
 
-	/** Delete selected events by clicking on the trashcan.
+	/** OBSOLETE WAY. Use only when using from popup cause I got no other idea for now.
+	 *  Delete selected events by clicking on the trashcan.
 	 *  Also deletes the events in this.events.
 	 */
 	public async delete() {
@@ -92,6 +93,13 @@ export class SelectedEvents extends Events {
 		});
 	}
 
+	/** Set as obsolete.  */
+	public remove(event: CalendarEvent) {
+		delete this.events[event.eid];
+		this.allEvents.remove(event);
+		this.allEvents.selectedObsolete();
+	}
+
 	/** For all visible events it finds `HTMLElement`s of selected events.
 	 *
 	 *  Happens e.g. when event is dragged over to another day.
@@ -112,6 +120,8 @@ export class SelectedEvents extends Events {
 				HTMLEvent => HTMLEvent.dataset.eventid === calendarEvent.eid
 			);
 			if (!newEvent) {
+				/* Event not found. Was probably deleted or something went wrong. */
+
 				debugger;
 			}
 
@@ -126,8 +136,8 @@ export class SelectedEvents extends Events {
 		return allEvents.length > 0;
 	}
 
-	/** Sets all `CalendarEvent`s.selected = false.
-	 *
+	/**
+	 * Sets all `CalendarEvent`s.selected = false.
 	 */
 	public unselect() {
 		this.calendarEvents.forEach(event => (event.selected = false));

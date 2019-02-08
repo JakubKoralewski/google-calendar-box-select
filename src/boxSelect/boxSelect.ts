@@ -55,9 +55,8 @@ chrome.runtime.onMessage.addListener(async request => {
 			break;
 		case 'delete':
 			window.focus();
-			keyDown({
-				key: 'q'
-			});
+			/* Is actually clicking on events for now. */
+			if (events.selected) events.selected.delete();
 			console.log('delete');
 			break;
 
@@ -90,7 +89,8 @@ chrome.runtime.onMessage.addListener(async request => {
 			uncompletedRequest.onSendHeaders = request.details;
 
 			repeatWebRequest(events.selected, uncompletedRequest);
-			events.selected.reset();
+			/* If events just got deleted then there's nothing to reset */
+			if (events.selected) events.selected.reset();
 			break;
 		}
 		case 'onCompleted': {
@@ -131,11 +131,6 @@ chrome.runtime.onMessage.addListener(async request => {
 
 			break;
 		}
-		/* case 'containsLoadOnSendHeaders': {
-			if (!events.selected) return;
-			console.log('containsLoadOnSendHeaders');
-			break;
-		} */
 		case 'containsLoadOnCompleted': {
 			if (!events.selected) return;
 			console.log('containsLoadOnCompleted');
@@ -323,7 +318,7 @@ function boxSelectUp() {
 		return;
 	}
 	selector.select(events);
-	events.selected.reset();
+	if (events.selected) events.selected.reset();
 	selector.destroy();
 
 	// If triggered from popup/popup.html then remember to remove the blocker!

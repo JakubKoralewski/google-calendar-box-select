@@ -67,6 +67,20 @@ export function repeatWebRequest(
 		const event = calendarEvent.element;
 		const eventId = event.dataset.eventid;
 
+		const requestURL = uncompletedRequest.onBeforeRequest.url;
+		/* When deleting `requestURL = "https://calendar.google.com/calendar/deleteevent"` */
+		if (requestURL.includes('deleteevent')) {
+			/* Event is being deleted. Delete from events. */
+
+			/* //FIXME: the original event actually stays in the DOM for some reason? */
+			// TODO: delete events
+
+			/* Remove from DOM. */
+			if (event.parentNode) event.parentNode.removeChild(event);
+
+			selectedEvents.remove(calendarEvent);
+		}
+
 		if (eventId === originalEventId) {
 			/* No need to repeat action for event that actually triggered the action. */
 			return;
@@ -153,7 +167,6 @@ export function repeatWebRequest(
 		console.log('OPTIONS:');
 		console.log(OPTIONS);
 
-		const requestURL = uncompletedRequest.onBeforeRequest.url;
 		/* Send request */
 		fetch(requestURL, OPTIONS as RequestInit).then(
 			response => {

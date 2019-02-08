@@ -53,6 +53,12 @@ export class CalendarEvents extends Events {
 			this.events[event.eid] = event;
 		}
 	}
+	/** Set as obsolete.
+	 *  Ran from SelectedEvents
+	 */
+	public remove(event: CalendarEvent) {
+		delete this.events[event.eid];
+	}
 
 	/** Adds gradient animation to indicate the possibility of being selected.
 	 *
