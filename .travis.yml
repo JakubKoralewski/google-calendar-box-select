@@ -12,14 +12,13 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name Jakub Koralewski
   - git config --local user.email jakub.koralewski1@gmail.com
-  - git tag -f experimental
   - export NODE_ENV=production
-  - npm run build && zip -r google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip build
+  - npm run build && zip -r google-calendar-box-select-experimental${TRAVIS_TAG}.zip build
 
 deploy:
   provider: releases
   api_key: "$GH_TOKEN"
-  file: google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip
+  file: google-calendar-box-select-experimental${TRAVIS_TAG}.zip
   name: Experimental build $(date +'%d.%m.%Y %R UTC')
   prerelease: true
   body: This is an automagical build. Use with caution.<br/>See the build details [here](${TRAVIS_BUILD_WEB_URL}).<br/>
