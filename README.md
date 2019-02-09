@@ -13,7 +13,11 @@ multilingual locale support
 
 </h5>
 
+<p align="center">The extension works by repeating an action applied to one of the selected events and repeating it to the rest. Using the original as a source using a fetch request is made to change just the necessary properties, e.g.: the event ID, start date, end date or color. </p> 
+
 ## Usage
+
+You can click the extension icon to view a simple toolbar letting you select as well as delete all selected events. Deleting all selected events from the pop-up uses hardcoded CSS-based selectors instead of repeating an HTTP request.
 
 `B` - (hold) enter selection mode
 
@@ -21,68 +25,78 @@ multilingual locale support
 
 Keyboard shortcuts **can be changed** in the Extension's options.
 
-## :construction: Before developing
+### Supported features are: 
+- repeating these actions to selected events:
+  - [x] deleting,
+  - [x] dragging (including changing duration),
+  - [x] changing color.
+
+### Considered features are:
+- [ ] moving selected events while dragging,
+- [ ] special context menu,
+- [ ] changing title to multiple events at a time,
+- [ ] inserting multiple events at a time,
+- [ ] using [Mozilla's WebExtension polyfill][webextension-polyfill] to support Firefox, Chrome, Opera and Edge.
+
+[webextension-polyfill]: https://github.com/mozilla/webextension-polyfill
+## Develop
 
 ```bash
 $ npm install
+$ npm run dev
 ```
 
-## Develop
-
-For developing this extension I **strongly** recommend [VSCode][vscode] with these settings:
+For developing this extension I **strongly** recommend the free editor - [VSCode][vscode].
 
 ### VSCode settings ([`settings.json`](.vscode/settings.json)):
+
 [Prettier plugin][prettier] + [TSLint plugin][tslint] + (optionally) [Debugger for Chrome][debugger] in [VSCode][vscode].
 
 This extension is written in TypeScript and [VSCode][vscode] provides great TypeScript IntelliSense.
-[Debugger for Chrome][debugger] allows you to debug compiled TypeScript in Chrome and TypeScript synchronously.
+[Debugger for Chrome][debugger] allows you to set breakpoints in VSCode and debug in VSCode as well; however, I didn't find this too practical and also a bit buggy.
+
+Consider these tools to simplify your workflow: [Extensions Reloader][extensions-reloader], [Webpack Chrome Extension Reloader][webpack-chrome-extension-reloader] (commented out by default).
 
 [prettier]: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
 [tslint]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin
 [debugger]: https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
 [vscode]: https://code.visualstudio.com/
-
-```bash
-$ npm run dev
-```
+[extensions-reloader]: https://chrome.google.com/webstore/detail/extensions-reloader/fimgfedafeadlieiabdeeaodndnlbhid?hl=pl
+[webpack-chrome-extension-reloader]: https://www.npmjs.com/package/webpack-chrome-extension-reloader
 
 ## Build
 
-Set NODE_ENV variable to `production` to minify, uglify JS, not create source maps. Use `development` apart from that to get blazing fast hot reload.
+Set NODE_ENV variable to `production` to minify generated JS and disable source maps. Use `development` apart from that to get blazing fast hot reload.
 
 ```bash
 $ npm run build
 ```
 
-Deploys to `build/` folder.
+Deploys to `build/` folder. Zip folder for distribution or open the directory in Chrome for developing `⋮ >> More tools >> Extensions >> Load unpacked` ([chrome://extensions/](chrome://extensions/)).
 
 ## Contributions
 
-Very welcome! Especially dealing with the dreaded... _PROBLEM_.
-
-Modern ES6+ syntax in TypeScript compiled to ES5 for maximum compatibility.
+Very welcome! Please follow the provided `TSLint` rules. Use [Prettier][prettier] to stop your code from becoming too long. Don't shun from using modern (ES6+) syntax, arrow functions and the like.
 
 ### Style ([`tslint.json`](src/tslint.json)):
-`tabs` (`4 spaces` long), `semicolons`, `single quotes`, `CRLF line endings`.
+
+`tabs`, `semicolons`, `single` quotes, `CRLF` line endings.
 
 ### ES6+ features encouraged ([`tsconfig.json`](src/tsconfig.json)):
+
 target: `ES5`, lib: `dom, es2018`.
 
 ## :warning: Problem
 
 The process of deleting events is very hacked together since no hooking into underlying (minified) JavaScript code is being done.
-Instead of that the **trash can** is actually being clicked to delete events using a **querySelector**, something like this:
+Instead of that the **trash can** is actually being clicked to delete events using a **querySelector** with hardcoded selectors:
 
-```javascript
-document
-	.querySelector(
-		'#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div'
-	)
-	.click();
+```css
+#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div
 ```
 
 You can see this is not ideal.
-Because of this the ideal goal of this extension would be to acquire so many users as to pressure the Google Calendar team into creating a real, stable system of multiple selection, deletion and edition...
+Because of this the ideal goal of this extension would be to acquire so many users as to pressure the Google Calendar team into creating a stable system of multiple selection, deletion and editing...
 
 ## the ideal goal of this extension would be to... [**die**](https://getyarn.io/yarn-clip/9f143220-ed9d-4525-b4ef-b37fd5413768)
 
