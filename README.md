@@ -13,7 +13,7 @@ multilingual locale support
 
 </h5>
 
-<p align="center">The extension works by repeating an action applied to one of the selected events and repeating it to the rest. 
+<p align="center">The extension works by repeating an action on one of the selected events and applying it to the rest. 
 <br/>Using the original as a source a Fetch request is made changing just the necessary properties (e.g., the event ID, start date, end date or color). </p> 
 
 ## Usage
