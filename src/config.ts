@@ -3,6 +3,8 @@ export const OK_PATH =
 	'div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';
 export const TRASH_PATH =
 	'#xDetDlg > div > div.Tnsqdc > div > div > div.pPTZAe > div:nth-child(2) > div';
+/** CSS class that makes event element transparent. Used to indicate the original position of event before dragging it.  */
+export const TRANSPARENT_CLASS = 'Sb44q';
 
 /** The amount added to evtColor forming brColor.
  *  This is used for creating the gradient that's animating when select mode is on.

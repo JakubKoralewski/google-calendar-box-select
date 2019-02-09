@@ -114,6 +114,7 @@ export class SelectedEvents extends Events {
 		/* this.calendarEvents.forEach(event => (event.selectable = false)); */
 
 		const allEvents = this.findInDOM();
+		let isEventFound = false;
 
 		for (const calendarEvent of this.calendarEvents) {
 			const newEvent = allEvents.find(
@@ -122,7 +123,10 @@ export class SelectedEvents extends Events {
 			if (!newEvent) {
 				/* Event not found. Was probably deleted or something went wrong. */
 
-				debugger;
+				console.error('Event not found on reset. Deleting it.');
+				this.remove(calendarEvent);
+			} else {
+				isEventFound = true;
 			}
 
 			/* The old HTMLEvent is replaced with the newly found one. */
@@ -133,7 +137,7 @@ export class SelectedEvents extends Events {
 		console.log('after:');
 		console.log(this.events);
 
-		return allEvents.length > 0;
+		return isEventFound;
 	}
 
 	/**

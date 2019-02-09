@@ -167,21 +167,24 @@ export function repeatWebRequest(
 		console.log('OPTIONS:');
 		console.log(OPTIONS);
 
+		const DEBUG = {OPTIONS, uncompletedRequest, newBody, requestBody, newHeaders};
 		/* Send request */
+		/* //FIXME: 503 */
 		fetch(requestURL, OPTIONS as RequestInit).then(
-			response => {
-				console.log('fetch response:');
-				console.log(response);
-				/* debugger; */
-			},
+			response => fetchResponse(response, DEBUG),
 			reject => {
-				console.warn('fetch reject:');
+				console.error('fetch reject:');
 				console.log(reject);
 			}
 		);
-
 		console.groupEnd();
 	});
+}
+
+function fetchResponse(response: Response, DEBUG) {
+	console.log('fetch response:');
+	console.log(response);
+	if (!response.ok) debugger;
 }
 
 function padNumber(number: number, n?: number) {

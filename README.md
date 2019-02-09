@@ -13,17 +13,18 @@ multilingual locale support
 
 </h5>
 
-<p align="center">The extension works by repeating an action applied to one of the selected events and repeating it to the rest. Using the original as a source using a fetch request is made to change just the necessary properties, e.g.: the event ID, start date, end date or color. </p> 
+<p align="center">The extension works by repeating an action applied to one of the selected events and repeating it to the rest. 
+<br/>Using the original as a source a Fetch request is made changing just the necessary properties (e.g., the event ID, start date, end date or color). </p> 
 
 ## Usage
-
-You can click the extension icon to view a simple toolbar letting you select as well as delete all selected events. Deleting all selected events from the pop-up uses hardcoded CSS-based selectors instead of repeating an HTTP request.
 
 `B` - (hold) enter selection mode
 
 `Q` - delete selected events
 
 Keyboard shortcuts **can be changed** in the Extension's options.
+
+You can click the extension icon to view a simple toolbar letting you select as well as delete all selected events. Deleting all selected events from the pop-up uses hardcoded CSS-based selectors instead of repeating an HTTP request.
 
 ### Supported features are: 
 - repeating these actions to selected events:

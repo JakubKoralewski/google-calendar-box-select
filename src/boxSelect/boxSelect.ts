@@ -169,7 +169,7 @@ window.addEventListener('injectedScriptInitialData', (data: CustomEvent) => {
 /* Load new event data caused by an overwrite of XHR prototype's functions. */
 window.addEventListener(
 	'injectedScriptEventLoad',
-	(data: IeventLoadCustomEvent) => {
+	async (data: IeventLoadCustomEvent) => {
 		console.group('injectedScriptEventLoad');
 		const detail: IsingleEventLoad[] = JSON.parse(
 			String.raw`${data.detail.substring(5)}`
@@ -182,6 +182,7 @@ window.addEventListener(
 				"us" - ?
 			*/
 			if (unknownDataElement[0] === 'a') {
+
 				const rawEventData: IrawEventData = JSON.parse(
 					unknownDataElement[1]
 				);
@@ -199,10 +200,10 @@ window.addEventListener(
 				);
 
 				if (!foundEvent) {
-					/* Event created while extension was online. Create new one? */
+					/* Event created while extension was online. Create new one. New event cannot be selected. */
 					events.add(new CalendarEvent(eventData));
 				} else {
-					/* No need to assign if new event just got created. */
+					/* Event exists so just update the values. */
 					foundEvent.assign(eventData);
 				}
 			}

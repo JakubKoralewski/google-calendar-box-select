@@ -1,7 +1,7 @@
 const webpack = require('webpack'),
 	path = require('path'),
-	fileSystem = require('fs'),
-	env = require('./utils/env'),
+/* 	fileSystem = require('fs'),
+	env = require('./utils/env'), */
 	CleanWebpackPlugin = require('clean-webpack-plugin'),
 	CopyWebpackPlugin = require('copy-webpack-plugin'),
 	HtmlWebpackPlugin = require('html-webpack-plugin'),
@@ -9,23 +9,27 @@ const webpack = require('webpack'),
 	MiniCssExtractPlugin = require('mini-css-extract-plugin'),
 	FileManagerWebpackPlugin = require('filemanager-webpack-plugin'),
 	TerserPlugin = require('terser-webpack-plugin'),
-	JSONMinifyPlugin = require('node-json-minify'),
-	ChromeExtensionReloaderPlugin = require('webpack-chrome-extension-reloader');
+	JSONMinifyPlugin = require('node-json-minify');/* ,
+	ChromeExtensionReloaderPlugin = require('webpack-chrome-extension-reloader'); */
 
-require('dotenv').config();
+const env = (process.env.NODE_ENV || 'development').trim();
 
-const debug = process.env.NODE_ENV !== 'production';
+console.log(`env='${env}'`);
+const debug = env.includes('dev');
+console.log(`debug=${debug}`);
 
-var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
+
+
+/* var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js'); */
 
 var fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
 
-if (fileSystem.existsSync(secretsPath)) {
+/* if (fileSystem.existsSync(secretsPath)) {
 	alias['secrets'] = secretsPath;
-}
+} */
 
 var options = {
-	mode: process.env.NODE_ENV || 'development',
+	mode: env,
 	entry: {
 		popup: path.join(__dirname, 'src', 'popup', 'popup.ts'),
 		options: path.join(__dirname, 'src', 'options', 'options.ts'),
@@ -186,10 +190,13 @@ var options = {
 };
 
 if (debug) {
-	options.devtool = 'source-map';
+	/* options.devtool = 'source-map'; */
+	options.devtool = 'cheap-eval-source-map';
 	/* options.devtool = 'cheap-module-eval-source-map'; */
 } else {
-	options.devtool = 'false';
+	/* options.devtool = 'false'; */
+	options.devtool = 'eval';
+	/* options.devtool = 'cheap-module-eval-source-map'; */
 	options.performance = {
 		hints: 'warning'
 	};

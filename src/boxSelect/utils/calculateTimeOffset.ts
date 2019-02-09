@@ -53,8 +53,7 @@ export function calculateTimeOffset(
 
 			const offset = parseInt(time1, 10) - parseInt(time2, 10);
 
-			/* If 0 will return false. */
-			rv[startOrEnd][timeTemplate.name] = offset || !!offset;
+			rv[startOrEnd][timeTemplate.name] = offset;
 		}
 	}
 	return rv as ItimeOffset;
