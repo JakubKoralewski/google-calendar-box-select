@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "11.9.0"
+  - '11.9.0'
 
 branches:
   only:
@@ -15,15 +15,14 @@ before_deploy:
   - git tag -f experimental${TRAVIS_BUILD_NUMBER}
   - export NODE_ENV=development
   - npm run build
-  - npm run dev 
   - export NODE_ENV=production
+  # - npm run dev # for testing, blocks the execution but I don't know how to make build give errors
   - npm run build
-  - npm run dev 
   - zip -r google-calendar-box-select-experimental${TRAVIS_TAG}.zip build
 
 deploy:
   provider: releases
-  api_key: "$GH_TOKEN"
+  api_key: '$GH_TOKEN'
   file: google-calendar-box-select-experimental${TRAVIS_TAG}.zip
   name: Experimental build $(date +'%d.%m.%Y %R UTC')
   prerelease: true
