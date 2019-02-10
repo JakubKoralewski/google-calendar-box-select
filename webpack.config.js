@@ -186,7 +186,8 @@ var options = {
 				background: 'background'
 			}
 		}) */
-	]
+	],
+	stats: 'verbose'
 };
 
 if (debug) {
