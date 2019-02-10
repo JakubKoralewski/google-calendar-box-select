@@ -14,6 +14,7 @@ export class Selection {
 		const element = document.createElement('div');
 		element.style.left = `${startX}px`;
 		element.style.top = `${startY}px`;
+		element.style.display = 'flex';
 
 		element.id = 'selector';
 		this.element = element;
@@ -41,7 +42,7 @@ export class Selection {
 	}
 
 	public destroy() {
-		this.parent.removeChild(this.element);
+		this.element.style.display = 'none';
 		Selection.visible = false;
 	}
 

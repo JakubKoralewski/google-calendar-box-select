@@ -9,6 +9,14 @@ import {
 export class SelectedEvents extends Events {
 	private allEvents: CalendarEvents;
 
+	/** There should be seven DIV's - each corresponding to a day.
+	 *  Will work in 4 days view, week view.
+	 *  Won't work in Month view.
+	 */
+	private elementsContainer: HTMLDivElement[];
+	private elementsContainerObservers: MutationObserver[];
+	private isMutationObserverApplied: boolean = false;
+
 	constructor(selectedEvents: CalendarEvent[], allEvents: CalendarEvents) {
 		super();
 		if (selectedEvents != null) {
@@ -17,6 +25,27 @@ export class SelectedEvents extends Events {
 			}
 		}
 		this.allEvents = allEvents;
+
+		this.elementsContainer = Array.from(
+			document.querySelectorAll('div[role=row] > div[role=gridcell]')
+		);
+
+		const mutationObserverConfig = { childList: true, subtree: true };
+
+		this.elementsContainer.forEach(container => {
+			const mutationObserver = new MutationObserver(
+				(mutationsList, observer) => {
+					console.log(
+						'mutation observed on container',
+						container,
+						' with observer',
+						observer
+					);
+					this.reset();
+				}
+			);
+			mutationObserver.observe(container, mutationObserverConfig);
+		});
 	}
 
 	get ids(): string[] {

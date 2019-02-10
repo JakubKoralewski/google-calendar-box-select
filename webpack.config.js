@@ -197,9 +197,6 @@ if (debug) {
 	/* options.devtool = 'false'; */
 	options.devtool = 'eval';
 	/* options.devtool = 'cheap-module-eval-source-map'; */
-	options.performance = {
-		hints: 'warning'
-	};
 }
 
 console.log(options);

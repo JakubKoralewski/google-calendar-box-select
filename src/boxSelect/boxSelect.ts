@@ -90,7 +90,7 @@ chrome.runtime.onMessage.addListener(async request => {
 
 			repeatWebRequest(events.selected, uncompletedRequest);
 			/* If events just got deleted then there's nothing to reset */
-			if (events.selected) events.selected.reset();
+			/* if (events.selected) events.selected.reset(); */
 			break;
 		}
 		case 'onCompleted': {
@@ -101,7 +101,7 @@ chrome.runtime.onMessage.addListener(async request => {
 			console.log('onCompleted:');
 			console.log(request.details);
 
-			events.selected.reset();
+			/* events.selected.reset(); */
 			break;
 		}
 
@@ -136,13 +136,13 @@ chrome.runtime.onMessage.addListener(async request => {
 			console.log('containsLoadOnCompleted');
 
 			/** Number of tries before you give up waiting. */
-			let i: number = 5;
+			/* let i: number = 5;
 
 			// Wait a few times for div to change place
 			while (!events.selected.reset() && i) {
 				await new Promise(r => setTimeout(r, 50));
 				i--;
-			}
+			}*/
 
 			break;
 		}
@@ -182,7 +182,6 @@ window.addEventListener(
 				"us" - ?
 			*/
 			if (unknownDataElement[0] === 'a') {
-
 				const rawEventData: IrawEventData = JSON.parse(
 					unknownDataElement[1]
 				);

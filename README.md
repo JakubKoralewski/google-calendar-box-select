@@ -32,12 +32,6 @@ You can click the extension icon to view a simple toolbar letting you select as 
   - [x] dragging (including changing duration),
   - [x] changing color.
 
-### Considered features are:
-- [ ] moving selected events while dragging,
-- [ ] special context menu,
-- [ ] changing title to multiple events at a time,
-- [ ] inserting multiple events at a time,
-- [ ] using [Mozilla's WebExtension polyfill][webextension-polyfill] to support Firefox, Chrome, Opera and Edge.
 
 [webextension-polyfill]: https://github.com/mozilla/webextension-polyfill
 ## Develop
@@ -76,6 +70,16 @@ $ npm run build
 Deploys to `build/` folder. Zip folder for distribution or open the directory in Chrome for developing `⋮ >> More tools >> Extensions >> Load unpacked` ([chrome://extensions/](chrome://extensions/)).
 
 ## Contributions
+
+### Considered features you could help with are:
+- [ ] moving selected events while dragging,
+- [ ] special context menu,
+- [ ] copying events,
+- [ ] SHIFT or ALT selection to respectively add and remove from selected,
+- [ ] CTRL+Z undo mechanism,
+- [ ] changing title to multiple events at a time,
+- [ ] inserting multiple events at a time,
+- [ ] using [Mozilla's WebExtension polyfill][webextension-polyfill] to support Firefox, Chrome, Opera and Edge.
 
 Very welcome! Please follow the provided `TSLint` rules. Use [Prettier][prettier] to stop your code from becoming too long. Don't shun from using modern (ES6+) syntax, arrow functions and the like.
 
