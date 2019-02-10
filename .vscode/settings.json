@@ -26,12 +26,6 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.tslint": true
 	},
-	"prettier.useTabs": true,
-	"prettier.arrowParens": "avoid",
-	"prettier.semi": true,
-	"prettier.tabWidth": 4,
-	"prettier.printWidth": 80,
-	"prettier.singleQuote": true,
 	"eslint.enable": false,
 	"editor.insertSpaces": false
 }
