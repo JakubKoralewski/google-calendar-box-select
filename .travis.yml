@@ -18,12 +18,12 @@ before_deploy:
   - export NODE_ENV=production
   # - npm run dev # for testing, blocks the execution but I don't know how to make build give errors
   - npm run build
-  - zip -r google-calendar-box-select-experimental${TRAVIS_TAG}.zip build
+  - zip -r google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip build
 
 deploy:
   provider: releases
   api_key: '$GH_TOKEN'
-  file: google-calendar-box-select-experimental${TRAVIS_TAG}.zip
+  file: google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip
   name: Experimental build $(date +'%d.%m.%Y %R UTC')
   prerelease: true
   body: This is an automagical build. Use with caution.<br/>See the build details [here](${TRAVIS_BUILD_WEB_URL}).<br/>
