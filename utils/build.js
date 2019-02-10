@@ -3,8 +3,10 @@ const webpack = require('webpack'),
 
 delete config.chromeExtensionBoilerplate;
 
-config.mode = 'production';
+//config.mode = 'production';
 
 webpack(config, function(err) {
-	if (err) throw err;
+	if (err) {
+		throw err;
+	}
 });
