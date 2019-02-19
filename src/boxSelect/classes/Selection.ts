@@ -1,3 +1,4 @@
+/* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
 import { CalendarEvent, CalendarEvents, IcalendarEventHTMLElement } from '..';
 
 export class Selection {

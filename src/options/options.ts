@@ -1,3 +1,4 @@
+/* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
 import '../fonts/OpenSans-Bold.ttf';
 import '../fonts/OpenSans-Regular.ttf';
 import '../fonts/OpenSans-SemiBold.ttf';

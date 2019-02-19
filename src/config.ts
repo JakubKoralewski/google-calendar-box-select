@@ -1,3 +1,4 @@
+/* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
 /* Query selector paths to elements associated with deleting an event. */
 export const OK_PATH =
 	'div.I7OXgf.dT3uCc.gF3fI.fNxzgd.Inn9w.iWO5td > div.OE6hId.J9fJmf > div > div.uArJ5e.UQuaGc.kCyAyd.l3F1ye.ARrCac.HvOprf.evJWRb.M9Bg4d';

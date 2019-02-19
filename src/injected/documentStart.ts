@@ -1,3 +1,4 @@
+/* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
 type RequestIdleCallbackHandle = any;
 interface RequestIdleCallbackOptions {
 	timeout: number;

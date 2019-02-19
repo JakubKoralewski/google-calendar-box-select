@@ -1,3 +1,4 @@
+/* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
 // tslint:disable: ordered-imports
 import {
 	/* Classes */

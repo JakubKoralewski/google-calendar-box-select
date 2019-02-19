@@ -1,3 +1,4 @@
+/* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
 /**
  *  Blocker is a transparent overlay that allows for click and drag.
  *  Blocker will disable click reaction when holding e.g. 'B'

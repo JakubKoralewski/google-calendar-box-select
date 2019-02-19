@@ -1,3 +1,5 @@
+/* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
+
 export * from '../config';
 export * from './classes/Blocker';
 export * from './classes/CalendarEvent';

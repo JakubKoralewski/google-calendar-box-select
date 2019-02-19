@@ -1,3 +1,4 @@
+/* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
 import { Idetail } from '../boxSelect';
 
 let events = JSON.parse((window as any).INITIAL_DATA[2][2][0]);

@@ -1,3 +1,4 @@
+/* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
 import './img/icon-128.png';
 import './img/icon-16.png';
 import './img/icon-48.png';
