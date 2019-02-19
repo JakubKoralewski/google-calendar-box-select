@@ -72,7 +72,7 @@ Deploys to `build/` folder. Zip folder for distribution or open the directory in
 ## Contributions
 
 ### Considered features you could help with are:
-- [ ] moving selected events while dragging,
+- [X] moving selected events while dragging,
 - [ ] special context menu,
 - [ ] copying events,
 - [ ] SHIFT or ALT selection to respectively add and remove from selected,
