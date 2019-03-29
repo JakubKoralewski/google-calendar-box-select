@@ -35,3 +35,5 @@ deploy:
   prerelease: true
   body: This is an automagical build. Use with caution.<br/>See the build details [here](${TRAVIS_BUILD_WEB_URL}).<br/>The dev version of the extension contains source maps, console logs, etc. I recommend using it when submitting bugs.
   skip_cleanup: true
+  on:
+    - node: 'node'
