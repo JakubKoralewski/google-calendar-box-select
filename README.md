@@ -1,4 +1,4 @@
-# Google Calendar Box Select [![](https://img.shields.io/travis/com/JakubKoralewski/google-calendar-box-select/master.svg?label=build&logo=travis)](https://travis-ci.com/JakubKoralewski/google-calendar-box-select/builds) [![](https://img.shields.io/github/release/JakubKoralewski/google-calendar-box-select.svg?label=latest%20stable)](https://github.com/JakubKoralewski/google-calendar-box-select/releases/latest) [![](https://img.shields.io/github/release-pre/JakubKoralewski/google-calendar-box-select.svg?label=latest%20any)](https://github.com/JakubKoralewski/google-calendar-box-select/releases)
+# Google Calendar Box Select [![](https://img.shields.io/travis/com/JakubKoralewski/google-calendar-box-select/master.svg?label=build&logo=travis)](https://travis-ci.com/JakubKoralewski/google-calendar-box-select/builds) [![](https://img.shields.io/github/release/JakubKoralewski/google-calendar-box-select.svg?label=latest%20stable)](https://github.com/JakubKoralewski/google-calendar-box-select/releases/latest) [![](https://img.shields.io/github/release-pre/JakubKoralewski/google-calendar-box-select.svg?label=latest%20any)](https://github.com/JakubKoralewski/google-calendar-box-select/releases) 
 
 # ![logo](docs/img/main_logo.png)
 
@@ -10,6 +10,8 @@
 <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/320px-Flag_of_Poland.svg.png" height="30" width="48"/> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/320px-Flag_of_the_United_Kingdom.svg.png" height="30" width="48" />
 
 multilingual locale support
+
+[![](https://img.shields.io/badge/help%20translate-web--ext--translator-brightgreen.svg)](https://lusito.github.io/web-ext-translator/?gh=https://github.com/JakubKoralewski/google-calendar-box-select)
 
 </h5>
 
