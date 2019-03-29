@@ -23,13 +23,14 @@ before_deploy:
   - npm run build
   - cd build
   - zip -r google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip *
+  - cd ..
 
 deploy:
   provider: releases
   api_key: '$GH_TOKEN'
   file: 
-    - google-calendar-box-select-dev-experimental${TRAVIS_BUILD_NUMBER}.zip
-    - google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip
+    - build/google-calendar-box-select-dev-experimental${TRAVIS_BUILD_NUMBER}.zip
+    - build/google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip
   name: Experimental build $(date +'%d.%m.%Y %R UTC')
   prerelease: true
   body: This is an automagical build. Use with caution.<br/>See the build details [here](${TRAVIS_BUILD_WEB_URL}).<br/>The dev version of the extension contains source maps, console logs, etc. I recommend using it when submitting bugs.
