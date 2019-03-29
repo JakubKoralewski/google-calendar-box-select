@@ -27,7 +27,7 @@ deploy:
   provider: releases
   api_key: '$GH_TOKEN'
   file: 
-    - google-calendar-box-select-experimental-dev-${TRAVIS_BUILD_NUMBER}.zip
+    - google-calendar-box-select-dev-experimental${TRAVIS_BUILD_NUMBER}.zip
     - google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip
   name: Experimental build $(date +'%d.%m.%Y %R UTC')
   prerelease: true
