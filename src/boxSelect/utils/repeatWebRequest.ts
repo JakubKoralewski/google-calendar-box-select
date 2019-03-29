@@ -36,7 +36,7 @@ export function repeatWebRequest(
 	selectedEvents: SelectedEvents,
 	uncompletedRequest: IuncompletedRequest
 ) {
-	console.log('repeatWebRequest');
+	console.group('repeatWebRequest');
 	/* console.log(selectedEvents, uncompletedRequest); */
 
 	/** Event that got sent originally */
@@ -167,27 +167,54 @@ export function repeatWebRequest(
 		console.log('OPTIONS:');
 		console.log(OPTIONS);
 
-		const DEBUG = {OPTIONS, uncompletedRequest, newBody, requestBody, newHeaders};
+		// const DEBUG = {OPTIONS, uncompletedRequest, newBody, requestBody, newHeaders};
 		/* Send request */
-		/* //FIXME: 503 */
-		fetch(requestURL, OPTIONS as RequestInit).then(
-			response => fetchResponse(response, DEBUG),
+		/* //FIXME: 503
+		 happens when multiple events get sent at the same time */
+		fetchRetry(requestURL, OPTIONS as RequestInit).then(
+			response => {
+				if (response.ok) {
+					// fetchResponse(response);
+				} else {
+					/* Response failed! */
+				}
+			},
 			reject => {
 				console.error('fetch reject:');
 				console.log(reject);
 			}
-		);
+		).catch(() => {
+			console.error(
+				`fetchRetry(url: ${requestURL}, OPTIONS: ${OPTIONS}, n ?= 5) failed
+				trying multiple times to resend an event.`
+				);
+		});
+		console.groupEnd();
 		console.groupEnd();
 	});
 }
 
-function fetchResponse(response: Response, DEBUG) {
-	console.log('fetch response:');
-	console.log(response);
-	if (!response.ok) debugger;
+/** This aims to stop the 503/500 POST errors when multiple events are modified at the same time.
+ *  The chosen solution is to try multiple times, and on each fail wait a bit longer and try again.
+ */
+async function fetchRetry(url: string, options: RequestInit, n: number = 5): Promise<Response> {
+	try {
+		return await fetch(url, options);
+	} catch (err) {
+		if (n === 1) throw err;
+		/* The smaller the number the longer you should wait before retrying. */
+		await sleep(1000 / n);
+		console.log(`Fetch failed. Retrying for the ${n}-th time.`);
+		return await fetchRetry(url, options, n - 1);
+	}
 }
 
 function padNumber(number: number, n?: number) {
 	if (n == undefined) n = 2;
 	return (new Array(n).join('0') + number).slice(-n);
+}
+
+/* Stack Overflow ♡ */
+function sleep(ms: number) {
+	return new Promise(resolve => setTimeout(resolve, ms));
 }
