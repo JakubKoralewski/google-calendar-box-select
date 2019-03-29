@@ -17,6 +17,7 @@ before_deploy:
   - git tag -f experimental${TRAVIS_BUILD_NUMBER}
   - export NODE_ENV=development
   - npm run build
+  - zip -r google-calendar-box-select-dev-experimental${TRAVIS_BUILD_NUMBER}.zip build
   - export NODE_ENV=production
   # - npm run dev # for testing, blocks the execution but I don't know how to make build give errors
   - npm run build
@@ -25,8 +26,10 @@ before_deploy:
 deploy:
   provider: releases
   api_key: '$GH_TOKEN'
-  file: google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip
+  file: 
+    - google-calendar-box-select-experimental-dev-${TRAVIS_BUILD_NUMBER}.zip
+    - google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip
   name: Experimental build $(date +'%d.%m.%Y %R UTC')
   prerelease: true
-  body: This is an automagical build. Use with caution.<br/>See the build details [here](${TRAVIS_BUILD_WEB_URL}).<br/>
+  body: This is an automagical build. Use with caution.<br/>See the build details [here](${TRAVIS_BUILD_WEB_URL}).<br/>The dev version of the extension contains source maps, console logs, etc. I recommend using it when submitting bugs.
   skip_cleanup: true
