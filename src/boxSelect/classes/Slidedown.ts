@@ -34,7 +34,7 @@ export class Slidedown {
 	public insertHTML() {
 		const selectModeActiveText = chrome.i18n.getMessage('selectModeActive');
 		this.element.innerHTML = `<p>${selectModeActiveText}</p>`;
-		console.log(`this.element.offsetWidth: ${this.element.offsetWidth}`);
+		console.log(`Slidedown.insertHTML: this.element.offsetWidth: ${this.element.offsetWidth}`);
 		this.element.style.marginLeft = (-this.element.offsetWidth / 2).toString() + 'px';
 	}
 }

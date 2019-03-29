@@ -75,10 +75,14 @@ export class CalendarEvent {
 	}
 
 	set selected(state: boolean) {
+		console.group(`set selected(state: ${state}`);
+
 		this.element.id = state ? 'selected' : '';
 		console.log('setting', this.element, `id to`);
 		console.log(state ? 'selected' : '%cEMPTY', state ? '' : 'color: red');
 		this._selected = state;
+
+		console.groupEnd();
 	}
 
 	get selected(): boolean {
@@ -99,22 +103,20 @@ export class CalendarEvent {
 	public assign(object: IcalendarEventAssignment): void;
 	public assign(object: IcalendarEventHTMLElement): void;
 	public assign(object: any): any {
+		console.group(`CalendarEvent.assign(object: ${object})`);
+
 		let objectType: TYPE;
 
-		try {
-			// tslint:disable-next-line: no-unused-expression
-			(object as IcalendarEventHTMLElement).dataset.eventid;
+		if ((object as IcalendarEventHTMLElement).hasOwnProperty('dataset') && (object as IcalendarEventHTMLElement).dataset.hasOwnProperty('eventid')) {
 			objectType = TYPE.HTML_ELEMENT;
-		} catch (err) {
-			console.log('Not assigning an element, but an object.');
-			console.log(err);
+		} else {
 			objectType = TYPE.OBJECT;
+			console.log('Not assigning an element, but an object.');
 		}
 
 		if (objectType === TYPE.HTML_ELEMENT) {
 			this.element = object;
 		} else if (objectType === TYPE.OBJECT) {
-			console.log('Not assigning an element, but an object.');
 
 			for (const entry of Object.entries(
 				object as IcalendarEventAssignment
@@ -126,5 +128,6 @@ export class CalendarEvent {
 				this[entry[0] as string] = entry[1] as string;
 			}
 		}
+		console.groupEnd();
 	}
 }

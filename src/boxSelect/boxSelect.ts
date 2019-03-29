@@ -47,24 +47,30 @@ let popupModeDelete = false;
 chrome.runtime.onMessage.addListener(async request => {
 	switch (request.action) {
 		case 'boxSelect':
-			console.log('boxSelect');
-			popupModeDelete = true;
+			console.group('boxSelect.onMessage, case: boxSelect');
 
+			popupModeDelete = true;
 			keyDown({
 				key: 'b'
 			});
+
+			console.groupEnd();
 			break;
+
 		case 'delete':
+			console.group('boxSelect.onMessage, case: delete');
+
 			window.focus();
 			/* Is actually clicking on events for now. */
 			if (events.selected) events.selected.delete();
-			console.log('delete');
+
+			console.groupEnd();
 			break;
 
 		// The order of these events corresponds to the order they come in!
-
 		case 'onBeforeRequest': {
 			if (!events.selected) return;
+			console.group('boxSelect.onMessage, case: onBeforeRequest');
 
 			/* Check if that request pertains to actions made to events */
 			const webRequestEventId =
@@ -77,6 +83,8 @@ chrome.runtime.onMessage.addListener(async request => {
 				uncompletedRequest.onBeforeRequest = request.details;
 				console.log(request.details);
 			}
+
+			console.groupEnd();
 			break;
 		}
 		case 'onSendHeaders': {
@@ -85,13 +93,16 @@ chrome.runtime.onMessage.addListener(async request => {
 			}
 
 			if (!events.selected) return;
-			console.log('onSendHeaders: ');
+			console.group('boxSelect.onMessage, case: onSendHeaders: ');
+
 			console.log(request.details);
 			uncompletedRequest.onSendHeaders = request.details;
 
 			repeatWebRequest(events.selected, uncompletedRequest);
 			/* If events just got deleted then there's nothing to reset */
 			/* if (events.selected) events.selected.reset(); */
+
+			console.groupEnd();
 			break;
 		}
 		case 'onCompleted': {
@@ -99,17 +110,16 @@ chrome.runtime.onMessage.addListener(async request => {
 				return;
 			}
 			if (!events.selected) return;
-			console.log('onCompleted:');
+			console.group('boxSelect.onMessage, case: onCompleted:');
 			console.log(request.details);
-
-			/* events.selected.reset(); */
+			console.groupEnd();
 			break;
 		}
 
 		// The order of these load events corresponds to the order they come in!
 		case 'eventLoaded': {
 			/* if (!events.selected) return; */
-			console.log('eventLoaded');
+			console.group('boxSelect.onMessage, case: eventLoaded');
 
 			console.log(request.details);
 			const loadFormData: IloadFormData =
@@ -129,12 +139,12 @@ chrome.runtime.onMessage.addListener(async request => {
 					calendarEvent.timestamp = timestamp;
 				}
 			}
-
+			console.groupEnd();
 			break;
 		}
 		case 'containsLoadOnCompleted': {
 			if (!events.selected) return;
-			console.log('containsLoadOnCompleted');
+			console.group('boxSelect.onMessage, case: containsLoadOnCompleted');
 
 			/** Number of tries before you give up waiting. */
 			/* let i: number = 5;
@@ -144,7 +154,7 @@ chrome.runtime.onMessage.addListener(async request => {
 				await new Promise(r => setTimeout(r, 50));
 				i--;
 			}*/
-
+			console.groupEnd();
 			break;
 		}
 		default:
