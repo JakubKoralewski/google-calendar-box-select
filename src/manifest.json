@@ -4,16 +4,18 @@
 	"description": "__MSG_appDesc__",
 	"short_name": "__MSG_shortAppName__",
 	"default_locale": "en",
+	"author": "Jakub Koralewski",
 	"manifest_version": 2,
-	"content_scripts": [{
-		"matches": ["*://calendar.google.com/*/*"],
-		"js": ["boxSelect.bundle.js"]
-	},
-	{
-		"matches": ["*://calendar.google.com/*/*"],
-		"js": ["documentStart.bundle.js"],
-		"run_at": "document_start"
-	}
+	"content_scripts": [
+		{
+			"matches": ["*://calendar.google.com/*/*"],
+			"js": ["boxSelect.bundle.js"]
+		},
+		{
+			"matches": ["*://calendar.google.com/*/*"],
+			"js": ["documentStart.bundle.js"],
+			"run_at": "document_start"
+		}
 	],
 	"background": {
 		"scripts": ["background.bundle.js"],
