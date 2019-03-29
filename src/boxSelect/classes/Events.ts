@@ -17,9 +17,17 @@ export abstract class Events {
 	}
 
 	/** Takes care of the selectable property of CalendarEvent's.  */
-	protected findInDOM(): IcalendarEventHTMLElement[] {
+	protected findInDOM(container: HTMLDivElement): IcalendarEventHTMLElement[];
+	protected findInDOM(): IcalendarEventHTMLElement[];
+	protected findInDOM(x?: any): any {
+		console.group(`Events.findInDOM(x: ${x})`);
+
+		let isContainerArgument = true;
+		if (x === undefined) {
+			isContainerArgument = false;
+		}
 		const eventsHTMLElements: IcalendarEventHTMLElement[] = Array.from(
-			document.querySelectorAll(
+			(isContainerArgument ? x : document).querySelectorAll(
 				'div[role~="button"], div[role~="presentation"]'
 			) as NodeListOf<IcalendarEventHTMLElement>
 		).filter((event: IcalendarEventHTMLElement) => {
@@ -28,7 +36,9 @@ export abstract class Events {
 
 		console.log(`Found ${eventsHTMLElements.length} events in DOM.`);
 
+		console.groupEnd();
 		return eventsHTMLElements;
+
 	}
 
 	get calendarEvents(): CalendarEvent[] {

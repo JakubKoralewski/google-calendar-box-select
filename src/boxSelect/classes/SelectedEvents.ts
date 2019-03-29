@@ -15,8 +15,8 @@ export class SelectedEvents extends Events {
 	 *  Won't work in Month view.
 	 */
 	private elementsContainer: HTMLDivElement[];
-	private elementsContainerObservers: MutationObserver[];
-	private isMutationObserverApplied: boolean = false;
+/* 	private elementsContainerObservers: MutationObserver[];
+	private isMutationObserverApplied: boolean = false; */
 
 	constructor(selectedEvents: CalendarEvent[], allEvents: CalendarEvents) {
 		super();
@@ -34,15 +34,21 @@ export class SelectedEvents extends Events {
 		const mutationObserverConfig = { childList: true, subtree: true };
 
 		this.elementsContainer.forEach(container => {
+			/* Observes changes in DOM for every day of the week.
+			This will trigger when the user changes DOM as well as when the script itself does.
+			FIXME: This is stupid, because it shouldn't check the DOM again when you have just changed it!
+			TODO: Additionally, change in the DOM could also be used as a trigger for the dragging detection!  */
 			const mutationObserver = new MutationObserver(
 				(mutationsList, observer) => {
 					console.log(
 						'mutation observed on container',
 						container,
 						' with observer',
-						observer
+						observer,
+						'and mutationsList: ',
+						mutationsList
 					);
-					this.reset();
+					this.reset(container);
 				}
 			);
 			mutationObserver.observe(container, mutationObserverConfig);
@@ -134,22 +140,36 @@ export class SelectedEvents extends Events {
 	 *
 	 *  Happens e.g. when event is dragged over to another day.
 	 *  Ran after load to find events that changed DOM hierarchy e.g. after dragging.
-	 *
-	 * @returns {boolean} have any elements been found
+	 * @param { HTMLDivElement } container - where mutation was observed
+	 * @returns { boolean } have any elements been found
 	 */
-	public reset(): boolean {
+	public reset(container: HTMLDivElement): boolean;
+	public reset(): boolean;
+	public reset(container?: any): any {
+		console.group(`SelectedEvents.reset(container: ${container})`);
 		console.log('reset()\nbefore:');
 		console.log(this.events);
 
 		/* this.calendarEvents.forEach(event => (event.selectable = false)); */
 
-		const allEvents = this.findInDOM();
+		const allEvents = this.findInDOM(container ? container : undefined);
 		let isEventFound = false;
 
-		for (const calendarEvent of this.calendarEvents) {
-			const newEvent = allEvents.find(
-				HTMLEvent => HTMLEvent.dataset.eventid === calendarEvent.eid
+		for (const event of allEvents) {
+			let newEvent: IcalendarEventHTMLElement;
+			const calendarEvent = this.calendarEvents.find(
+				evt => evt.eid === event.dataset.eventid
 			);
+			if (!calendarEvent) {
+				continue;
+			}
+			const isElementCurrentlyLoopedOver: boolean = event.dataset.eventid === calendarEvent.eid;
+			if (isElementCurrentlyLoopedOver) {
+				newEvent = event;
+			} else {
+				continue;
+			}
+
 			if (!newEvent) {
 				/* Event not found. Was probably deleted or something went wrong. */
 
@@ -158,15 +178,21 @@ export class SelectedEvents extends Events {
 			} else {
 				isEventFound = true;
 			}
+			console.assert(this.events[calendarEvent.eid] !== undefined, 'Resetting an event that doesn\'t exist');
 
 			/* The old HTMLEvent is replaced with the newly found one. */
-			this.events[calendarEvent.eid].element = newEvent;
-			this.events[calendarEvent.eid].selected = true;
-			this.events[calendarEvent.eid].selectable = true;
+
+			const newAttributes = {
+				element: newEvent,
+				selected: true,
+				selectable: true
+			};
+			Object.assign(this.events[calendarEvent.eid], newAttributes);
 		}
 		console.log('after:');
 		console.log(this.events);
 
+		console.groupEnd();
 		return isEventFound;
 	}
 
