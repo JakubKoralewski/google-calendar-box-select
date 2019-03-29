@@ -11,17 +11,16 @@ branches:
 cache: npm
 
 before_deploy:
-  # Set up git user name and tag this commit
   - git config --local user.name Jakub Koralewski
   - git config --local user.email jakub.koralewski1@gmail.com
   - git tag -f experimental${TRAVIS_BUILD_NUMBER}
   - export NODE_ENV=development
   - npm run build
-  - zip -r google-calendar-box-select-dev-experimental${TRAVIS_BUILD_NUMBER}.zip build/*
+  - cd build
+  - zip -r google-calendar-box-select-dev-experimental${TRAVIS_BUILD_NUMBER}.zip *
   - export NODE_ENV=production
-  # - npm run dev # for testing, blocks the execution but I don't know how to make build give errors
   - npm run build
-  - zip -r google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip build/*
+  - zip -r google-calendar-box-select-experimental${TRAVIS_BUILD_NUMBER}.zip *
 
 deploy:
   provider: releases
