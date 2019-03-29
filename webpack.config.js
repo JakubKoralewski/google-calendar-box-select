@@ -139,12 +139,6 @@ var options = {
 					);
 				}
 			},
-/* 			{
-				from: path.join(__dirname, 'src', 'injected', 'script.js'),
-				transform: function(content) {
-					return tsLoad
-				}
-			}, */
 			{
 				/* i18n */
 				from: path.join(__dirname, 'src', '_locales'),
@@ -176,28 +170,14 @@ var options = {
 				delete: ['build/globalStyles.bundle.js']
 			}
 		}),
-		new WriteFilePlugin()/* ,
-		new webpack.SourceMapDevToolPlugin() *//* ,
-		new ChromeExtensionReloaderPlugin({
-			port: 9223, // Which port use to create the server
-			reloadPage: true, // Force the reload of the page also
-			entries: {
-				contentScript: ['boxSelect'],
-				background: 'background'
-			}
-		}) */
+		new WriteFilePlugin()
 	],
 	stats: 'verbose'
 };
-
-if (debug) {
-	/* options.devtool = 'source-map'; */
-	options.devtool = 'cheap-eval-source-map';
-	/* options.devtool = 'cheap-module-eval-source-map'; */
-} else {
-	/* options.devtool = 'false'; */
-	options.devtool = 'eval';
-	/* options.devtool = 'cheap-module-eval-source-map'; */
+options.devtool = 'cheap-eval-source-map';
+if (!debug) {
+	/* options.devtool = 'eval'; */
+	options.devtool = 'false';
 }
 
 console.log(options);
