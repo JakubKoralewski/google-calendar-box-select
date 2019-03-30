@@ -1,9 +1,10 @@
 /* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
+import { browser } from 'webextension-polyfill-ts';
 import './img/icon-128.png';
 import './img/icon-16.png';
 import './img/icon-48.png';
 
-chrome.webRequest.onBeforeRequest.addListener(
+browser.webRequest.onBeforeRequest.addListener(
 	details => {
 		try {
 			/* details.requestBody.formData.emf[0] || details.requestBody.formData.load[0]; */
@@ -28,8 +29,8 @@ chrome.webRequest.onBeforeRequest.addListener(
 		}
 
 		if (details.url.includes('load')) {
-			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-				chrome.tabs.sendMessage(tabs[0].id, {
+			browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+				browser.tabs.sendMessage(tabs[0].id, {
 					action: 'eventLoaded',
 					details
 				});
@@ -43,8 +44,8 @@ chrome.webRequest.onBeforeRequest.addListener(
 		console.log(details);
 		console.groupEnd();
 
-		chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-			chrome.tabs.sendMessage(tabs[0].id, {
+		browser.tabs.query({ active: true, currentWindow: true }).then( tabs => {
+			browser.tabs.sendMessage(tabs[0].id, {
 				action: 'onBeforeRequest',
 				details
 			});
@@ -54,13 +55,13 @@ chrome.webRequest.onBeforeRequest.addListener(
 	['requestBody']
 );
 
-chrome.webRequest.onSendHeaders.addListener(
+browser.webRequest.onSendHeaders.addListener(
 	details => {
 		console.group('Send headers', new Date(details.timeStamp));
 
 		/* if (details.url.includes('load')) {
-			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-				chrome.tabs.sendMessage(tabs[0].id, {
+			browser.tabs.query({ active: true, currentWindow: true }, tabs => {
+				browser.tabs.sendMessage(tabs[0].id, {
 					action: 'containsLoadOnSendHeaders',
 					details
 				});
@@ -75,8 +76,8 @@ chrome.webRequest.onSendHeaders.addListener(
 		console.log(details);
 		console.groupEnd();
 
-		chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-			chrome.tabs.sendMessage(tabs[0].id, {
+		browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+			browser.tabs.sendMessage(tabs[0].id, {
 				action: 'onSendHeaders',
 				details
 			});
@@ -86,13 +87,13 @@ chrome.webRequest.onSendHeaders.addListener(
 	['requestHeaders']
 );
 
-chrome.webRequest.onCompleted.addListener(
+browser.webRequest.onCompleted.addListener(
 	details => {
 		console.group('Completed:', new Date(details.timeStamp));
 
 		if (details.url.includes('load')) {
-			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-				chrome.tabs.sendMessage(tabs[0].id, {
+			browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+				browser.tabs.sendMessage(tabs[0].id, {
 					action: 'containsLoadOnCompleted',
 					details
 				});
@@ -107,8 +108,8 @@ chrome.webRequest.onCompleted.addListener(
 		console.log(details);
 		console.groupEnd();
 
-		chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-			chrome.tabs.sendMessage(tabs[0].id, {
+		browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+			browser.tabs.sendMessage(tabs[0].id, {
 				action: 'onCompleted',
 				details
 			});
