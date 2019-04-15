@@ -1,8 +1,10 @@
 # Google Calendar Box Select [![](https://img.shields.io/travis/com/JakubKoralewski/google-calendar-box-select/master.svg?label=build&logo=travis)](https://travis-ci.com/JakubKoralewski/google-calendar-box-select/builds) [![](https://img.shields.io/github/release/JakubKoralewski/google-calendar-box-select.svg?label=latest%20stable)](https://github.com/JakubKoralewski/google-calendar-box-select/releases/latest) [![](https://img.shields.io/github/release-pre/JakubKoralewski/google-calendar-box-select.svg?label=latest%20any)](https://github.com/JakubKoralewski/google-calendar-box-select/releases) 
 
-# ![logo](docs/img/main_logo.png)
+<p align="center">
+    <img src="docs/img/box-select-icon.png" width="200" align="center" />
+</p>
 
-<h4 align="center">Chrome Extension to (Box) Select multiple Google Calendar events. Built with TypeScript and Webpack. </h4>
+<h4 align="center">Web Extension to (Box) Select multiple Google Calendar events. Built with TypeScript and Webpack. Supports Chrome and experimentally Firefox and Opera. </h4>
 
 ![trailer](docs/img/demo.gif)
 
