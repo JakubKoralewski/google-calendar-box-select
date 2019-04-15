@@ -3,6 +3,15 @@ This is a changelog for the Google Calendar Box Select extension.
 
 ## [Unreleased] 
 <small>These are the changes not yet assigned to any release.</small>
+#### Added
+- migrate to browser instead of chrome
+  - using webextension-polyfill-ts
+  - now is supposed to work with Chrome, Firefox and Opera
+#### Changed
+- some packages needed automatic auditing
+### Bugs
+- Firefox very laggy + literally unusable
+- Opera not tested
 
 ## 0.2.1 - 2019-03-29
 Mutation Observers, prettify consoles, repeatWebRequests repeat on fail.

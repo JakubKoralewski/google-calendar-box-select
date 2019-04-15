@@ -1,4 +1,5 @@
 /* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
+import { browser } from 'webextension-polyfill-ts';
 import {
 	CalendarEvent,
 	CalendarEvents,
@@ -65,7 +66,7 @@ export class SelectedEvents extends Events {
 	 */
 	public async delete() {
 		/* Let popup know when starts and ends for UX animation purposes */
-		chrome.runtime.sendMessage({
+		browser.runtime.sendMessage({
 			action: 'deleteStart'
 		});
 
@@ -124,7 +125,7 @@ export class SelectedEvents extends Events {
 
 			delete this.events[calendarEvent.dataset.eventid];
 		}
-		chrome.runtime.sendMessage({
+		browser.runtime.sendMessage({
 			action: 'deleteEnd'
 		});
 	}
