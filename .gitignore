@@ -1,9 +1,17 @@
 # dependencies
 /node_modules/
+
 # actual file that you zip and publish
 /build/
+
 # environment variables
 .env
-/docs/
+
+docs/*
+!docs/img
+
 google-calendar-box-select.iml
-/.history/
+
+# VSCode extension
+.history/
+

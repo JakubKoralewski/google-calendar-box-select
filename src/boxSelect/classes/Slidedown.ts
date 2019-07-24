@@ -2,6 +2,7 @@
 /**
  * Provides user feedback for when the select button is being held.
  */
+import { browser } from 'webextension-polyfill-ts';
 export class Slidedown {
 	public static created: boolean;
 	public element: HTMLElement;
@@ -32,7 +33,7 @@ export class Slidedown {
 
 	/** Insert html from **slidedown.html** into the innerHTML property of the slidedown.element instance */
 	public insertHTML() {
-		const selectModeActiveText = chrome.i18n.getMessage('selectModeActive');
+		const selectModeActiveText = browser.i18n.getMessage('selectModeActive');
 		this.element.innerHTML = `<p>${selectModeActiveText}</p>`;
 		console.log(`Slidedown.insertHTML: this.element.offsetWidth: ${this.element.offsetWidth}`);
 		this.element.style.marginLeft = (-this.element.offsetWidth / 2).toString() + 'px';

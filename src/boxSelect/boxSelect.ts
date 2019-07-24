@@ -24,6 +24,7 @@ import {
 	IsingleEventLoad,
 	IuncompletedRequest
 } from '.';
+import { browser } from 'webextension-polyfill-ts';
 
 let SELECT_KEY = DEFAULT_SELECT_KEY;
 let DELETE_KEY = DEFAULT_DELETE_KEY;
@@ -44,7 +45,7 @@ const slidedown = new Slidedown();
 
 let popupModeDelete = false;
 
-chrome.runtime.onMessage.addListener(async request => {
+browser.runtime.onMessage.addListener(async request => {
 	switch (request.action) {
 		case 'boxSelect':
 			console.group('boxSelect.onMessage, case: boxSelect');
@@ -165,7 +166,7 @@ chrome.runtime.onMessage.addListener(async request => {
 console.log('Box select extension on google calendar webpage active.');
 
 const s: HTMLScriptElement = document.createElement('script');
-s.src = chrome.runtime.getURL('script.bundle.js');
+s.src = browser.runtime.getURL('script.bundle.js');
 document.body.insertBefore(s, document.body.lastChild);
 s.onload = () => {
 	s.remove();
@@ -226,18 +227,18 @@ window.addEventListener(
 const style = document.createElement('link');
 style.rel = 'stylesheet';
 style.type = 'text/css';
-style.href = chrome.runtime.getURL('globalStyles.css');
+style.href = browser.runtime.getURL('globalStyles.css');
 (document.head || document.documentElement).appendChild(style);
 
 // Restore hotkeys for select and dlete from localStorage
-chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], data => {
+browser.storage.sync.get(['boxSelectHotkey', 'deleteHotkey']).then(data => {
 	SELECT_KEY = data.boxSelectHotkey || SELECT_KEY;
 	DELETE_KEY = data.deleteHotkey || DELETE_KEY;
 });
 console.log(`SELECT_KEY: ${SELECT_KEY}; DELETE_KEY: ${DELETE_KEY}`);
 
 // When value is changed while extension is running also update hotkeys
-chrome.storage.onChanged.addListener(data => {
+browser.storage.onChanged.addListener(data => {
 	console.log(data);
 	SELECT_KEY = data.boxSelectHotkey.newValue || SELECT_KEY;
 	DELETE_KEY = data.deleteHotkey.newValue || DELETE_KEY;
@@ -339,7 +340,7 @@ function boxSelectUp() {
 		});
 
 		// Get rid of highlight when box select div active in popup.html
-		chrome.runtime.sendMessage({
+		browser.runtime.sendMessage({
 			action: 'boxSelectOff'
 		});
 

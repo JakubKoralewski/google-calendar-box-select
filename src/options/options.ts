@@ -1,26 +1,27 @@
 /* Google Calendar Box Select | MIT License | Copyright (c) 2019 Jakub Koralewski */
+import { browser } from 'webextension-polyfill-ts';
 import '../fonts/OpenSans-Bold.ttf';
 import '../fonts/OpenSans-Regular.ttf';
 import '../fonts/OpenSans-SemiBold.ttf';
 import './options.scss';
 
 /* i18n */
-const optionsText = chrome.i18n.getMessage('options');
+const optionsText = browser.i18n.getMessage('options');
 
-document.documentElement.lang = chrome.i18n.getMessage('@@ui_locale');
+document.documentElement.lang = browser.i18n.getMessage('@@ui_locale');
 document.title = optionsText;
 (document.querySelector('#toolbar #title') as HTMLDivElement).innerText = optionsText;
-document.querySelector('#select_text').innerHTML = chrome.i18n.getMessage('selectHotkey', [
+document.querySelector('#select_text').innerHTML = browser.i18n.getMessage('selectHotkey', [
 	'<b>',
 	'</b>'
 ]);
-document.querySelector('#delete_text').innerHTML = chrome.i18n.getMessage('deleteHotkey', [
+document.querySelector('#delete_text').innerHTML = browser.i18n.getMessage('deleteHotkey', [
 	'<b>',
 	'</b>'
 ]);
-(document.querySelector('input#save') as HTMLInputElement).value = chrome.i18n.getMessage('save');
-(document.querySelector('input#remind_defaults') as HTMLButtonElement).value = chrome.i18n.getMessage('remindDefaults');
-(document.querySelector('h2#taken') as HTMLHeadingElement).innerText = chrome.i18n.getMessage('takenShortcuts');
+(document.querySelector('input#save') as HTMLInputElement).value = browser.i18n.getMessage('save');
+(document.querySelector('input#remind_defaults') as HTMLButtonElement).value = browser.i18n.getMessage('remindDefaults');
+(document.querySelector('h2#taken') as HTMLHeadingElement).innerText = browser.i18n.getMessage('takenShortcuts');
 
 const DEFAULTS = {
 	boxSelectHotkey: 'b',
@@ -48,11 +49,11 @@ function updatePlaceholders(select, del) {
 	deleteInput.placeholder = del || DEFAULTS.deleteHotkey;
 }
 
-chrome.storage.sync.get(['boxSelectHotkey', 'deleteHotkey'], data => {
+browser.storage.sync.get(['boxSelectHotkey', 'deleteHotkey']).then(data => {
 	updatePlaceholders(data.boxSelectHotkey, data.deleteHotkey);
 });
 
-chrome.storage.onChanged.addListener(data => {
+browser.storage.onChanged.addListener(data => {
 	console.log(data);
 	updatePlaceholders(data.boxSelectHotkey.newValue, data.deleteHotkey.newValue);
 });
@@ -79,7 +80,7 @@ function handleInput(e: InputEvent) {
 }
 
 function save() {
-	// https://stackoverflow.com/questions/28277312/chrome-extensions-saving-settings
+	// https://stackoverflow.com/questions/28277312/browser-extensions-saving-settings
 	const boxSelectHotkey = selectInput.value;
 	const deleteHotkey = deleteInput.value;
 	if (!boxSelectHotkey || !deleteHotkey) {
@@ -87,7 +88,7 @@ function save() {
 		return;
 	}
 	console.log(boxSelectHotkey, deleteHotkey);
-	chrome.storage.sync.set({
+	browser.storage.sync.set({
 		boxSelectHotkey,
 		deleteHotkey
 	});
