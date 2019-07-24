@@ -37,13 +37,32 @@ You can click the extension icon to view a simple toolbar letting you select as 
 
 [webextension-polyfill]: https://github.com/mozilla/webextension-polyfill
 ## Develop
+For developing this extension I **strongly** recommend the free editor - [VSCode][vscode].
+
+### Step 1
 
 ```bash
 $ npm install
 $ npm run dev
 ```
 
-For developing this extension I **strongly** recommend the free editor - [VSCode][vscode].
+### Step 1.5 (only the first time!)
+
+Load the extension in Chrome. Click `Load unpacked` and choose the `build` folder.
+<img src="https://i.imgur.com/JQ9kNdh.png" />
+
+### Step 2 (after every change)
+
+If the app has recompiled and you want to view the changes you have to reload the extension.
+
+You can do this either with the [Extensions Reloader][extensions-reloader]:
+
+<img src="https://i.imgur.com/SHtxkaf.png" />
+
+or manually:
+
+![](https://i.imgur.com/ldXgh6C.png)
+
 
 ### VSCode settings ([`settings.json`](.vscode/settings.json)):
 
